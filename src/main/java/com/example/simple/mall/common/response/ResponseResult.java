@@ -5,8 +5,6 @@ import lombok.Getter;
 import lombok.Setter;
 
 /**
- * ResponseResult
- *
  * @author sunny
  * @since 2025/05/05
  */
@@ -26,10 +24,25 @@ public class ResponseResult<T> extends BaseResponse {
         this.data = data;
     }
 
+    /**
+     * 返回值
+     *
+     * @return @return {@code ResponseResult<T> }
+     * @author sunny
+     * @since 2025/05/05
+     */
     public static <T> ResponseResult<T> out(ResponseEnum respEnum) {
         return new ResponseResult<>(respEnum);
     }
 
+    /**
+     * 返回值
+     *
+     * @param data 数据
+     * @return @return {@code ResponseResult<T> }
+     * @author sunny
+     * @since 2025/05/05
+     */
     public static <T> ResponseResult<T> out(ResponseEnum respEnum, T data) {
         return new ResponseResult<>(respEnum, data);
     }
