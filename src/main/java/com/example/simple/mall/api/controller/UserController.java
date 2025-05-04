@@ -18,4 +18,13 @@ public class UserController {
     @Autowired
     private UserService userService;
 
+    /**
+     * 添加用户
+     *
+     * @author sunny
+     * @since 2025/05/05
+     */
+    public UserController(UserService userService) {
+        this.userService = userService;
+    }
 }

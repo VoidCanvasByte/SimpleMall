@@ -2,6 +2,7 @@ package com.example.simple.mall.common.enu;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.Setter;
 
 /**
  * 响应的枚举
@@ -22,6 +23,9 @@ public enum ResponseEnum {
     USER_NOT_LOGIN(1004, "用户未登录"),
     USER_LOGIN_ERROR(1005, "用户登录失败"),
     ;
-    private final Integer code;
-    private final String msg;
+
+    @Setter
+    private Integer code;
+    @Setter
+    private String message;
 }

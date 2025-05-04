@@ -1,5 +1,6 @@
 package com.example.simple.mall.common.response;
 
+import com.example.simple.mall.common.enu.ResponseEnum;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -12,11 +13,11 @@ import lombok.Setter;
 @Getter
 @Setter
 public class BaseResponse {
-    Integer code;
-    String message;
+    private Integer code;
+    private String message;
 
-    public BaseResponse(Integer code, String message) {
-        this.code = code;
-        this.message = message;
+    public BaseResponse(ResponseEnum code) {
+        this.code = code.getCode();
+        this.message = code.getMessage();
     }
 }
