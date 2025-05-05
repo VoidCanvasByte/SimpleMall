@@ -1,5 +1,6 @@
 package com.example.simple.mall.api.service.impl;
 
+import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.util.ObjectUtil;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.example.simple.mall.api.mapper.UserMapper;
@@ -33,7 +34,6 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
      */
     @Override
     public void addUser(UserDTO userDto) {
-
         String email = userDto.getEmail();
         //根据邮箱的信息去数据库中查询数据
         User user = userMapper.selectUser(email);
@@ -49,6 +49,26 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         } else {
             //如果数据库中有数据，则抛出异常
             throw new RuntimeException(ResponseEnum.USER_EXIST.getMessage());
+        }
+    }
+
+    /**
+     * 更新用户信息(包括密码的更新)
+     *
+     * @author sunny
+     * @since 2025/05/05
+     */
+    @Override
+    public void updateUser(UserDTO userDto) {
+        Long id = userDto.getId();
+        if (ObjectUtil.isNotEmpty(id)) {
+            //进行用户信息的更新
+            User user = new User();
+            BeanUtil.copyProperties(userDto, user);
+            //更新用户的信息
+            this.updateById(user);
+        } else {
+            throw new RuntimeException(ResponseEnum.USER_ID_IS_EMPTY.getMessage());
         }
     }
 }

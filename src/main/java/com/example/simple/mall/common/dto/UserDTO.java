@@ -2,6 +2,7 @@ package com.example.simple.mall.common.dto;
 
 import javax.validation.constraints.NotNull;
 
+import com.example.simple.mall.common.entity.User;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -13,7 +14,7 @@ import lombok.EqualsAndHashCode;
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-public class UserDTO extends BaseDTO{
+public class UserDTO extends User{
 
     /**
      * 用户昵称

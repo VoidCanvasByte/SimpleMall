@@ -19,4 +19,12 @@ public interface UserService extends IService<User> {
      * @since 2025/05/05
      */
     void addUser(UserDTO userDto);
+
+    /**
+     * 更新用户信息
+     *
+     * @author sunny
+     * @since 2025/05/05
+     */
+    void updateUser(UserDTO userDto);
 }
