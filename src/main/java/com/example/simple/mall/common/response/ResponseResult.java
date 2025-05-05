@@ -5,6 +5,8 @@ import lombok.Getter;
 import lombok.Setter;
 
 /**
+ * 静态工厂方法
+ *
  * @author sunny
  * @since 2025/05/05
  */

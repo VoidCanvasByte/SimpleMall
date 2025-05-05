@@ -1,10 +1,10 @@
 package com.example.simple.mall.common.entity;
 
-import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.example.simple.mall.common.dto.BaseDTO;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import java.io.Serial;
 
@@ -16,16 +16,11 @@ import java.io.Serial;
  */
 @Data
 @TableName("user")
-public class User implements java.io.Serializable {
+@EqualsAndHashCode(callSuper = true)
+public class User extends BaseDTO implements java.io.Serializable {
 
     @Serial
     private static final long serialVersionUID = 1L;
-
-    /**
-     * 用户ID
-     */
-    @TableId(value = "id", type = IdType.ASSIGN_ID)
-    private Long id;
 
     /**
      * 用户昵称
