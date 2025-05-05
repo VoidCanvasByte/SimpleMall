@@ -21,6 +21,7 @@ public enum ResponseEnum {
     USER_PASSWORD_ERROR(1003, "用户名或密码错误，请确认信息"),
     USER_NOT_LOGIN(1004, "用户未登录"),
     USER_LOGIN_ERROR(1005, "用户登录失败"),
+    USER_ID_IS_EMPTY(1006, "用户ID不能为空，请确认信息"),
     ;
 
     @Setter
