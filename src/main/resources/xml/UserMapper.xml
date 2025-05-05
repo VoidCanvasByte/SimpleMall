@@ -9,7 +9,7 @@
                email,
                password,
                user_gender AS userGender
-        FROM users
+        FROM user
         WHERE email = #{email}
     </select>
 </mapper>
