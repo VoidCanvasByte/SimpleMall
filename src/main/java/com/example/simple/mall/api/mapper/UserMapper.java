@@ -2,6 +2,7 @@ package com.example.simple.mall.api.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.example.simple.mall.common.entity.User;
+import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 /**
@@ -10,6 +11,7 @@ import org.apache.ibatis.annotations.Param;
  * @author sunny
  * @since 2025/05/05
  */
+@Mapper
 public interface UserMapper extends BaseMapper<User> {
 
     /**
