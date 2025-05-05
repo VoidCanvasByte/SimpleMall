@@ -22,4 +22,12 @@ public interface UserMapper extends BaseMapper<User> {
      * @since 2025/05/05
      */
     User selectUser(@Param("email") String email);
+
+    /**
+     * 新增用户信息
+     *
+     * @author sunny
+     * @since 2025/05/05
+     */
+    void insertUserInfo(User userNew);
 }

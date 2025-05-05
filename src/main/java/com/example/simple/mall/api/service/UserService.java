@@ -27,4 +27,12 @@ public interface UserService extends IService<User> {
      * @since 2025/05/05
      */
     void updateUser(UserDTO userDto);
+
+    /**
+     * 用户消息注销
+     *
+     * @author sunny
+     * @since 2025/05/05
+     */
+    void userLogout(String userId);
 }

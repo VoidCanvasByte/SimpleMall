@@ -4,6 +4,8 @@ import com.example.simple.mall.api.service.UserService;
 import com.example.simple.mall.common.dto.UserDTO;
 import com.example.simple.mall.common.enu.ResponseEnum;
 import com.example.simple.mall.common.response.ResponseResult;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -14,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
  * @author sunny
  * @since 2025/05/05
  */
+@Tag(name = "UserControllerAPI", description = "用户管理控制器接口")
 @RestController
 @RequestMapping("/apply/user")
 public class UserController {
@@ -27,6 +30,7 @@ public class UserController {
      * @author sunny
      * @since 2025/05/05@return@return {@code ResponseResult,ResponseResult }
      */
+    @Operation(summary = "用户注册申请",description = "用户信息注册")
     @PostMapping("/add/userDetails")
     public ResponseResult<UserDTO> addUser(@Validated @RequestBody UserDTO userDto) {
         userService.addUser(userDto);
@@ -40,12 +44,12 @@ public class UserController {
      * @author sunny
      * @since 2025/05/05
      */
+    @Operation(summary = "更新用户信息",description = "用户用户信息的更新")
     @PutMapping("/update/userDetails")
     public ResponseResult<UserDTO> userUpdate(@RequestBody UserDTO userDto) {
         userService.updateUser(userDto);
         return ResponseResult.out(ResponseEnum.SUCCESS);
     }
-
 
     /**
      * 用户注销信息
@@ -54,9 +58,10 @@ public class UserController {
      * @author sunny
      * @since 2025/05/05
      */
-    @PutMapping("/delete/userDetails")
-    public ResponseResult<UserDTO> userLogout(@RequestBody UserDTO userDto) {
-        userService.updateUser(userDto);
+    @Operation(summary = "用户注销信息",description = "用于用户信息的封存")
+    @PutMapping("/delete/userDetails/{userId}")
+    public ResponseResult<UserDTO> userLogout(@PathVariable String userId) {
+        userService.userLogout(userId);
         return ResponseResult.out(ResponseEnum.SUCCESS);
     }
 

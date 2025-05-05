@@ -1,13 +1,17 @@
 package com.example.simple.mall.api.service.impl;
 
-import cn.hutool.core.bean.BeanUtil;
+import cn.hutool.core.lang.Validator;
 import cn.hutool.core.util.ObjectUtil;
+import cn.hutool.core.util.StrUtil;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.example.simple.mall.api.mapStruct.UserMapperStruct;
 import com.example.simple.mall.api.mapper.UserMapper;
 import com.example.simple.mall.api.service.UserService;
 import com.example.simple.mall.common.dto.UserDTO;
 import com.example.simple.mall.common.entity.User;
 import com.example.simple.mall.common.enu.ResponseEnum;
+import com.example.simple.mall.common.enu.UserStatusEnum;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -35,21 +39,18 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     @Override
     public void addUser(UserDTO userDto) {
         String email = userDto.getEmail();
+        //校验邮箱的格式是否正确
+        boolean email1 = Validator.isEmail(email);
+        if (!email1) {
+            throw new RuntimeException(ResponseEnum.USER_EMAIL_IF_CORRECT.getMessage());
+        }
         //根据邮箱的信息去数据库中查询数据
         User user = userMapper.selectUser(email);
-        boolean empty = ObjectUtil.isEmpty(user);
-        if (empty) {
-            //如果数据库中没有数据，则进行插入
-            User user1 = new User();
-            user1.setEmail(email);
-            user1.setPassword(userDto.getPassword());
-            user1.setUserName(userDto.getUserName());
-            user1.setUserGender(userDto.getUserGender());
-            userMapper.insert(user1);
-        } else {
-            //如果数据库中有数据，则抛出异常
-            throw new RuntimeException(ResponseEnum.USER_EXIST.getMessage());
+        if (!ObjectUtil.isEmpty(user)) {
+            throw new RuntimeException(ResponseEnum.USER_EMAIL_EXIST.getMessage());
         }
+        User userNew = UserMapperStruct.INSTANCE.userDtoToEntity(userDto);
+        userMapper.insertUserInfo(userNew);
     }
 
     /**
@@ -62,13 +63,47 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     public void updateUser(UserDTO userDto) {
         Long id = userDto.getId();
         if (ObjectUtil.isNotEmpty(id)) {
-            //进行用户信息的更新
-            User user = new User();
-            BeanUtil.copyProperties(userDto, user);
+            User userOld = userMapper.selectById(id);
+            if (ObjectUtil.isEmpty(userOld)) {
+                throw new RuntimeException(ResponseEnum.USER_NOT_EXIST.getMessage());
+            }
+            //根据ID查询用户的状态，确保正常在使用，才可以更新用户的信息
+            if (ObjectUtil.equals(userOld.getStatus(), UserStatusEnum.SEAL.getCode())) {
+                throw new RuntimeException(ResponseEnum.USER_STATUS_IS_UNUSED.getMessage());
+            }
+            //对象转换
+            User user = UserMapperStruct.INSTANCE.userDtoToEntity(userDto);
+            String password = user.getPassword();
+            //更新密码，对密码进行校验
+            if (StrUtil.isNotBlank(password)) {
+
+            }
             //更新用户的信息
             this.updateById(user);
         } else {
             throw new RuntimeException(ResponseEnum.USER_ID_IS_EMPTY.getMessage());
         }
+    }
+
+    /**
+     * 用户注销
+     *
+     * @author sunny
+     * @since 2025/05/05
+     */
+    @Override
+    public void userLogout(String userId) {
+        QueryWrapper<User> userWrapper = new QueryWrapper<>();
+        userWrapper.in("id", userId);
+        User userOld = userMapper.selectById(userWrapper);
+        //用户进行封存
+        if (ObjectUtil.isEmpty(userOld)) {
+            throw new RuntimeException(ResponseEnum.USER_NOT_EXIST.getMessage());
+        }
+        //对用户信息进行封存
+        QueryWrapper<User> userWrapperUpdate = new QueryWrapper<>();
+        userWrapperUpdate.eq("status", UserStatusEnum.SEAL.getCode());
+        userWrapperUpdate.eq("id", userId);
+        userMapper.update(userWrapperUpdate);
     }
 }

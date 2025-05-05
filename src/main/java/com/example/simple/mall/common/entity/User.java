@@ -45,4 +45,10 @@ public class User extends BaseDTO implements java.io.Serializable {
      */
     @TableField("user_gender")
     private Integer userGender;
+
+    /**
+     * 用户状态：0正常，1封禁'
+     */
+    @TableField("status")
+    private Integer status;
 }
