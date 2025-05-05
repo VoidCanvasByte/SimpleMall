@@ -1,6 +1,7 @@
 package com.example.simple.mall.api.controller;
 
 import com.example.simple.mall.api.service.UserService;
+import com.example.simple.mall.common.dto.LoginRequestDTO;
 import com.example.simple.mall.common.dto.UserDTO;
 import com.example.simple.mall.common.enu.ResponseEnum;
 import com.example.simple.mall.common.response.ResponseResult;
@@ -63,6 +64,20 @@ public class UserController {
     public ResponseResult<UserDTO> userLogout(@PathVariable String userId) {
         userService.userLogout(userId);
         return ResponseResult.out(ResponseEnum.SUCCESS);
+    }
+
+    /**
+     * 用户登陆
+     *
+     * @return @return {@code ResponseResult<UserDTO> }
+     * @author sunny
+     * @since 2025/05/05
+     */
+    @Operation(summary = "用户登陆")
+    @PostMapping("/login")
+    public ResponseResult<UserDTO> login(@RequestBody LoginRequestDTO loginRequest) {
+        UserDTO user = userService.login(loginRequest.getEmail(), loginRequest.getPassword());
+        return ResponseResult.out(ResponseEnum.SUCCESS,user);
     }
 
 }

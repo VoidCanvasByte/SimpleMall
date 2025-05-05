@@ -14,8 +14,10 @@ import com.example.simple.mall.common.enu.ResponseEnum;
 import com.example.simple.mall.common.enu.UserStatusEnum;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import static com.example.simple.mall.common.utils.PasswordRelated.enCode;
+import static com.example.simple.mall.common.utils.PasswordRelated.matches;
 
 /**
  * 用户 服务实现类
@@ -27,10 +29,6 @@ import org.springframework.stereotype.Service;
 @Service
 public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements UserService {
 
-    /**
-     * 用于密码加密
-     */
-    private static final BCryptPasswordEncoder ENCODER = new BCryptPasswordEncoder();
 
     @Autowired
     private UserMapper userMapper;
@@ -51,16 +49,13 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
             throw new RuntimeException(ResponseEnum.USER_EMAIL_IF_CORRECT.getMessage());
         }
         //根据邮箱的信息去数据库中查询数据
-        User user = userMapper.selectUser(email);
+        UserDTO user = userMapper.selectUserByEmail(email,null);
         if (!ObjectUtil.isEmpty(user)) {
             throw new RuntimeException(ResponseEnum.USER_EMAIL_EXIST.getMessage());
         }
-
         User userNew = UserMapperStruct.INSTANCE.userDtoToEntity(userDto);
-
-
         // 存储 hashedPassword 到数据库
-        String unCodePassword = this.enCode(userNew.getPassword());
+        String unCodePassword = enCode(userNew.getPassword());
         userNew.setPassword(unCodePassword);
         userMapper.insertUserInfo(userNew);
     }
@@ -85,10 +80,13 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
             }
             //对象转换
             User user = UserMapperStruct.INSTANCE.userDtoToEntity(userDto);
-            String password = user.getPassword();
-            //更新密码，对密码进行校验
-            if (StrUtil.isNotBlank(password)) {
 
+
+            //更新密码，对旧密码进行校验
+            String password = userDto.getPassword();
+            boolean match = matches(password, userOld.getPassword());
+            if(!match){
+                throw new RuntimeException(ResponseEnum.USER_PASSWORD_IS_WRONG.getMessage());
             }
             //更新用户的信息
             this.updateById(user);
@@ -100,8 +98,9 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     /**
      * 用户注销
      *
+     * @param userId 用户ID
      * @author sunny
-     * @since 2025/05/05
+     * @since 2025/05/05@return
      */
     @Override
     public void userLogout(String userId) {
@@ -119,15 +118,26 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         userMapper.update(userWrapperUpdate);
     }
 
-
     /**
-     * 密码加密
+     * 用户登陆
      *
-     * @return @return {@code String }
+     * @param email    用户邮件
+     * @param password 用户密码
+     * @return @return {@code UserDTO }
      * @author sunny
      * @since 2025/05/05
      */
-    private String enCode(String rawPassword) {
-        return ENCODER.encode(rawPassword);
+    @Override
+    public UserDTO login(String email, String password) {
+        //查询数据库中存储的邮箱的码值
+        UserDTO userDTO = userMapper.selectUserByEmail(email,null);
+        if (ObjectUtil.isNull(userDTO)) {
+            throw new RuntimeException(ResponseEnum.USER_NOT_EXIST.getMessage());
+        }
+        boolean match = matches(password, userDTO.getPassword());
+        if (!match) {
+            throw new RuntimeException("密码错误");
+        }
+        return userDTO;
     }
 }

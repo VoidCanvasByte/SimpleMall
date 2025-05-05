@@ -29,10 +29,22 @@ public interface UserService extends IService<User> {
     void updateUser(UserDTO userDto);
 
     /**
-     * 用户消息注销
+     * 用户注销
      *
+     * @param userId 用户ID
+     * @author sunny
+     * @since 2025/05/05@return@return
+     */
+    void userLogout(String userId);
+
+    /**
+     * 用户登陆
+     *
+     * @param email    邮箱
+     * @param password 密码
+     * @return @return {@code UserDTO }
      * @author sunny
      * @since 2025/05/05
      */
-    void userLogout(String userId);
+    UserDTO login(String email, String password);
 }

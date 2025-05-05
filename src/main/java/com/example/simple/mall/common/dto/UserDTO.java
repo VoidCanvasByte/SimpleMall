@@ -30,7 +30,7 @@ public class UserDTO extends User{
     /**
      * 用户密码
      */
-    @NotNull(message = "用户邮箱不能为空")
+    @NotNull(message = "用户密码不能为空")
     private String password;
 
     /**

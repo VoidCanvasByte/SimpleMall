@@ -1,6 +1,7 @@
 package com.example.simple.mall.api.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.example.simple.mall.common.dto.UserDTO;
 import com.example.simple.mall.common.entity.User;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -15,13 +16,13 @@ import org.apache.ibatis.annotations.Param;
 public interface UserMapper extends BaseMapper<User> {
 
     /**
-     * 查询用户的信息
+     * 根据邮箱查询用户信息
      *
-     * @return @return {@code User }
+     * @param email 邮箱
      * @author sunny
-     * @since 2025/05/05
+     * @since 2025/05/05@return @return {@code User }
      */
-    User selectUser(@Param("email") String email);
+    UserDTO selectUserByEmail(@Param("email") String email,@Param("id") Integer id);
 
     /**
      * 新增用户信息

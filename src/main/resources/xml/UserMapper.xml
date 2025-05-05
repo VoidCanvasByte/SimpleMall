@@ -5,23 +5,31 @@
     <!--新增用户信息-->
     <insert id="insertUserInfo" parameterType="com.example.simple.mall.common.entity.User">
         INSERT INTO user
-        (
-         user_name,
+        (user_name,
          email,
          password,
          user_gender,
          status)
-        VALUES (#{userName}, #{email}, #{password}, #{userGender},#{status})
+        VALUES (#{userName}, #{email}, #{password}, #{userGender}, #{status})
     </insert>
 
-    <!-- 查询单个用户 -->
-    <select id="selectUser" resultType="com.example.simple.mall.common.entity.User">
-        SELECT id,
-               user_name   AS userName,
-               email,
-               password,
-               user_gender AS userGender
+    <!-- 根据邮箱信息查询单个用户 -->
+    <select id="selectUserByEmail" resultType="com.example.simple.mall.common.dto.UserDTO">
+        SELECT
+        id,
+        user_name AS userName,
+        email,
+        password,
+        user_gender AS userGender,
+        status AS status
         FROM user
-        WHERE email = #{email}
+        WHERE 1 = 1
+        and
+        <if test="id != null">
+            id = #{id}
+        </if>
+        <if test="email != null and email != ''">
+            email = #{email}
+        </if>
     </select>
 </mapper>

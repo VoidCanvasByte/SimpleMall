@@ -24,6 +24,7 @@ public enum ResponseEnum {
     USER_ID_IS_EMPTY(1006, "用户ID不能为空，请确认信息"),
     USER_STATUS_IS_UNUSED(1007, "用户为封存状态，不可以进行信息的更新"),
     USER_EMAIL_IF_CORRECT(1008, "当前邮箱格式不正确，请确认邮箱的是否真确！"),
+    USER_PASSWORD_IS_WRONG(1009,"当前密码输入错误，请确定密码！"),
     ;
 
     @Setter
