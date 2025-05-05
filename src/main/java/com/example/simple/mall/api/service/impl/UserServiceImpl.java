@@ -14,6 +14,7 @@ import com.example.simple.mall.common.enu.ResponseEnum;
 import com.example.simple.mall.common.enu.UserStatusEnum;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 /**
@@ -25,6 +26,11 @@ import org.springframework.stereotype.Service;
 @Slf4j
 @Service
 public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements UserService {
+
+    /**
+     * 用于密码加密
+     */
+    private static final BCryptPasswordEncoder ENCODER = new BCryptPasswordEncoder();
 
     @Autowired
     private UserMapper userMapper;
@@ -49,7 +55,13 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         if (!ObjectUtil.isEmpty(user)) {
             throw new RuntimeException(ResponseEnum.USER_EMAIL_EXIST.getMessage());
         }
+
         User userNew = UserMapperStruct.INSTANCE.userDtoToEntity(userDto);
+
+
+        // 存储 hashedPassword 到数据库
+        String unCodePassword = this.enCode(userNew.getPassword());
+        userNew.setPassword(unCodePassword);
         userMapper.insertUserInfo(userNew);
     }
 
@@ -105,5 +117,17 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         userWrapperUpdate.eq("status", UserStatusEnum.SEAL.getCode());
         userWrapperUpdate.eq("id", userId);
         userMapper.update(userWrapperUpdate);
+    }
+
+
+    /**
+     * 密码加密
+     *
+     * @return @return {@code String }
+     * @author sunny
+     * @since 2025/05/05
+     */
+    private String enCode(String rawPassword) {
+        return ENCODER.encode(rawPassword);
     }
 }
