@@ -30,6 +30,8 @@
 
 # 技术列表
 
+## 后端
+
 ✅ Java JDK 17</br>
 ✅ Maven </br>
 ✅ Spring Boot 3.1.8</br>
@@ -41,3 +43,12 @@
 ✅ Hutool </br>
 ✅ SLF4J + Logback </br>
 ✅ BCrypt </br>
+
+## 前端
+
+Vue 3 </br>
+Vite </br>
+Element Plus </br>
+Pinia </br>
+Vue Router </br>
+Axios
