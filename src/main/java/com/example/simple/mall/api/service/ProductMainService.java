@@ -1,17 +1,15 @@
 package com.example.simple.mall.api.service;
 
-import cn.hutool.db.PageResult;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.example.simple.mall.common.dto.ProductDTO;
 import com.example.simple.mall.common.entity.ProductMain;
-import com.example.simple.mall.common.page.Pagination;
 
 /**
  * 商品Service
  *
  * @author sunny
- * @since 2025/05/08
+ * @since 2025/05/08å
  */
 public interface ProductMainService extends IService<ProductMain> {
 

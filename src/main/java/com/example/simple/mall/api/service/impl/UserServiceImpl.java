@@ -49,12 +49,12 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
             throw new RuntimeException(ResponseEnum.USER_EMAIL_IF_CORRECT.getMessage());
         }
         //根据邮箱的信息去数据库中查询数据
-        UserDTO user = userMapper.selectUserByEmail(email,null);
+        UserDTO user = userMapper.selectUserByEmail(email, null);
         if (!ObjectUtil.isEmpty(user)) {
             throw new RuntimeException(ResponseEnum.USER_EMAIL_EXIST.getMessage());
         }
         User userNew = UserMapperStruct.INSTANCE.userDtoToEntity(userDto);
-        if(StrUtil.isEmpty(userNew.getUserName())){
+        if (StrUtil.isEmpty(userNew.getUserName())) {
             String userName = "user" + System.currentTimeMillis();
             userNew.setUserName(userName);
         }
@@ -89,7 +89,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
             //更新密码，对旧密码进行校验
             String password = userDto.getPassword();
             boolean match = matches(password, userOld.getPassword());
-            if(!match){
+            if (!match) {
                 throw new RuntimeException(ResponseEnum.USER_PASSWORD_IS_WRONG.getMessage());
             }
             //更新用户的信息
@@ -134,7 +134,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     @Override
     public UserDTO login(String email, String password) {
         //查询数据库中存储的邮箱的码值
-        UserDTO userDTO = userMapper.selectUserByEmail(email,null);
+        UserDTO userDTO = userMapper.selectUserByEmail(email, null);
         if (ObjectUtil.isNull(userDTO)) {
             throw new RuntimeException(ResponseEnum.USER_NOT_EXIST.getMessage());
         }
