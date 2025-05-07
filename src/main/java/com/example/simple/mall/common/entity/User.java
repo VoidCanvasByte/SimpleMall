@@ -2,7 +2,6 @@ package com.example.simple.mall.common.entity;
 
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
-import com.example.simple.mall.common.dto.BaseDTO;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -17,7 +16,7 @@ import java.io.Serial;
 @Data
 @TableName("user")
 @EqualsAndHashCode(callSuper = true)
-public class User extends BaseDTO implements java.io.Serializable {
+public class User extends BaseEntity implements java.io.Serializable {
 
     @Serial
     private static final long serialVersionUID = 1L;
