@@ -32,7 +32,7 @@ public class UserController {
      * @since 2025/05/05@return@return {@code ResponseResult,ResponseResult }
      */
     @Operation(summary = "用户注册申请",description = "用户信息注册")
-    @PostMapping("/add/userDetails")
+    @PostMapping("/register")
     public ResponseResult<UserDTO> addUser(@Validated @RequestBody UserDTO userDto) {
         userService.addUser(userDto);
         return ResponseResult.out(ResponseEnum.SUCCESS);
@@ -46,7 +46,7 @@ public class UserController {
      * @since 2025/05/05
      */
     @Operation(summary = "更新用户信息",description = "用户用户信息的更新")
-    @PutMapping("/update/userDetails")
+    @PutMapping("/update")
     public ResponseResult<UserDTO> userUpdate(@RequestBody UserDTO userDto) {
         userService.updateUser(userDto);
         return ResponseResult.out(ResponseEnum.SUCCESS);
@@ -60,7 +60,7 @@ public class UserController {
      * @since 2025/05/05
      */
     @Operation(summary = "用户注销信息",description = "用于用户信息的封存")
-    @PutMapping("/delete/userDetails/{userId}")
+    @PutMapping("/delete/{userId}")
     public ResponseResult<UserDTO> userLogout(@PathVariable String userId) {
         userService.userLogout(userId);
         return ResponseResult.out(ResponseEnum.SUCCESS);

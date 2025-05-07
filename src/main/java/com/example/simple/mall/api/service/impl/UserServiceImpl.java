@@ -54,7 +54,11 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
             throw new RuntimeException(ResponseEnum.USER_EMAIL_EXIST.getMessage());
         }
         User userNew = UserMapperStruct.INSTANCE.userDtoToEntity(userDto);
-        // 存储 hashedPassword 到数据库
+        if(StrUtil.isEmpty(userNew.getUserName())){
+            String userName = "user" + System.currentTimeMillis();
+            userNew.setUserName(userName);
+        }
+        //密码加密(BCryptPasswordEncoder)
         String unCodePassword = enCode(userNew.getPassword());
         userNew.setPassword(unCodePassword);
         userMapper.insertUserInfo(userNew);
