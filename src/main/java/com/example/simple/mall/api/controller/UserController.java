@@ -17,9 +17,9 @@ import org.springframework.web.bind.annotation.*;
  * @author sunny
  * @since 2025/05/05
  */
-@Tag(name = "UserControllerAPI", description = "用户管理控制器接口")
 @RestController
 @RequestMapping("/apply/user")
+@Tag(name = "UserControllerAPI", description = "用户管理控制器接口")
 public class UserController {
 
     @Autowired
