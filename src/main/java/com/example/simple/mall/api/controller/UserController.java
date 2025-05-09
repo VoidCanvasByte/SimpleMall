@@ -31,7 +31,7 @@ public class UserController {
      * @author sunny
      * @since 2025/05/05@return@return {@code ResponseResult,ResponseResult }
      */
-    @Operation(summary = "用户注册申请",description = "用户信息注册")
+    @Operation(summary = "用户注册申请", description = "用户信息注册")
     @PostMapping("/register")
     public ResponseResult<UserDTO> addUser(@Validated @RequestBody UserDTO userDto) {
         userService.addUser(userDto);
@@ -45,7 +45,7 @@ public class UserController {
      * @author sunny
      * @since 2025/05/05
      */
-    @Operation(summary = "更新用户信息",description = "用户用户信息的更新")
+    @Operation(summary = "更新用户信息", description = "用户用户信息的更新")
     @PutMapping("/update")
     public ResponseResult<UserDTO> userUpdate(@RequestBody UserDTO userDto) {
         userService.updateUser(userDto);
@@ -59,7 +59,7 @@ public class UserController {
      * @author sunny
      * @since 2025/05/05
      */
-    @Operation(summary = "用户注销信息",description = "用于用户信息的封存")
+    @Operation(summary = "用户注销信息", description = "用于用户信息的封存")
     @PutMapping("/delete/{userId}")
     public ResponseResult<UserDTO> userLogout(@PathVariable String userId) {
         userService.userLogout(userId);
@@ -77,7 +77,7 @@ public class UserController {
     @PostMapping("/login")
     public ResponseResult<UserDTO> login(@RequestBody LoginRequestDTO loginRequest) {
         UserDTO user = userService.login(loginRequest.getEmail(), loginRequest.getPassword());
-        return ResponseResult.out(ResponseEnum.SUCCESS,user);
+        return ResponseResult.out(ResponseEnum.SUCCESS, user);
     }
 
 }
