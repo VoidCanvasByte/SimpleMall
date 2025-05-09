@@ -38,7 +38,9 @@ public class ProductMainServiceImpl extends ServiceImpl<ProductMainMapper, Produ
     }
 
     /**
-     * @param productDTO
+     * 添加商品
+     *
+     * @param productDTO productDTO
      * @author sunny
      * @since 2025/05/08
      */
@@ -47,11 +49,25 @@ public class ProductMainServiceImpl extends ServiceImpl<ProductMainMapper, Produ
 
     }
 
+    /**
+     * 更新商品信息
+     *
+     * @param productDTO productDTO
+     * @author sunny
+     * @since 2025/05/09
+     */
     @Override
     public void updateProduct(ProductDTO productDTO) {
 
     }
 
+    /**
+     * 删除商品
+     *
+     * @param productCode productCode
+     * @author sunny
+     * @since 2025/05/09
+     */
     @Override
     public void deleteProduct(String productCode) {
 

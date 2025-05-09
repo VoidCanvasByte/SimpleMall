@@ -17,20 +17,15 @@ import javax.validation.constraints.NotNull;
 public class ProductDTO extends ProductDetails {
 
     /**
-     * 商品ID
-     */
-    private Long id;
-
-    /**
      * 商品货号
      */
-    @NotNull(message ="商品货号不能为空")
+    @NotNull(message = "商品货号不能为空")
     public String productCode;
 
     /**
      * 商品名称
      */
-    @NotNull(message ="商品名称不能为空")
+    @NotNull(message = "商品名称不能为空")
     public String productName;
 
     /**
@@ -39,12 +34,12 @@ public class ProductDTO extends ProductDetails {
     public Integer status;
 
     /**
-     * 创建时间
+     * 分类名称
      */
-    private String creatTime;
+    public String name;
 
     /**
-     * 更新时间
+     * 排序值，越小越靠前
      */
-    private String updateTime;
+    public String sort;
 }

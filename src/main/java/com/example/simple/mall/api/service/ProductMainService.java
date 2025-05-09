@@ -26,13 +26,29 @@ public interface ProductMainService extends IService<ProductMain> {
     Page<ProductMain> queryPageList(Integer page, Integer size, ProductMain productMain);
 
     /**
-     * @param productDTO
+     * 添加商品信息
+     *
+     * @param productDTO productDTO
      * @author sunny
      * @since 2025/05/08
      */
     void addProduct(ProductDTO productDTO);
 
+    /**
+     * 更新商品信息
+     *
+     * @param productDTO productDTO
+     * @author sunny
+     * @since 2025/05/09
+     */
     void updateProduct(ProductDTO productDTO);
 
+    /**
+     * 删除商品信息
+     *
+     * @param productCode productCode
+     * @author sunny
+     * @since 2025/05/09
+     */
     void deleteProduct(String productCode);
 }

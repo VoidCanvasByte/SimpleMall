@@ -40,7 +40,7 @@ public class ProductController {
     @GetMapping(value = "/queryPageList")
     public Page<ProductMain> queryPageList(@RequestParam(defaultValue = "1") Integer page,
                                            @RequestParam(defaultValue = "10") Integer size,
-                                           @RequestBody ProductMain productMain) {
+                                           @RequestBody(required = false) ProductMain productMain) {
         return productMainService.queryPageList(page, size, productMain);
 
     }
