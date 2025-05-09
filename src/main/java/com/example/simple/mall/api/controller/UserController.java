@@ -8,6 +8,7 @@ import com.example.simple.mall.common.response.ResponseResult;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -37,6 +38,8 @@ public class UserController {
         userService.addUser(userDto);
         return ResponseResult.out(ResponseEnum.SUCCESS);
     }
+
+//    @PreAuthorize("hasRole('ADMIN')")//指定方法访问控制表达式的注释将进行评估以决定是否允许使用方法调用
 
     /**
      * 更新用户信息
@@ -75,8 +78,8 @@ public class UserController {
      */
     @Operation(summary = "用户登陆")
     @PostMapping("/login")
-    public ResponseResult<UserDTO> login(@RequestBody LoginRequestDTO loginRequest) {
-        UserDTO user = userService.login(loginRequest.getEmail(), loginRequest.getPassword());
+    public ResponseResult<User> login(@RequestBody LoginRequestDTO loginRequest) {
+        User user = userService.login(loginRequest.getEmail(), loginRequest.getPassword());
         return ResponseResult.out(ResponseEnum.SUCCESS, user);
     }
 

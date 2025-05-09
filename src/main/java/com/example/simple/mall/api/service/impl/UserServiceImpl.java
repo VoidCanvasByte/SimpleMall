@@ -9,12 +9,17 @@ import com.example.simple.mall.api.mapStruct.UserMapperStruct;
 import com.example.simple.mall.api.mapper.UserMapper;
 import com.example.simple.mall.api.service.UserService;
 import com.example.simple.mall.common.dto.UserDTO;
-import com.example.simple.mall.common.entity.User;
+import com.example.simple.mall.common.entity.UserEntity;
+import org.springframework.security.core.userdetails.User;
 import com.example.simple.mall.common.enu.ResponseEnum;
 import com.example.simple.mall.common.enu.UserStatusEnum;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 import static com.example.simple.mall.common.utils.PasswordRelated.enCode;
 import static com.example.simple.mall.common.utils.PasswordRelated.matches;
@@ -27,7 +32,7 @@ import static com.example.simple.mall.common.utils.PasswordRelated.matches;
  */
 @Slf4j
 @Service
-public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements UserService {
+public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity> implements UserService {
 
 
     @Autowired
@@ -53,7 +58,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         if (!ObjectUtil.isEmpty(user)) {
             throw new RuntimeException(ResponseEnum.USER_EMAIL_EXIST.getMessage());
         }
-        User userNew = UserMapperStruct.INSTANCE.userDtoToEntity(userDto);
+        UserEntity userNew = UserMapperStruct.INSTANCE.userDtoToEntity(userDto);
         if (StrUtil.isEmpty(userNew.getUserName())) {
             String userName = "user" + System.currentTimeMillis();
             userNew.setUserName(userName);
@@ -74,7 +79,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     public void updateUser(UserDTO userDto) {
         Long id = userDto.getId();
         if (ObjectUtil.isNotEmpty(id)) {
-            User userOld = userMapper.selectById(id);
+            UserEntity userOld = userMapper.selectById(id);
             if (ObjectUtil.isEmpty(userOld)) {
                 throw new RuntimeException(ResponseEnum.USER_NOT_EXIST.getMessage());
             }
@@ -83,7 +88,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
                 throw new RuntimeException(ResponseEnum.USER_STATUS_IS_UNUSED.getMessage());
             }
             //对象转换
-            User user = UserMapperStruct.INSTANCE.userDtoToEntity(userDto);
+            UserEntity user = UserMapperStruct.INSTANCE.userDtoToEntity(userDto);
 
 
             //更新密码，对旧密码进行校验
@@ -110,13 +115,13 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     public void userLogout(String userId) {
         QueryWrapper<User> userWrapper = new QueryWrapper<>();
         userWrapper.in("id", userId);
-        User userOld = userMapper.selectById(userWrapper);
+        UserEntity userOld = userMapper.selectById(userWrapper);
         //用户进行封存
         if (ObjectUtil.isEmpty(userOld)) {
             throw new RuntimeException(ResponseEnum.USER_NOT_EXIST.getMessage());
         }
         //对用户信息进行封存
-        QueryWrapper<User> userWrapperUpdate = new QueryWrapper<>();
+        QueryWrapper<UserEntity> userWrapperUpdate = new QueryWrapper<>();
         userWrapperUpdate.eq("status", UserStatusEnum.SEAL.getCode());
         userWrapperUpdate.eq("id", userId);
         userMapper.update(userWrapperUpdate);
@@ -132,7 +137,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
      * @since 2025/05/05
      */
     @Override
-    public UserDTO login(String email, String password) {
+    public User login(String email, String password) {
         //查询数据库中存储的邮箱的码值
         UserDTO userDTO = userMapper.selectUserByEmail(email, null);
         if (ObjectUtil.isNull(userDTO)) {
@@ -142,6 +147,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         if (!match) {
             throw new RuntimeException("密码错误");
         }
-        return userDTO;
+        List<GrantedAuthority> authorities = AuthorityUtils.createAuthorityList("ROLE_" + userDTO.getRole());
+        return new User(userDTO.getEmail(), userDTO.getPassword(), authorities);
     }
 }

@@ -2,7 +2,7 @@ package com.example.simple.mall.api.mapStruct;
 
 
 import com.example.simple.mall.common.dto.UserDTO;
-import com.example.simple.mall.common.entity.User;
+import com.example.simple.mall.common.entity.UserEntity;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
 
@@ -15,5 +15,5 @@ import org.mapstruct.factory.Mappers;
 @Mapper
 public interface UserMapperStruct {
     UserMapperStruct INSTANCE = Mappers.getMapper(UserMapperStruct.class);
-     User userDtoToEntity(UserDTO userDto);
+    UserEntity userDtoToEntity(UserDTO userDto);
 }

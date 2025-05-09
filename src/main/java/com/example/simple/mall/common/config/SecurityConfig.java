@@ -22,6 +22,8 @@ public class SecurityConfig {
         http.
                 csrf(AbstractHttpConfigurer::disable). // 关闭 CSRF（防止 Swagger 发 POST 被拦）
                 authorizeHttpRequests(auth -> auth
+                .requestMatchers("/api/admin/**").hasRole("ADMIN")
+                .requestMatchers("/api/user/**").hasAnyRole("USER", "ADMIN")
                 // 允许Swagger相关路径匿名访问
                 .requestMatchers(
                         "/v3/api-docs/**",
@@ -29,6 +31,7 @@ public class SecurityConfig {
                         "/swagger-ui.html",
                         "/api/auth/**",
                         "/apply/**")
+
                 .permitAll()
                 // 其他接口都需要认证
                 .anyRequest().authenticated());

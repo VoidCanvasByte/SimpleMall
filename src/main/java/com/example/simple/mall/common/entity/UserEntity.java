@@ -16,7 +16,7 @@ import java.io.Serial;
 @Data
 @TableName("user")
 @EqualsAndHashCode(callSuper = true)
-public class User extends BaseEntity implements java.io.Serializable {
+public class UserEntity extends BaseEntity implements java.io.Serializable {
 
     @Serial
     private static final long serialVersionUID = 1L;
@@ -50,4 +50,10 @@ public class User extends BaseEntity implements java.io.Serializable {
      */
     @TableField("status")
     private Integer status;
+
+    /**
+     * 用户权限控制（USER 或 ADMIN）
+     */
+    @TableField("role")
+    private String role;
 }

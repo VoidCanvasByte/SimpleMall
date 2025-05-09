@@ -2,7 +2,7 @@ package com.example.simple.mall.api.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.example.simple.mall.common.dto.UserDTO;
-import com.example.simple.mall.common.entity.User;
+import com.example.simple.mall.common.entity.UserEntity;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -13,7 +13,7 @@ import org.apache.ibatis.annotations.Param;
  * @since 2025/05/05
  */
 @Mapper
-public interface UserMapper extends BaseMapper<User> {
+public interface UserMapper extends BaseMapper<UserEntity> {
 
     /**
      * 根据邮箱查询用户信息
@@ -30,5 +30,5 @@ public interface UserMapper extends BaseMapper<User> {
      * @author sunny
      * @since 2025/05/05
      */
-    void insertUserInfo(User userNew);
+    void insertUserInfo(UserEntity userNew);
 }

@@ -3,7 +3,7 @@
 <mapper namespace="com.example.simple.mall.api.mapper.UserMapper">
 
     <!--新增用户信息-->
-    <insert id="insertUserInfo" parameterType="com.example.simple.mall.common.entity.User">
+    <insert id="insertUserInfo" parameterType="com.example.simple.mall.common.entity.UserEntity">
         INSERT INTO user
         (user_name,
          email,
@@ -19,7 +19,10 @@
         email,
         password,
         user_gender AS userGender,
-        status AS status
+        status AS status,
+        role as role,
+        created_time as createdTime,
+        updated_time as updatedTime
         FROM user
         WHERE 1 = 1
         and

@@ -2,7 +2,8 @@ package com.example.simple.mall.api.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.example.simple.mall.common.dto.UserDTO;
-import com.example.simple.mall.common.entity.User;
+import com.example.simple.mall.common.entity.UserEntity;
+import org.springframework.security.core.userdetails.User;
 
 /**
  * 用户Service
@@ -10,7 +11,7 @@ import com.example.simple.mall.common.entity.User;
  * @author sunny
  * @since 2025/05/05
  */
-public interface UserService extends IService<User> {
+public interface UserService extends IService<UserEntity> {
 
     /**
      * 用户添加申请
@@ -46,5 +47,5 @@ public interface UserService extends IService<User> {
      * @author sunny
      * @since 2025/05/05
      */
-    UserDTO login(String email, String password);
+    User login(String email, String password);
 }
