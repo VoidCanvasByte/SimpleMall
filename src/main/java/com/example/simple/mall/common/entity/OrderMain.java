@@ -23,12 +23,6 @@ public class OrderMain extends BaseEntity {
     public String userId;
 
     /**
-     * 数量
-     */
-    @TableField("total_amount")
-    public String totalAmount;
-
-    /**
      * 订单状态
      */
     @TableField("status")

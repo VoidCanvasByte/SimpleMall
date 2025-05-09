@@ -2,7 +2,6 @@ package com.example.simple.mall.api.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.example.simple.mall.common.entity.OrderMain;
-import com.example.simple.mall.common.entity.ProductCategory;
 import org.apache.ibatis.annotations.Mapper;
 
 /**
