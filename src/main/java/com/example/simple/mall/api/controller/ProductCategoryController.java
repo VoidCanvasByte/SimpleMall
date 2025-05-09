@@ -51,14 +51,28 @@ public class ProductCategoryController {
         return null;
     }
 
-    // 获取所有分类（公开）
+    /**
+     * 获取所有分类（公开）
+     *
+     * @return @return {@code ResponseResult<List<ProductDTO>> }
+     * @author sunny
+     * @since 2025/05/09
+     */
     @GetMapping("/list")
     public ResponseResult<List<ProductDTO>> listCategories() {
         List<ProductDTO> list = productCategoryService.listObjs();
         return ResponseResult.out(ResponseEnum.SUCCESS, list);
     }
 
-    // 删除分类（管理员）
+
+    /**
+     * 删除分类（管理员）
+     *
+     * @param id id
+     * @return @return {@code ResponseResult<ProductDTO> }
+     * @author sunny
+     * @since 2025/05/09
+     */
     @DeleteMapping("/delete/{id}")
     public ResponseResult<ProductDTO> deleteCategory(@PathVariable Long id) {
         productCategoryService.removeById(id);
