@@ -21,8 +21,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-import static com.example.simple.mall.common.utils.PasswordRelated.enCode;
-import static com.example.simple.mall.common.utils.PasswordRelated.matches;
+import static com.example.simple.mall.common.utils.PasswordRelatedUtil.enCode;
+import static com.example.simple.mall.common.utils.PasswordRelatedUtil.matches;
 
 /**
  * 用户 服务实现类

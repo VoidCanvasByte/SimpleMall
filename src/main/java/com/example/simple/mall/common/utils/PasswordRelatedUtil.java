@@ -3,10 +3,12 @@ package com.example.simple.mall.common.utils;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 /**
+ * 密码校验类
+ *
  * @author sunny
  * @since 2025/05/05
  */
-public class PasswordRelated {
+public class PasswordRelatedUtil {
     private static final BCryptPasswordEncoder ENCODER = new BCryptPasswordEncoder();
 
     /**
@@ -23,13 +25,13 @@ public class PasswordRelated {
     /**
      * 密码校验
      *
-     * @param rawPassword 密码
+     * @param rawPassword    密码
      * @param hashedPassword hashedPassword
      * @return @return {@code String }
      * @author sunny
      * @since 2025/05/05
      */
-    public static Boolean matches(String rawPassword, String hashedPassword){
+    public static Boolean matches(String rawPassword, String hashedPassword) {
         return ENCODER.matches(rawPassword, hashedPassword);
     }
 }
