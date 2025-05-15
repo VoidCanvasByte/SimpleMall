@@ -14,7 +14,6 @@ import java.util.List;
  */
 public interface CartItemService extends IService<CartItem> {
 
-
     /**
      * 添加购物车
      *
@@ -32,25 +31,16 @@ public interface CartItemService extends IService<CartItem> {
      * @author sunny
      * @since 2025/05/15
      */
-    List<CartItemDTO> listByUserId(Long userId);
+    List<CartItem> listByUserId(Long userId);
 
     /**
-     * 修改购物车的数量
+     * 添加或者减少购物车中物品的数量
      *
      * @param cartItemDTO cartItemDTO
      * @author sunny
      * @since 2025/05/15
      */
     void updateCartItem(CartItemDTO cartItemDTO);
-
-    /**
-     * 删除商品数量
-     *
-     * @param cartItemDTO cartItemDTO
-     * @author sunny
-     * @since 2025/05/15
-     */
-    void deleteCartItem(CartItemDTO cartItemDTO);
 
     /**
      * 一键清空购物车
@@ -60,4 +50,13 @@ public interface CartItemService extends IService<CartItem> {
      * @since 2025/05/15
      */
     void clearCart(Long userId);
+
+    /**
+     * 自定义修改商品数量
+     *
+     * @param cartItemDTO cartItemDTO
+     * @author sunny
+     * @since 2025/05/15@return
+     */
+    void customUpdateTag(CartItemDTO cartItemDTO);
 }

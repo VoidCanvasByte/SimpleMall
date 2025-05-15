@@ -7,6 +7,7 @@ import com.example.simple.mall.api.service.ProductCategoryService;
 import com.example.simple.mall.common.dto.ProductDTO;
 import com.example.simple.mall.common.entity.ProductCategory;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -17,6 +18,7 @@ import java.util.List;
 @Service
 public class ProductCategoryServiceImpl extends ServiceImpl<ProductCategoryMapper, ProductCategory> implements ProductCategoryService {
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public List<ProductDTO> listAllBySort(QueryWrapper<ProductDTO> sort) {
         return null;
     }

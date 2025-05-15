@@ -2,4 +2,12 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.simple.mall.api.mapper.CartItemMapper">
 
+    <!--根据ID更新语句-->
+    <update id="updateQuantity">
+        UPDATE cart_item
+        <if test="quantity != null">
+            quantity = #{quantity}
+        </if>
+        WHERE id = #{id}
+    </update>
 </mapper>

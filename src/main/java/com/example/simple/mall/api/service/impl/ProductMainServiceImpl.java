@@ -9,6 +9,7 @@ import com.example.simple.mall.api.service.ProductMainService;
 import com.example.simple.mall.common.dto.ProductDTO;
 import com.example.simple.mall.common.entity.ProductMain;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * 商品实现层
@@ -29,6 +30,7 @@ public class ProductMainServiceImpl extends ServiceImpl<ProductMainMapper, Produ
      * @since 2025/05/08@return @return {@code PageResult<ProductDTO> }
      */
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public Page<ProductMain> queryPageList(Integer page, Integer size, ProductMain productMain) {
         QueryWrapper<ProductMain> wrapper = new QueryWrapper<>();
         wrapper.eq(!ObjectUtil.isEmpty(productMain.getProductCode()), "product_code", productMain.getProductCode());

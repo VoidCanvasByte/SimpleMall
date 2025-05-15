@@ -18,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -46,6 +47,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity> impleme
      * @since 2025/05/05
      */
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public void addUser(UserDTO userDto) {
         String email = userDto.getEmail();
         //校验邮箱的格式是否正确
@@ -76,6 +78,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity> impleme
      * @since 2025/05/05
      */
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public void updateUser(UserDTO userDto) {
         Long id = userDto.getId();
         if (ObjectUtil.isNotEmpty(id)) {
@@ -112,6 +115,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity> impleme
      * @since 2025/05/05@return
      */
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public void userLogout(String userId) {
         QueryWrapper<User> userWrapper = new QueryWrapper<>();
         userWrapper.in("id", userId);
@@ -137,6 +141,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity> impleme
      * @since 2025/05/05
      */
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public User login(String email, String password) {
         //查询数据库中存储的邮箱的码值
         UserDTO userDTO = userMapper.selectUserByEmail(email, null);

@@ -2,6 +2,7 @@ package com.example.simple.mall.api.controller;
 
 import com.example.simple.mall.api.service.CartItemService;
 import com.example.simple.mall.common.dto.CartItemDTO;
+ import com.example.simple.mall.common.entity.CartItem;
 import com.example.simple.mall.common.enu.ResponseEnum;
 import com.example.simple.mall.common.response.ResponseResult;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -46,13 +47,13 @@ public class CartItemController {
      * @since 2025/05/15
      */
     @GetMapping("/list")
-    public ResponseResult<List<CartItemDTO>> list(@RequestAttribute Long userId) {
-        List<CartItemDTO> list = cartItemService.listByUserId(userId);
+    public ResponseResult<List<CartItem>> list(@RequestAttribute Long userId) {
+        List<CartItem> list = cartItemService.listByUserId(userId);
         return ResponseResult.out(ResponseEnum.SUCCESS, list);
     }
 
     /**
-     * 修改购物车的数量
+     * 添加或者减少购物车中物品的数量
      *
      * @param cartItemDTO cartItemDTO
      * @author sunny
@@ -65,15 +66,15 @@ public class CartItemController {
     }
 
     /**
-     * 删除商品
+     * 自定义修改商品数量
      *
      * @param cartItemDTO cartItemDTO
      * @author sunny
-     * @since 2025/05/15
+     * @since 2025/05/15@return @return {@code ResponseResult<CartItemDTO> }
      */
-    @DeleteMapping("/delete/{productId}")
-    public ResponseResult<CartItemDTO> delete(@RequestBody CartItemDTO cartItemDTO) {
-        cartItemService.deleteCartItem(cartItemDTO);
+    @DeleteMapping("/custom/update")
+    public ResponseResult<CartItemDTO> customUpdateTag(@RequestBody CartItemDTO cartItemDTO) {
+        cartItemService.customUpdateTag(cartItemDTO);
         return ResponseResult.out(ResponseEnum.SUCCESS);
     }
 
