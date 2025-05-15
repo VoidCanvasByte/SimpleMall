@@ -8,8 +8,10 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.example.simple.mall.api.mapStruct.UserMapperStruct;
 import com.example.simple.mall.api.mapper.UserMapper;
 import com.example.simple.mall.api.service.UserService;
+import com.example.simple.mall.common.dto.LoginRequestDTO;
 import com.example.simple.mall.common.dto.UserDTO;
 import com.example.simple.mall.common.entity.UserEntity;
+import com.example.simple.mall.common.utils.JwtUtils;
 import org.springframework.security.core.userdetails.User;
 import com.example.simple.mall.common.enu.ResponseEnum;
 import com.example.simple.mall.common.enu.UserStatusEnum;
@@ -20,7 +22,9 @@ import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static com.example.simple.mall.common.utils.PasswordRelatedUtil.enCode;
 import static com.example.simple.mall.common.utils.PasswordRelatedUtil.matches;
@@ -38,6 +42,9 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity> impleme
 
     @Autowired
     private UserMapper userMapper;
+
+    @Autowired
+    private JwtUtils jwtUtils;
 
 
     /**
@@ -154,5 +161,25 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity> impleme
         }
         List<GrantedAuthority> authorities = AuthorityUtils.createAuthorityList("ROLE_" + userDTO.getRole());
         return new User(userDTO.getEmail(), userDTO.getPassword(), authorities);
+    }
+
+    /**
+     * 获取用户的token
+     *
+     * @param user         user
+     * @param loginRequest loginRequest
+     * @return @return {@code Map<String, User> }
+     * @author sunny
+     * @since 2025/05/16
+     */
+    @Override
+    public Map<String, User> resultToken(User user, LoginRequestDTO loginRequest) {
+        QueryWrapper<UserEntity> userWrapperUpdate = new QueryWrapper<>();
+        userWrapperUpdate.eq("email", loginRequest.getEmail());
+        UserEntity userEntity = userMapper.selectOne(userWrapperUpdate);
+        String token = jwtUtils.generateToken(userEntity.getId());
+        Map<String, User> resultMap = new HashMap<>();
+        resultMap.put(token, user);
+        return resultMap;
     }
 }

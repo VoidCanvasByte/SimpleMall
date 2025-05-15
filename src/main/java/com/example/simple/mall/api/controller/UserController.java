@@ -12,6 +12,8 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Map;
+
 /**
  * 用户控制层
  *
@@ -78,9 +80,10 @@ public class UserController {
      */
     @Operation(summary = "用户登陆")
     @PostMapping("/login")
-    public ResponseResult<User> login(@RequestBody LoginRequestDTO loginRequest) {
+    public ResponseResult<Map<String,User>> login(@RequestBody LoginRequestDTO loginRequest) {
         User user = userService.login(loginRequest.getEmail(), loginRequest.getPassword());
-        return ResponseResult.out(ResponseEnum.SUCCESS, user);
+        Map<String, User> resultMap = userService.resultToken(user,loginRequest);
+        return ResponseResult.out(ResponseEnum.SUCCESS, resultMap);
     }
 
 }

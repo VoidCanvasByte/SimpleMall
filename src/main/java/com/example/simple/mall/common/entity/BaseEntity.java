@@ -23,8 +23,8 @@ public class BaseEntity {
     /**
      * 创建时间
      */
-    @TableField("creat_time")
-    private String creatTime;
+    @TableField("create_time")
+    private String createTime;
 
     /**
      * 更新时间

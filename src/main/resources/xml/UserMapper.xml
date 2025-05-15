@@ -21,8 +21,8 @@
         user_gender AS userGender,
         status AS status,
         role as role,
-        created_time as createdTime,
-        updated_time as updatedTime
+        create_time as createTime,
+        update_time as updateTime
         FROM user
         WHERE 1 = 1
         and

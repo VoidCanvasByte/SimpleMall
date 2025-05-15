@@ -1,9 +1,12 @@
 package com.example.simple.mall.api.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.example.simple.mall.common.dto.LoginRequestDTO;
 import com.example.simple.mall.common.dto.UserDTO;
 import com.example.simple.mall.common.entity.UserEntity;
 import org.springframework.security.core.userdetails.User;
+
+import java.util.Map;
 
 /**
  * 用户Service
@@ -48,4 +51,15 @@ public interface UserService extends IService<UserEntity> {
      * @since 2025/05/05
      */
     User login(String email, String password);
+
+    /**
+     * 获取用户的token
+     *
+     * @param user user
+     * @param loginRequest loginRequest
+     * @return @return {@code Map<String, User> }
+     * @author sunny
+     * @since 2025/05/16
+     */
+    Map<String, User> resultToken(User user, LoginRequestDTO loginRequest);
 }
