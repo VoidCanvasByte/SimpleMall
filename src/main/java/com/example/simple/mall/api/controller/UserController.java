@@ -80,9 +80,9 @@ public class UserController {
      */
     @Operation(summary = "用户登陆")
     @PostMapping("/login")
-    public ResponseResult<Map<String,User>> login(@RequestBody LoginRequestDTO loginRequest) {
+    public ResponseResult<Map<String, User>> login(@RequestBody LoginRequestDTO loginRequest) {
         User user = userService.login(loginRequest.getEmail(), loginRequest.getPassword());
-        Map<String, User> resultMap = userService.resultToken(user,loginRequest);
+        Map<String, User> resultMap = userService.resultToken(user, loginRequest);
         return ResponseResult.out(ResponseEnum.SUCCESS, resultMap);
     }
 
