@@ -19,10 +19,16 @@ import java.math.BigDecimal;
 public class ProductDetails extends BaseEntity {
 
     /**
-     * 商品代码
+     * 商品货号
      */
     @TableField("product_code")
     public String productCode;
+
+    /**
+     * 商品单价
+     */
+    @TableField("product_price")
+    public BigDecimal productPrice;
 
     /**
      * 商品数量
@@ -41,10 +47,4 @@ public class ProductDetails extends BaseEntity {
      */
     @TableField("product_img")
     public String productImg;
-
-    /**
-     * 商品价格
-     */
-    @TableField("product_price")
-    public BigDecimal productPrice;
 }

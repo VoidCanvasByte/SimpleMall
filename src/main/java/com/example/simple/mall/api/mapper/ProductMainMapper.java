@@ -11,5 +11,4 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 public interface ProductMainMapper extends BaseMapper<com.example.simple.mall.common.entity.ProductMain> {
 
 
-
 }

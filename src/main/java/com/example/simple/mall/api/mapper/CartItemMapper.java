@@ -1,11 +1,12 @@
 package com.example.simple.mall.api.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.example.simple.mall.common.dto.CartItemDTO;
 import com.example.simple.mall.common.entity.CartItem;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
-import java.util.List;
+import java.math.BigDecimal;
+
 
 /**
  * CartItemMapper
@@ -20,11 +21,21 @@ public interface CartItemMapper extends BaseMapper<CartItem> {
      * 根据ID更新购物车中的数量
      *
      * @param quantityOld 数量
-     * @param id ID
+     * @param id          id
      * @author sunny
      * @since 2025/05/15
      */
-    void updateQuantity(Integer quantityOld, Long id);
+    void updateQuantity(@Param("quantity") Integer quantityOld,
+                        @Param("id") Long id);
 
-    List<CartItemDTO> listByUserId(Long userId);
+    /**
+     * 根据订单信息修改购物车信息
+     *
+     * @param userId    用户id
+     * @param productId 产品ID
+     * @param quantity  数量
+     */
+    void clearCartItemProduct(@Param("userId") String userId,
+                              @Param("productId") String productId,
+                              @Param("quantity") BigDecimal quantity);
 }

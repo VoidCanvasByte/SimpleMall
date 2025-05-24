@@ -10,8 +10,10 @@ import com.example.simple.mall.api.mapper.UserMapper;
 import com.example.simple.mall.api.service.UserService;
 import com.example.simple.mall.common.dto.LoginRequestDTO;
 import com.example.simple.mall.common.dto.UserDTO;
+import com.example.simple.mall.common.entity.ProductMain;
 import com.example.simple.mall.common.entity.UserEntity;
 import com.example.simple.mall.common.utils.JwtUtils;
+import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.security.core.userdetails.User;
 import com.example.simple.mall.common.enu.ResponseEnum;
 import com.example.simple.mall.common.enu.UserStatusEnum;
@@ -76,6 +78,21 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity> impleme
         String unCodePassword = enCode(userNew.getPassword());
         userNew.setPassword(unCodePassword);
         userMapper.insertUserInfo(userNew);
+    }
+
+    /**
+     * 判断用户是否存在(用户不存在返回true)
+     *
+     * @param userId 用户ID
+     * @author sunny
+     * @since 2025/05/24@return @return {@code Boolean }@return @return {@code Boolean }
+     */
+    @Override
+    public Boolean judgeUserIfNull(String userId) {
+        QueryWrapper<UserEntity> userWrapper = new QueryWrapper<>();
+        userWrapper.eq("id", userId);
+        userWrapper.eq("status", UserStatusEnum.FRIEND.getCode());
+        return ObjectUtils.isEmpty(this.getOne(userWrapper));
     }
 
     /**

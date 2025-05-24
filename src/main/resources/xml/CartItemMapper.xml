@@ -10,4 +10,13 @@
         </if>
         WHERE id = #{id}
     </update>
+
+    <!--  根据订单信息清空购物车信息  -->
+    <update id="clearCartItemProduct">
+        UPDATE cart_item
+        SET quantity = quantity - #{quantity}
+        WHERE user_id = #{userId}
+          AND product_id = #{productId}
+          AND quantity >= #{quantity};
+    </update>
 </mapper>

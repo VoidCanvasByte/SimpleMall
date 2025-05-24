@@ -25,6 +25,16 @@ public interface UserService extends IService<UserEntity> {
     void addUser(UserDTO userDto);
 
     /**
+     * 判断用户是否存在（用户不存在返回true）
+     *
+     * @param userId 用户ID
+     * @return @return {@code Boolean }
+     * @author sunny
+     * @since 2025/05/24
+     */
+    Boolean judgeUserIfNull(String userId);
+
+    /**
      * 更新用户信息
      *
      * @author sunny
@@ -55,11 +65,13 @@ public interface UserService extends IService<UserEntity> {
     /**
      * 获取用户的token
      *
-     * @param user user
+     * @param user         user
      * @param loginRequest loginRequest
      * @return @return {@code Map<String, User> }
      * @author sunny
      * @since 2025/05/16
      */
     Map<String, User> resultToken(User user, LoginRequestDTO loginRequest);
+
+
 }

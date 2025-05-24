@@ -1,6 +1,5 @@
 package com.example.simple.mall.common.enu;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 /**

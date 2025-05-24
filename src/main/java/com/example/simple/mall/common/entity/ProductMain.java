@@ -23,12 +23,6 @@ public class ProductMain extends BaseEntity implements java.io.Serializable {
     private static final long serialVersionUID = 1L;
 
     /**
-     * 所有者
-     */
-    @TableField("artist_name")
-    private String artistName;
-
-    /**
      * 商品货号
      */
     @TableField("product_code")

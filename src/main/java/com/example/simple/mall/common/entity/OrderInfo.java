@@ -22,7 +22,7 @@ public class OrderInfo extends BaseEntity {
      * 订单ID
      */
     @TableField("order_id")
-    public Integer orderId;
+    public String orderId;
 
     /**
      * 产品ID

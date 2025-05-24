@@ -6,6 +6,7 @@ import com.example.simple.mall.common.entity.CartItem;
 
 import java.util.List;
 
+
 /**
  * CartItemService
  *
@@ -34,7 +35,7 @@ public interface CartItemService extends IService<CartItem> {
     List<CartItem> listByUserId(Long userId);
 
     /**
-     * 添加或者减少购物车中物品的数量
+     * 单次添加或者减少购物车中物品的数量
      *
      * @param cartItemDTO cartItemDTO
      * @author sunny
