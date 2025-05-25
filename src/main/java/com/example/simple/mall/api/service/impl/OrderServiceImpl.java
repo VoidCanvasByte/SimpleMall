@@ -15,10 +15,7 @@ import com.example.simple.mall.api.service.virtual.SimulatedPayService;
 import com.example.simple.mall.common.dto.order.OrderAddInfoDTO;
 import com.example.simple.mall.common.dto.order.OrderPayInfoDTO;
 import com.example.simple.mall.common.dto.order.OrderReDTO;
-import com.example.simple.mall.common.entity.OrderInfo;
-import com.example.simple.mall.common.entity.OrderMain;
-import com.example.simple.mall.common.entity.ProductDetails;
-import com.example.simple.mall.common.entity.ProductMain;
+import com.example.simple.mall.common.entity.*;
 import com.example.simple.mall.common.enu.OrderStatusEnum;
 import com.example.simple.mall.common.enu.ProductStatusEnum;
 import com.example.simple.mall.common.enu.ResponseEnum;
@@ -97,6 +94,12 @@ public class OrderServiceImpl extends ServiceImpl<OrderMainMapper, OrderMain> im
         OrderReDTO orderReDTO = new OrderReDTO();
         orderReDTO.setOrderId(orderId);
         orderReDTO.setStatus(OrderStatusEnum.PENDING_PAYMENT.getCode());
+
+        //删除购物车中的货物信息
+        QueryWrapper<CartItem> cartItemQueryWrapper = new QueryWrapper<>();
+        cartItemQueryWrapper.eq("user_id", orderAddInfoDTO.getUserId());
+        cartItemQueryWrapper.eq("product_id", orderAddInfoDTO.getProductId());
+        cartItemMapper.delete(cartItemQueryWrapper);
         return orderReDTO;
     }
 
@@ -110,7 +113,6 @@ public class OrderServiceImpl extends ServiceImpl<OrderMainMapper, OrderMain> im
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void orderPay(OrderPayInfoDTO orderPayInfoDTO) {
-        //订单ID
         String orderId = orderPayInfoDTO.getOrderId();
         QueryWrapper<OrderMain> orderMainWrapper = new QueryWrapper<>();
         orderMainWrapper.eq("id", orderId);
