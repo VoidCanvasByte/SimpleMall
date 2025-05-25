@@ -3,10 +3,12 @@ package com.example.simple.mall.api.controller;
 import com.example.simple.mall.api.service.UserService;
 import com.example.simple.mall.common.dto.LoginRequestDTO;
 import com.example.simple.mall.common.dto.user.UserDTO;
+import com.example.simple.mall.common.entity.UserEntity;
 import com.example.simple.mall.common.enu.ResponseEnum;
 import com.example.simple.mall.common.response.ResponseResult;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.validation.annotation.Validated;
@@ -80,9 +82,9 @@ public class UserController {
      */
     @Operation(summary = "用户登陆")
     @PostMapping("/login")
-    public ResponseResult<Map<String, User>> login(@RequestBody LoginRequestDTO loginRequest) {
+    public ResponseResult<Map<String, UserEntity>> login(@Valid @RequestBody LoginRequestDTO loginRequest) {
         User user = userService.login(loginRequest.getEmail(), loginRequest.getPassword());
-        Map<String, User> resultMap = userService.resultToken(user, loginRequest);
+        Map<String, UserEntity> resultMap = userService.resultToken(user, loginRequest);
         return ResponseResult.out(ResponseEnum.SUCCESS, resultMap);
     }
 

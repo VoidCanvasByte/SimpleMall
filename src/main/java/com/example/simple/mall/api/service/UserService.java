@@ -71,7 +71,7 @@ public interface UserService extends IService<UserEntity> {
      * @author sunny
      * @since 2025/05/16
      */
-    Map<String, User> resultToken(User user, LoginRequestDTO loginRequest);
+    Map<String, UserEntity> resultToken(User user, LoginRequestDTO loginRequest);
 
 
 }

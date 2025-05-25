@@ -173,10 +173,10 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity> impleme
         }
         boolean match = matches(password, userDTO.getPassword());
         if (!match) {
-            throw new RuntimeException("密码错误");
+            throw new RuntimeException(ResponseEnum.USER_PASSWORD_IS_WRONG.getMessage());
         }
         List<GrantedAuthority> authorities = AuthorityUtils.createAuthorityList("ROLE_" + userDTO.getRole());
-        return new User(userDTO.getEmail(), userDTO.getPassword(), authorities);
+        return new User(userDTO.getUserName(), userDTO.getPassword(), authorities);
     }
 
     /**
@@ -189,13 +189,13 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity> impleme
      * @since 2025/05/16
      */
     @Override
-    public Map<String, User> resultToken(User user, LoginRequestDTO loginRequest) {
+    public Map<String, UserEntity> resultToken(User user, LoginRequestDTO loginRequest) {
         QueryWrapper<UserEntity> userWrapperUpdate = new QueryWrapper<>();
         userWrapperUpdate.eq("email", loginRequest.getEmail());
         UserEntity userEntity = userMapper.selectOne(userWrapperUpdate);
         String token = jwtUtils.generateToken(userEntity.getId());
-        Map<String, User> resultMap = new HashMap<>();
-        resultMap.put(token, user);
+        Map<String, UserEntity> resultMap = new HashMap<>();
+        resultMap.put(token, userEntity);
         return resultMap;
     }
 }
