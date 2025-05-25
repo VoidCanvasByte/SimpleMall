@@ -33,7 +33,8 @@ public class ProductController {
      * @param size        size
      * @param productMain productMain
      * @author sunny
-     * @since 2025/05/08@return @return {@code PageResult<ProductDTO> }@return @return {@code Page<ProductMain> }
+     * @since 2025/05/08
+     * @return @return {@code Page<ProductMain> }
      */
 
     @Operation(summary = "商品列表-分页", description = "商品列表-分页")
@@ -66,7 +67,8 @@ public class ProductController {
      *
      * @param productDTO productDTO
      * @author sunny
-     * @since 2025/05/08@return @return {@code ResponseResult<ProductDTO> }
+     * @since 2025/05/08
+     * @return {@code ResponseResult<ProductDTO> }
      */
     @PutMapping
     public ResponseResult<ProductDTO> updateProduct(@Validated @RequestBody ProductDTO productDTO) {
@@ -79,7 +81,8 @@ public class ProductController {
      *
      * @param productCode 商品货号
      * @author sunny
-     * @since 2025/05/08@return @return {@code ResponseResult<ProductDTO> }
+     * @since 2025/05/08
+     * @return {@code ResponseResult<ProductDTO> }
      */
     @DeleteMapping("/{productCode}")
     public ResponseResult<ProductDTO> deleteProduct(@PathVariable String productCode) {

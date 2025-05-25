@@ -32,7 +32,7 @@ public class UserController {
      * 用户注册申请
      *
      * @author sunny
-     * @since 2025/05/05@return@return {@code ResponseResult,ResponseResult }
+     * @since 2025/05/05
      */
     @Operation(summary = "用户注册申请", description = "用户信息注册")
     @PostMapping("/register")
