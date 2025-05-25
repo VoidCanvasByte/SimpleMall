@@ -20,7 +20,7 @@ import java.util.List;
  */
 
 @RestController
-@RequestMapping("/apply/cart/item")
+@RequestMapping("/apply/cart")
 @Tag(name = "CartItemController", description = "购物车控制器")
 public class CartItemController {
 
