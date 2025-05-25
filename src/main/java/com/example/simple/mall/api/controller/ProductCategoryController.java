@@ -35,6 +35,7 @@ public class ProductCategoryController {
      */
     @PostMapping("/add")
     public ResponseResult<ProductDTO> addCategory(@RequestBody ProductDTO productDTO) {
+        //TODO   商品分类部分的代码还没有进行写
         return null;
     }
 
