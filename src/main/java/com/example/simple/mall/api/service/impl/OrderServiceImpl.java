@@ -11,9 +11,10 @@ import com.example.simple.mall.api.service.OrderInfoService;
 import com.example.simple.mall.api.service.OrderService;
 import com.example.simple.mall.api.service.ProductDetailsService;
 import com.example.simple.mall.api.service.ProductMainService;
+import com.example.simple.mall.api.service.virtual.SimulatedPayService;
 import com.example.simple.mall.common.dto.order.OrderAddInfoDTO;
+import com.example.simple.mall.common.dto.order.OrderPayInfoDTO;
 import com.example.simple.mall.common.dto.order.OrderReDTO;
-import com.example.simple.mall.common.dto.order.OrderUpdateInfoDTO;
 import com.example.simple.mall.common.entity.OrderInfo;
 import com.example.simple.mall.common.entity.OrderMain;
 import com.example.simple.mall.common.entity.ProductDetails;
@@ -48,7 +49,13 @@ public class OrderServiceImpl extends ServiceImpl<OrderMainMapper, OrderMain> im
     private OrderInfoService OrderInfoService;
 
     @Autowired
+    private OrderMainMapper orderMainMapper;
+
+    @Autowired
     private CartItemMapper cartItemMapper;
+
+    @Autowired
+    private SimulatedPayService simulatedPayService;
 
     /**
      * 创建订单
@@ -94,16 +101,58 @@ public class OrderServiceImpl extends ServiceImpl<OrderMainMapper, OrderMain> im
     }
 
     /**
-     * 更新订单
+     * 订单支付
      *
-     * @param orderUpdateInfoDTO orderUpdateInfoDTO
+     * @param orderPayInfoDTO orderPayInfoDTO
      * @author sunny
      * @since 2025/05/09@return @return {@code ResponseResult<ProductDTO> }
      */
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void updateOrder(OrderUpdateInfoDTO orderUpdateInfoDTO) {
-        //获取状态
+    public void orderPay(OrderPayInfoDTO orderPayInfoDTO) {
+        //订单ID
+        String orderId = orderPayInfoDTO.getOrderId();
+        QueryWrapper<OrderMain> orderMainWrapper = new QueryWrapper<>();
+        orderMainWrapper.eq("id", orderId);
+        OrderMain orderInfo = this.getOne(orderMainWrapper);
+        if (ObjectUtil.isEmpty(orderInfo)) {
+            throw new RuntimeException(ResponseEnum.ORDER_NOT_EXIST.getMessage());
+        }
+        //只有状态是代付款的订单才可以进行付款支付
+        if (ObjectUtil.equals(orderInfo.getStatus(), OrderStatusEnum.PENDING_PAYMENT.getCode())) {
+            //TODO 异步发走 调用模拟支付 发送消息队列发走，是失败还是成功，后续三方支付接口会给返回结果
+            Boolean pay = simulatedPayService.pay(orderId);
 
+            //更新订单状态
+            QueryWrapper<OrderMain> orderMainStatusWrapper = new QueryWrapper<>();
+            orderMainStatusWrapper.eq("id", orderId);
+            orderMainStatusWrapper.eq("status", OrderStatusEnum.PAYING.getCode());
+            orderMainMapper.update(orderMainStatusWrapper);
+        }
+    }
+
+    /**
+     * 订单信息更新
+     *
+     * @param orderReDTO orderReDTO
+     * @author sunny
+     * @since 2025/05/25@return@return
+     */
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public void orderUpdate(OrderReDTO orderReDTO) {
+        QueryWrapper<OrderMain> orderMainWrapper = new QueryWrapper<>();
+        orderMainWrapper.eq("id", orderReDTO.getOrderId());
+        OrderMain orderInfo = this.getOne(orderMainWrapper);
+        if (ObjectUtil.isEmpty(orderInfo)) {
+            throw new RuntimeException(ResponseEnum.ORDER_NOT_EXIST.getMessage());
+        }
+        if (ObjectUtil.equals(orderInfo.getStatus(), OrderStatusEnum.PAYING.getCode())) {
+            //更新订单状态
+            QueryWrapper<OrderMain> orderMainStatusWrapper = new QueryWrapper<>();
+            orderMainStatusWrapper.eq("id", orderReDTO.getOrderId());
+            orderMainStatusWrapper.eq("status", OrderStatusEnum.PAID.getCode());
+            orderMainMapper.update(orderMainStatusWrapper);
+        }
     }
 }

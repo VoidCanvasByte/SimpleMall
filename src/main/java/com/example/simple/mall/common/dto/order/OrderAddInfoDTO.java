@@ -3,7 +3,6 @@ package com.example.simple.mall.common.dto.order;
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
-
 import jakarta.validation.constraints.NotNull;
 import java.math.BigDecimal;
 

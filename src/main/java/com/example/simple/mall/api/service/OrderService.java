@@ -3,7 +3,7 @@ package com.example.simple.mall.api.service;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.example.simple.mall.common.dto.order.OrderAddInfoDTO;
 import com.example.simple.mall.common.dto.order.OrderReDTO;
-import com.example.simple.mall.common.dto.order.OrderUpdateInfoDTO;
+import com.example.simple.mall.common.dto.order.OrderPayInfoDTO;
 import com.example.simple.mall.common.entity.OrderMain;
 
 /**
@@ -25,11 +25,20 @@ public interface OrderService extends IService<OrderMain> {
     OrderReDTO addOrder(OrderAddInfoDTO orderAddInfoDTO);
 
     /**
-     * 更新订单
+     * 订单支付
      *
-     * @param orderUpdateInfoDTO orderUpdateInfoDTO
+     * @param orderPayInfoDTO orderPayInfoDTO
      * @author sunny
      * @since 2025/05/09@return @return {@code ResponseResult<ProductDTO> }
      */
-    void updateOrder(OrderUpdateInfoDTO orderUpdateInfoDTO);
+    void orderPay(OrderPayInfoDTO orderPayInfoDTO);
+
+    /**
+     * orderReDTO
+     *
+     * @param orderReDTO orderReDTO
+     * @author sunny
+     * @since 2025/05/25@return
+     */
+    void orderUpdate(OrderReDTO orderReDTO);
 }
