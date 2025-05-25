@@ -2,7 +2,7 @@ package com.example.simple.mall.api.service;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.example.simple.mall.common.dto.ProductDTO;
+import com.example.simple.mall.common.dto.product.ProductDTO;
 import com.example.simple.mall.common.entity.ProductMain;
 
 /**

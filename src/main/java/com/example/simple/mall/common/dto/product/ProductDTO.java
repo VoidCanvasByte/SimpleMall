@@ -1,4 +1,4 @@
-package com.example.simple.mall.common.dto;
+package com.example.simple.mall.common.dto.product;
 
 import com.example.simple.mall.common.entity.ProductDetails;
 import jakarta.validation.constraints.NotNull;

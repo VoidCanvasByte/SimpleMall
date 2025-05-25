@@ -1,14 +1,16 @@
 package com.example.simple.mall.api.controller;
 
 import com.example.simple.mall.api.service.ProductCategoryService;
-import com.example.simple.mall.common.dto.ProductDTO;
+import com.example.simple.mall.common.dto.product.ProductDTO;
+import com.example.simple.mall.common.dto.product.ProductInfoDTO;
+import com.example.simple.mall.common.dto.product.ProductUpdateDTO;
 import com.example.simple.mall.common.enu.ResponseEnum;
 import com.example.simple.mall.common.response.ResponseResult;
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 
 /**
@@ -26,45 +28,34 @@ public class ProductCategoryController {
     private ProductCategoryService productCategoryService;
 
     /**
-     * 添加管理员逻辑
+     * 添加商品分类
      *
-     * @param productDTO productDTO
-     * @return @return {@code ResponseResult<ProductDTO> }
+     * @param productInfoDTO productInfoDTO
+     * @return {@code ResponseResult<ProductDTO> }
      * @author sunny
      * @since 2025/05/09
      */
     @PostMapping("/add")
-    public ResponseResult<ProductDTO> addCategory(@RequestBody ProductDTO productDTO) {
-        //TODO   商品分类部分的代码还没有进行写
-        return null;
+    @Operation(summary = "添加商品分类", description = "添加商品分类")
+    public ResponseResult<ProductDTO> addCategory(@Valid @RequestBody ProductInfoDTO productInfoDTO) {
+        productCategoryService.addCategory(productInfoDTO);
+        return ResponseResult.out(ResponseEnum.SUCCESS);
     }
 
     /**
      * 更新商品分类
      *
-     * @param productDTO productDTO
-     * @return @return {@code ResponseResult<ProductDTO> }
+     * @param productUpdateDTO productDTO
+     * @return {@code ResponseResult<ProductDTO> }
      * @author sunny
      * @since 2025/05/09
      */
     @PostMapping("/update")
-    public ResponseResult<ProductDTO> updateCategory(@RequestBody ProductDTO productDTO) {
-        return null;
+    @Operation(summary = "更新商品分类", description = "更新商品分类")
+    public ResponseResult<ProductDTO> updateCategory(@Valid @RequestBody ProductUpdateDTO productUpdateDTO) {
+        productCategoryService.updateCategory(productUpdateDTO);
+        return ResponseResult.out(ResponseEnum.SUCCESS);
     }
-
-    /**
-     * 获取所有分类（公开）
-     *
-     * @return @return {@code ResponseResult<List<ProductDTO>> }
-     * @author sunny
-     * @since 2025/05/09
-     */
-    @GetMapping("/list")
-    public ResponseResult<List<ProductDTO>> listCategories() {
-        List<ProductDTO> list = productCategoryService.listObjs();
-        return ResponseResult.out(ResponseEnum.SUCCESS, list);
-    }
-
 
     /**
      * 删除分类（管理员）
@@ -75,7 +66,7 @@ public class ProductCategoryController {
      * @since 2025/05/09
      */
     @DeleteMapping("/delete/{id}")
-    public ResponseResult<ProductDTO> deleteCategory(@PathVariable Long id) {
+    public ResponseResult<ProductDTO> deleteCategory(@PathVariable String id) {
         productCategoryService.removeById(id);
         return ResponseResult.out(ResponseEnum.SUCCESS);
     }

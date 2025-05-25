@@ -4,8 +4,11 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.example.simple.mall.api.mapper.ProductCategoryMapper;
 import com.example.simple.mall.api.service.ProductCategoryService;
-import com.example.simple.mall.common.dto.ProductDTO;
+import com.example.simple.mall.common.dto.product.ProductDTO;
+import com.example.simple.mall.common.dto.product.ProductInfoDTO;
+import com.example.simple.mall.common.dto.product.ProductUpdateDTO;
 import com.example.simple.mall.common.entity.ProductCategory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,9 +20,44 @@ import java.util.List;
  */
 @Service
 public class ProductCategoryServiceImpl extends ServiceImpl<ProductCategoryMapper, ProductCategory> implements ProductCategoryService {
+
+    @Autowired
+    private ProductCategoryMapper productCategoryMapper;
+
+
     @Override
     @Transactional(rollbackFor = Exception.class)
     public List<ProductDTO> listAllBySort(QueryWrapper<ProductDTO> sort) {
         return null;
+    }
+
+    /**
+     * 添加商品分类
+     *
+     * @param productInfoDTO productInfoDTO
+     * @author sunny
+     * @since 2025/05/25
+     */
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public void addCategory(ProductInfoDTO productInfoDTO) {
+        ProductCategory productCategory = new ProductCategory();
+        productCategory.setName(productInfoDTO.getName());
+        productCategoryMapper.insert(productCategory);
+    }
+
+    /**
+     * 更新商品分类信息
+     *
+     * @param productUpdateDTO productUpdateDTO
+     * @author sunny
+     * @since 2025/05/25
+     */
+    @Override
+    public void updateCategory(ProductUpdateDTO productUpdateDTO) {
+        QueryWrapper<ProductCategory> productCategoryWrapper = new QueryWrapper<>();
+        productCategoryWrapper.eq("id", productUpdateDTO.getId());
+        productCategoryWrapper.eq("name", productUpdateDTO.getName());
+        this.update(productCategoryWrapper);
     }
 }
