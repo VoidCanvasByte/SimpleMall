@@ -2,7 +2,7 @@ package com.example.simple.mall.api.controller;
 
 import com.example.simple.mall.api.service.UserService;
 import com.example.simple.mall.common.dto.LoginRequestDTO;
-import com.example.simple.mall.common.dto.UserDTO;
+import com.example.simple.mall.common.dto.user.UserDTO;
 import com.example.simple.mall.common.enu.ResponseEnum;
 import com.example.simple.mall.common.response.ResponseResult;
 import io.swagger.v3.oas.annotations.Operation;

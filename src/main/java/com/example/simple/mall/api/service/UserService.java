@@ -2,7 +2,7 @@ package com.example.simple.mall.api.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.example.simple.mall.common.dto.LoginRequestDTO;
-import com.example.simple.mall.common.dto.UserDTO;
+import com.example.simple.mall.common.dto.user.UserDTO;
 import com.example.simple.mall.common.entity.UserEntity;
 import org.springframework.security.core.userdetails.User;
 

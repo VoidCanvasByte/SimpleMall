@@ -1,6 +1,6 @@
-package com.example.simple.mall.common.dto;
+package com.example.simple.mall.common.dto.user;
 
-import javax.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotNull;
 
 import com.example.simple.mall.common.entity.UserEntity;
 import lombok.Data;

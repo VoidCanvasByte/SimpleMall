@@ -11,7 +11,9 @@ import com.example.simple.mall.api.service.OrderInfoService;
 import com.example.simple.mall.api.service.OrderService;
 import com.example.simple.mall.api.service.ProductDetailsService;
 import com.example.simple.mall.api.service.ProductMainService;
-import com.example.simple.mall.common.dto.OrderAddDTO;
+import com.example.simple.mall.common.dto.order.OrderAddInfoDTO;
+import com.example.simple.mall.common.dto.order.OrderReDTO;
+import com.example.simple.mall.common.dto.order.OrderUpdateInfoDTO;
 import com.example.simple.mall.common.entity.OrderInfo;
 import com.example.simple.mall.common.entity.OrderMain;
 import com.example.simple.mall.common.entity.ProductDetails;
@@ -49,18 +51,17 @@ public class OrderServiceImpl extends ServiceImpl<OrderMainMapper, OrderMain> im
     private CartItemMapper cartItemMapper;
 
     /**
-     * 添加订单
+     * 创建订单
      *
-     * @param orderAddDTO orderAddDTO
+     * @param orderAddInfoDTO orderAddInfoDTO
      * @author sunny
-     * @since 2025/05/24
+     * @since 2025/05/24@return {@code OrderReDTO }
      */
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void addOrder(OrderAddDTO orderAddDTO) {
-        String productId = orderAddDTO.getProductId();
-        BigDecimal quantity = orderAddDTO.getQuantity();
-
+    public OrderReDTO addOrder(OrderAddInfoDTO orderAddInfoDTO) {
+        String productId = orderAddInfoDTO.getProductId();
+        BigDecimal quantity = orderAddInfoDTO.getQuantity();
         QueryWrapper<ProductMain> productMainWrapper = new QueryWrapper<>();
         productMainWrapper.eq("product_id", productId);
         productMainWrapper.eq("status", ProductStatusEnum.NORMAL.getCode());
@@ -75,16 +76,34 @@ public class OrderServiceImpl extends ServiceImpl<OrderMainMapper, OrderMain> im
         if (ObjectUtil.isEmpty(productDetails)) {
             throw new RuntimeException(ResponseEnum.PRODUCT_NOT_EXIST.getMessage());
         }
-        BigDecimal multiply = productDetails.getProductPrice().multiply(orderAddDTO.getQuantity()).setScale(2, RoundingMode.HALF_UP);
+        BigDecimal multiply = productDetails.getProductPrice().multiply(orderAddInfoDTO.getQuantity()).setScale(2, RoundingMode.HALF_UP);
         OrderMain orderMain = new OrderMain();
         String orderId = UUID.randomUUID().toString();
         orderMain.setId(orderId);
-        orderMain.setUserId(orderAddDTO.getUserId());
+        orderMain.setUserId(orderAddInfoDTO.getUserId());
         orderMain.setStatus(OrderStatusEnum.PENDING_PAYMENT.getCode());
         this.save(orderMain);
-        OrderInfo orderInfo = OrderMapperStruct.INSTANCE.orderAddDTOToOrderInfo(orderAddDTO);
+        OrderInfo orderInfo = OrderMapperStruct.INSTANCE.orderAddDTOToOrderInfo(orderAddInfoDTO);
         orderInfo.setOrderId(orderId);
         orderInfo.setProductPrice(multiply);
         OrderInfoService.save(orderInfo);
+        OrderReDTO orderReDTO = new OrderReDTO();
+        orderReDTO.setOrderId(orderId);
+        orderReDTO.setStatus(OrderStatusEnum.PENDING_PAYMENT.getCode());
+        return orderReDTO;
+    }
+
+    /**
+     * 更新订单
+     *
+     * @param orderUpdateInfoDTO orderUpdateInfoDTO
+     * @author sunny
+     * @since 2025/05/09@return @return {@code ResponseResult<ProductDTO> }
+     */
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public void updateOrder(OrderUpdateInfoDTO orderUpdateInfoDTO) {
+        //获取状态
+
     }
 }

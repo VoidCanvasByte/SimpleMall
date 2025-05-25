@@ -1,8 +1,7 @@
 package com.example.simple.mall.common.dto;
 
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
-
-import javax.validation.constraints.NotNull;
 
 /**
  * 购物车

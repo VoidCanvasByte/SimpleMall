@@ -12,7 +12,7 @@
     </insert>
 
     <!-- 根据邮箱信息查询单个用户 -->
-    <select id="selectUserByEmail" resultType="com.example.simple.mall.common.dto.UserDTO">
+    <select id="selectUserByEmail" resultType="com.example.simple.mall.common.dto.user.UserDTO">
         SELECT
         id,
         user_name AS userName,

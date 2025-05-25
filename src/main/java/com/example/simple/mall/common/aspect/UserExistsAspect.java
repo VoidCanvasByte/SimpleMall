@@ -2,11 +2,13 @@ package com.example.simple.mall.common.aspect;
 
 
 import com.example.simple.mall.api.service.UserService;
+import com.example.simple.mall.common.dto.user.UserAspectDTO;
 import com.example.simple.mall.common.enu.ResponseEnum;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
+import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Component;
 
 /**
@@ -28,21 +30,13 @@ public class UserExistsAspect {
 
     @Around("@annotation(com.example.simple.mall.common.annotation.UserVerification)")
     public Object checkUserExists(ProceedingJoinPoint joinPoint) throws Throwable {
-
-        String currentUserId = null;
-
         Object[] args = joinPoint.getArgs();
-        for (Object arg : args) {
-            if ("userId".equals(arg)) {
-                currentUserId = (String) arg;
-                break;
-            }
-        }
-
-        if (userService.judgeUserIfNull(currentUserId)) {
+        Object argInfo = args[0];
+        UserAspectDTO userAspectDTO = new UserAspectDTO();
+        BeanUtils.copyProperties(argInfo,userAspectDTO);
+        if (userService.judgeUserIfNull(userAspectDTO.getUserId())) {
             throw new RuntimeException(ResponseEnum.USER_NOT_EXIST.getMessage());
         }
-
         return joinPoint.proceed();
     }
 }

@@ -1,10 +1,9 @@
 package com.example.simple.mall.common.dto;
 
 import com.example.simple.mall.common.entity.ProductDetails;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-
-import javax.validation.constraints.NotNull;
 
 /**
  * 商品DTO
