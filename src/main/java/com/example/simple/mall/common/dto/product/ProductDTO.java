@@ -1,9 +1,9 @@
 package com.example.simple.mall.common.dto.product;
 
-import com.example.simple.mall.common.entity.ProductDetails;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
+
+import java.math.BigDecimal;
 
 /**
  * 商品DTO
@@ -12,8 +12,7 @@ import lombok.EqualsAndHashCode;
  * @since 2025/05/08
  */
 @Data
-@EqualsAndHashCode(callSuper = true)
-public class ProductDTO extends ProductDetails {
+public class ProductDTO {
 
     /**
      * 商品货号
@@ -22,23 +21,41 @@ public class ProductDTO extends ProductDetails {
     public String productCode;
 
     /**
+     * 商品分类ID
+     */
+    @NotNull(message = "商品分类ID不能为空")
+    public String productCategoryId;
+
+    /**
      * 商品名称
      */
     @NotNull(message = "商品名称不能为空")
     public String productName;
 
     /**
-     * 商品状态：1正常，2售罄
+     * 商品单价
      */
-    public Integer status;
+    @NotNull(message = "商品单价不能为空")
+    public BigDecimal productPrice;
 
     /**
-     * 分类名称
+     * 商品数量
      */
-    public String name;
+    @NotNull(message = "商品数量不能为空")
+    public String productQuantity;
 
     /**
-     * 排序值，越小越靠前
+     * 商品描述
      */
-    public String sort;
+    public String productDesc;
+
+    /**
+     * 商品图片
+     */
+    public String productImg;
+
+    /**
+     * 商品状态
+     */
+    public String status;
 }

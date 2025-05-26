@@ -39,4 +39,10 @@ public class ProductMain extends BaseEntity implements java.io.Serializable {
      */
     @TableField("status")
     public Integer status;
+
+    /**
+     * 商品分类id
+     */
+    @TableField("product_category_id")
+    public String productCategoryId;
 }

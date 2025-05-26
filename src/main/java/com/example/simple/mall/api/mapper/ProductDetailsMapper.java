@@ -9,7 +9,7 @@ import com.example.simple.mall.common.entity.ProductDetails;
  * @author sunny
  * @since 2025/05/08
  */
-public interface productDetailsMapper extends BaseMapper<ProductDetails> {
+public interface ProductDetailsMapper extends BaseMapper<ProductDetails> {
 
 
 

@@ -55,7 +55,8 @@ public class ProductController {
      * @author sunny
      * @since 2025/05/08
      */
-    @PostMapping
+    @PostMapping(value = "/add")
+    @Operation(summary = "添加商品", description = "添加商品")
     public ResponseResult<ProductDTO> addProduct(@Validated
                                                  @RequestBody ProductDTO productDTO) {
         productMainService.addProduct(productDTO);
