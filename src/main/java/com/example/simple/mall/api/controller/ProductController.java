@@ -1,6 +1,5 @@
 package com.example.simple.mall.api.controller;
 
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.example.simple.mall.api.service.ProductMainService;
 import com.example.simple.mall.common.dto.product.ProductDTO;
 import com.example.simple.mall.common.entity.ProductMain;
@@ -11,6 +10,8 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 /**
  * 商品管理层
@@ -32,14 +33,13 @@ public class ProductController {
      * @param page        page
      * @param size        size
      * @param productMain productMain
+     * @return @return {@code Page<ProductMain> }
      * @author sunny
      * @since 2025/05/08
-     * @return @return {@code Page<ProductMain> }
      */
-
+    @GetMapping(value = "/query/page")
     @Operation(summary = "商品列表-分页", description = "商品列表-分页")
-    @GetMapping(value = "/queryPageList")
-    public Page<ProductMain> queryPageList(@RequestParam(defaultValue = "1") Integer page,
+    public List<ProductMain> queryPageList(@RequestParam(defaultValue = "1") Integer page,
                                            @RequestParam(defaultValue = "10") Integer size,
                                            @RequestBody(required = false) ProductMain productMain) {
         return productMainService.queryPageList(page, size, productMain);
@@ -66,9 +66,9 @@ public class ProductController {
      * 商品信息更新
      *
      * @param productDTO productDTO
+     * @return {@code ResponseResult<ProductDTO> }
      * @author sunny
      * @since 2025/05/08
-     * @return {@code ResponseResult<ProductDTO> }
      */
     @PutMapping
     public ResponseResult<ProductDTO> updateProduct(@Validated @RequestBody ProductDTO productDTO) {
@@ -80,9 +80,9 @@ public class ProductController {
      * 删除商品信息
      *
      * @param productCode 商品货号
+     * @return {@code ResponseResult<ProductDTO> }
      * @author sunny
      * @since 2025/05/08
-     * @return {@code ResponseResult<ProductDTO> }
      */
     @DeleteMapping("/{productCode}")
     public ResponseResult<ProductDTO> deleteProduct(@PathVariable String productCode) {

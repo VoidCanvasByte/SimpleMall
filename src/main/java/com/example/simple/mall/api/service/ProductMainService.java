@@ -1,9 +1,10 @@
 package com.example.simple.mall.api.service;
 
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.example.simple.mall.common.dto.product.ProductDTO;
 import com.example.simple.mall.common.entity.ProductMain;
+
+import java.util.List;
 
 /**
  * 商品Service
@@ -23,7 +24,7 @@ public interface ProductMainService extends IService<ProductMain> {
      * @author sunny
      * @since 2025/05/08@return @return {@code PageResult<ProductDTO> }
      */
-    Page<ProductMain> queryPageList(Integer page, Integer size, ProductMain productMain);
+    List<ProductMain> queryPageList(Integer page, Integer size, ProductMain productMain);
 
     /**
      * 添加商品信息
