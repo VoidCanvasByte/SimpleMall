@@ -47,4 +47,10 @@ public class ProductDetails extends BaseEntity {
      */
     @TableField("product_img")
     public String productImg;
+
+    /**
+     * 版本号
+     */
+    @TableField("version")
+    public Integer version;
 }

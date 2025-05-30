@@ -2,4 +2,13 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.simple.mall.api.mapper.ProductDetailsMapper">
 
+    <!--扣减库存-->
+    <update id="updateQuantity">
+        UPDATE product_details
+        SET product_quantity = product_quantity - #{quantity},
+            version          = version + 1
+        WHERE id = #{productId}
+          AND product_quantity >= #{quantity}
+          AND version = #{oldVersion};
+    </update>
 </mapper>

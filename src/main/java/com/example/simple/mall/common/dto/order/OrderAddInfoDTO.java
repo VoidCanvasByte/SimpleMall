@@ -2,6 +2,7 @@ package com.example.simple.mall.common.dto.order;
 
 import com.example.simple.mall.common.dto.user.UserBaseDTO;
 import jakarta.validation.constraints.DecimalMin;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -35,6 +36,12 @@ public class OrderAddInfoDTO extends UserBaseDTO {
      */
     @NotNull(message = "产品ID不能为空")
     public Integer productId;
+
+    /**
+     * 产品code
+     */
+    @NotBlank(message = "产品code不能为空")
+    public String productCode;
 
     /**
      * 产品数量

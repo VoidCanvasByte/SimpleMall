@@ -1,10 +1,8 @@
 package com.example.simple.mall.api.service.impl;
 
 import cn.hutool.core.util.ObjectUtil;
-import org.redisson.RedissonMultiLock;
-import org.redisson.api.RLock;
-import org.redisson.api.RedissonClient;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.example.simple.mall.api.mapStruct.OrderMapperStruct;
 import com.example.simple.mall.api.mapper.CartItemMapper;
@@ -22,6 +20,9 @@ import com.example.simple.mall.common.enu.OrderStatusEnum;
 import com.example.simple.mall.common.enu.ProductStatusEnum;
 import com.example.simple.mall.common.enu.ResponseEnum;
 import com.example.simple.mall.common.enu.StatusEnum;
+import org.redisson.RedissonMultiLock;
+import org.redisson.api.RLock;
+import org.redisson.api.RedissonClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -31,6 +32,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
+
 
 /**
  * 订单实现层
@@ -78,13 +80,24 @@ public class OrderServiceImpl extends ServiceImpl<OrderMainMapper, Order> implem
                 .distinct()
                 .sorted()
                 .toList();
+        Integer userId = 0;
+        if (orderAddInfoDTO.stream()
+                .map(OrderAddInfoDTO::getUserId).findFirst().isPresent()) {
+            userId = orderAddInfoDTO.get(0).getUserId();
+        }
+        Integer shippingAddressId = 0;
+        if (orderAddInfoDTO.stream()
+                .map(OrderAddInfoDTO::getUserId).findFirst().isPresent()) {
+            shippingAddressId = orderAddInfoDTO.get(0).getShippingAddressId();
+        }
+        //TODO  订单防重校验（幂等性处理），如幂等token/唯一业务号，可扩展
+        // 幂等性可以用业务号+唯一索引，防止重复扣库存
         //商品锁
         List<RLock> lockList = new ArrayList<>();
         for (Integer productId : productIdList) {
             RLock lock = redissonClient.getLock("order:product:" + productId);
             lockList.add(lock);
         }
-        // MultiLock：所有锁必须都加成功才算获得锁
         boolean locked = false;
         RLock multiLock = new RedissonMultiLock(lockList.toArray(new RLock[0]));
         try {
@@ -110,28 +123,17 @@ public class OrderServiceImpl extends ServiceImpl<OrderMainMapper, Order> implem
                 if (hasZeroQuantity) {
                     throw new RuntimeException(ResponseEnum.PRODUCT_NOT_EXIST.getMessage());
                 }
-                Integer userId = 0;
-                if (orderAddInfoDTO.stream()
-                        .map(OrderAddInfoDTO::getUserId).findFirst().isPresent()) {
-                    userId = orderAddInfoDTO.get(0).getUserId();
-                }
-                Integer shippingAddressId = 0;
-                if (orderAddInfoDTO.stream()
-                        .map(OrderAddInfoDTO::getUserId).findFirst().isPresent()) {
-                    shippingAddressId = orderAddInfoDTO.get(0).getShippingAddressId();
-                }
                 //处理数据
                 List<OrderItems> insertOrderItemList = new ArrayList<>();
                 List<Integer> productIdsToDelete = new ArrayList<>();
-                BigDecimal subtotal = new BigDecimal("0.00");
+                BigDecimal subtotal = BigDecimal.ZERO;
+                ///订单编号 + userName + 下单时间戳
+                String orderNumber = String.valueOf(userId) + System.currentTimeMillis();
                 Order order = new Order();
                 order.setUserId(userId);
-                order.setStatus(OrderStatusEnum.PENDING_PAYMENT.getCode());
-                //订单编号 + userName + 下单时间戳
-                String orderNumber = String.valueOf(userId) + System.currentTimeMillis();
                 order.setOrderNumber(orderNumber);
-                order.setUserId(userId);
                 order.setShippingAddressId(shippingAddressId);
+                order.setStatus(OrderStatusEnum.PENDING_PAYMENT.getCode());
                 order.setPaymentStatus(OrderStatusEnum.PENDING_PAYMENT.getCode());
                 order.setShippingStatus(OrderStatusEnum.PENDING_SHIPMENT.getCode());
                 order.setStatus(StatusEnum.NEW.getCode());
@@ -155,6 +157,18 @@ public class OrderServiceImpl extends ServiceImpl<OrderMainMapper, Order> implem
                     orderItem.setOrderId(orderId);
                     orderItem.setSubtotal(subtotal);
                     productIdsToDelete.add(item.getProductId());
+                    //给商品添加乐观锁
+                    List<ProductDetails> filteredProducts = productDetails.stream()
+                            .filter(product -> product.getProductCode().equals(item.getProductCode()))
+                            .toList();
+                    if (CollectionUtils.isNotEmpty(filteredProducts)) {
+                        ProductDetails productCode = filteredProducts.get(0);
+                        int rows = productDetailsService.updateQuantity(item.getProductId(),
+                                item.getQuantity(), productCode.getVersion());
+                        if (rows == 0) {
+                            throw new RuntimeException(ResponseEnum.PRODUCT_INSUFFICIENT_INVENTORY.getMessage());
+                        }
+                    }
                 }
                 if (!insertOrderItemList.isEmpty()) {
                     orderItemsMapper.batchInsert(insertOrderItemList);
