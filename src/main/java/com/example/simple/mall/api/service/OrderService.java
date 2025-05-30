@@ -6,6 +6,8 @@ import com.example.simple.mall.common.dto.order.OrderReDTO;
 import com.example.simple.mall.common.dto.order.OrderPayInfoDTO;
 import com.example.simple.mall.common.entity.Order;
 
+import java.util.List;
+
 /**
  * 订单信息
  *
@@ -21,7 +23,7 @@ public interface OrderService extends IService<Order> {
      * @author sunny
      * @since 2025/05/24@return {@code OrderReDTO }
      */
-    void addOrder(OrderAddInfoDTO orderAddInfoDTO);
+    void addOrder(List<OrderAddInfoDTO> orderAddInfoDTO);
 
     /**
      * 订单支付

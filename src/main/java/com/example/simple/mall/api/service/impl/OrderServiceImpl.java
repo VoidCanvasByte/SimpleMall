@@ -62,15 +62,14 @@ public class OrderServiceImpl extends ServiceImpl<OrderMainMapper, Order> implem
      *
      * @param orderAddInfoDTO orderAddInfoDTO
      * @author sunny
-     * @since 2025/05/24@return {@code OrderReDTO }@return
+     * @since 2025/05/24
      */
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void addOrder(OrderAddInfoDTO orderAddInfoDTO) {
-        List<OrderAddInfoDTO.ProductInfo> productInfoList = orderAddInfoDTO.getProductInfoList();
+    public void addOrder(List<OrderAddInfoDTO> orderAddInfoDTO) {
         //校验
-        List<Integer> productIdList = productInfoList.stream()
-                .map(OrderAddInfoDTO.ProductInfo::getProductId)
+        List<Integer> productIdList = orderAddInfoDTO.stream()
+                .map(OrderAddInfoDTO::getProductId)
                 .toList();
         QueryWrapper<Product> productMainWrapper = new QueryWrapper<>();
         productMainWrapper.in("id", productIdList);
@@ -93,9 +92,19 @@ public class OrderServiceImpl extends ServiceImpl<OrderMainMapper, Order> implem
             throw new RuntimeException(ResponseEnum.PRODUCT_NOT_EXIST.getMessage());
         }
 
+        Integer userId = 0;
+        if (orderAddInfoDTO.stream()
+                .map(OrderAddInfoDTO::getUserId).findFirst().isPresent()) {
+            userId = orderAddInfoDTO.stream()
+                    .map(OrderAddInfoDTO::getUserId).toList().get(1);
+        }
 
-        Integer userId = orderAddInfoDTO.getUserId();
-        Integer shippingAddressId = orderAddInfoDTO.getShippingAddressId();
+        Integer shippingAddressId = 0;
+        if (orderAddInfoDTO.stream()
+                .map(OrderAddInfoDTO::getUserId).findFirst().isPresent()) {
+            shippingAddressId = orderAddInfoDTO.stream()
+                    .map(OrderAddInfoDTO::getShippingAddressId).toList().get(1);
+        }
         List<OrderItems> insertOrderItemList = new ArrayList<>();
         List<Integer> productIdsToDelete = new ArrayList<>();
         BigDecimal subtotal = new BigDecimal("0.00");
@@ -104,9 +113,9 @@ public class OrderServiceImpl extends ServiceImpl<OrderMainMapper, Order> implem
         order.setUserId(userId);
         order.setStatus(OrderStatusEnum.PENDING_PAYMENT.getCode());
         //订单编号 + userName + 下单时间戳
-        String orderNumber = String.valueOf(orderAddInfoDTO.getUserId()) + System.currentTimeMillis();
+        String orderNumber = String.valueOf(userId) + System.currentTimeMillis();
         order.setOrderNumber(orderNumber);
-        order.setUserId(orderAddInfoDTO.getUserId());
+        order.setUserId(userId);
         order.setShippingAddressId(shippingAddressId);
         order.setPaymentStatus(OrderStatusEnum.PENDING_PAYMENT.getCode());
         order.setShippingStatus(OrderStatusEnum.PENDING_SHIPMENT.getCode());
@@ -114,7 +123,7 @@ public class OrderServiceImpl extends ServiceImpl<OrderMainMapper, Order> implem
         orderMainMapper.insert(order);
         Integer orderId = order.getId();
         //循环处理订单
-        for (OrderAddInfoDTO.ProductInfo item : orderAddInfoDTO.getProductInfoList()) {
+        for (OrderAddInfoDTO item : orderAddInfoDTO) {
             OrderItems orderItem = OrderMapperStruct.INSTANCE.orderAddDTOToOrderInfo(item);
             orderItem.setOrderId(order.getId());
             Optional<String> productName = produceMainInfoList.stream()
@@ -138,7 +147,7 @@ public class OrderServiceImpl extends ServiceImpl<OrderMainMapper, Order> implem
         }
         //删除购物车中的货物信息
         QueryWrapper<CartItem> cartItemQueryWrapper = new QueryWrapper<>();
-        cartItemQueryWrapper.eq("user_id", orderAddInfoDTO.getUserId());
+        cartItemQueryWrapper.eq("user_id", userId);
         cartItemQueryWrapper.in("product_id", productIdsToDelete);
         cartItemMapper.delete(cartItemQueryWrapper);
         QueryWrapper<Order> orderWrapper = new QueryWrapper<>();

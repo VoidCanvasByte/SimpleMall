@@ -13,6 +13,8 @@ import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 /**
  * 订单控制器
  *
@@ -37,7 +39,7 @@ public class OrderController {
     @UserVerification
     @PostMapping("/add")
     @Operation(summary = "创建订单", description = "创建订单")
-    public ResponseResult<OrderReDTO> addOrder(@Valid @RequestBody OrderAddInfoDTO orderAddInfoDTO) {
+    public ResponseResult<OrderReDTO> addOrder(@Valid @RequestBody List<OrderAddInfoDTO> orderAddInfoDTO) {
         orderService.addOrder(orderAddInfoDTO);
         return ResponseResult.out(ResponseEnum.SUCCESS);
     }

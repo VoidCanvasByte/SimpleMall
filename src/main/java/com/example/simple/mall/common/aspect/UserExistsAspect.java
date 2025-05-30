@@ -11,6 +11,9 @@ import org.aspectj.lang.annotation.Aspect;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Component;
 
+import java.util.Collection;
+import java.util.List;
+
 /**
  * 当前用户是否存在
  *
@@ -33,7 +36,14 @@ public class UserExistsAspect {
         Object[] args = joinPoint.getArgs();
         Object argInfo = args[0];
         UserBaseDTO userAspectDTO = new UserBaseDTO();
-        BeanUtils.copyProperties(argInfo,userAspectDTO);
+        if (argInfo instanceof List) {
+            Collection<?> collection = (Collection<?>) argInfo;
+            for (Object item : collection) {
+                BeanUtils.copyProperties(item, userAspectDTO);
+            }
+        } else if (argInfo instanceof UserBaseDTO) {
+            BeanUtils.copyProperties(argInfo, userAspectDTO);
+        }
         if (userService.judgeUserIfNull(userAspectDTO.getUserId())) {
             throw new RuntimeException(ResponseEnum.USER_NOT_EXIST.getMessage());
         }

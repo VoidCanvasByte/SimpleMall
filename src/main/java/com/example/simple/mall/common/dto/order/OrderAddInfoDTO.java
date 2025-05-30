@@ -1,11 +1,12 @@
 package com.example.simple.mall.common.dto.order;
 
+import com.example.simple.mall.common.dto.user.UserBaseDTO;
 import jakarta.validation.constraints.DecimalMin;
-import jakarta.validation.constraints.NotEmpty;
-import lombok.Data;
 import jakarta.validation.constraints.NotNull;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+
 import java.math.BigDecimal;
-import java.util.List;
 
 /**
  * 订单创建DTO
@@ -14,7 +15,8 @@ import java.util.List;
  * @since 2025/05/24
  */
 @Data
-public class OrderAddInfoDTO {
+@EqualsAndHashCode(callSuper = true)
+public class OrderAddInfoDTO extends UserBaseDTO {
 
     /**
      * 用户id
@@ -28,35 +30,29 @@ public class OrderAddInfoDTO {
     @NotNull(message = "收获地址ID")
     public Integer shippingAddressId;
 
-    @NotEmpty(message = "商品信息不能为空")
-    private List<ProductInfo> productInfoList;
+    /**
+     * 产品ID
+     */
+    @NotNull(message = "产品ID不能为空")
+    public Integer productId;
 
-    @Data
-    public static class ProductInfo {
-        /**
-         * 产品ID
-         */
-        @NotNull(message = "产品ID不能为空")
-        public Integer productId;
+    /**
+     * 产品数量
+     */
+    @NotNull(message = "商品数量不能为空")
+    @DecimalMin(value = "1", message = "商品数量不能小于1")
+    public Integer quantity;
 
-        /**
-         * 产品数量
-         */
-        @NotNull(message = "商品数量不能为空")
-        @DecimalMin(value = "1", message = "商品数量不能小于1")
-        public Integer quantity;
+    /**
+     * 商品变体ID不能为空
+     */
+    @NotNull(message = "商品变体ID不能为空")
+    public Integer variantId;
 
-        /**
-         * 商品变体ID不能为空
-         */
-        @NotNull(message = "商品变体ID不能为空")
-        public Integer variantId;
-
-        /**
-         * 下单时单价
-         */
-        @NotNull(message = "下单时单价")
-        @DecimalMin("0.01")
-        public BigDecimal unitPrice;
-    }
+    /**
+     * 下单时单价
+     */
+    @NotNull(message = "下单时单价")
+    @DecimalMin("0.01")
+    public BigDecimal unitPrice;
 }

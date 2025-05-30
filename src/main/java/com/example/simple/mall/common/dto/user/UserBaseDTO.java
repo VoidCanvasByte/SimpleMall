@@ -14,6 +14,6 @@ public class UserBaseDTO {
     /**
      * 用户id
      */
-    private Integer userId;
+    public Integer userId;
 }
 

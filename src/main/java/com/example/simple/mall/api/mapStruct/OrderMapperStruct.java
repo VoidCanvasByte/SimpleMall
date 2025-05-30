@@ -23,5 +23,5 @@ public interface OrderMapperStruct {
      * @author sunny
      * @since 2025/05/24
      */
-    OrderItems orderAddDTOToOrderInfo(OrderAddInfoDTO.ProductInfo productInfo);
+    OrderItems orderAddDTOToOrderInfo(OrderAddInfoDTO productInfo);
 }
