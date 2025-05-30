@@ -13,9 +13,9 @@ import java.math.BigDecimal;
  * @since 2025/05/09
  */
 @Data
-@TableName("order")
+@TableName("order_main")
 @EqualsAndHashCode(callSuper = true)
-public class Order extends BaseEntity {
+public class OrderMainEntity extends BaseEntity {
 
     /**
      * 订单编号
@@ -27,13 +27,13 @@ public class Order extends BaseEntity {
      * 下单用户
      */
     @TableField("user_id")
-    public Integer userId;
+    public Long userId;
 
     /**
      * 收货地址
      */
     @TableField("shipping_address_id")
-    public Integer shippingAddressId;
+    public Long shippingAddressId;
 
     /**
      * 订单总额

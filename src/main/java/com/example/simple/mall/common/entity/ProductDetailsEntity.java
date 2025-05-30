@@ -16,7 +16,7 @@ import java.math.BigDecimal;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @TableName("product_details")
-public class ProductDetails extends BaseEntity {
+public class ProductDetailsEntity extends BaseEntity {
 
     /**
      * 商品货号

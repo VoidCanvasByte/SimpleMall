@@ -32,7 +32,9 @@ public enum ResponseEnum {
     PRODUCT_INSUFFICIENT_INVENTORY(10012, "当前商品库存不足，请确认商品信息"),
     ORDER_NOT_EXIST(10013, "当前订单信息不存在，请确认信息"),
     // -----------------------------------------产品相关---------------------------------------------------------------------------------
-    PRODUCT_CATEGORY_NOT_EXIST(10014, "当前商品分类不存在请确认数据！");
+    PRODUCT_CATEGORY_NOT_EXIST(10014, "当前商品分类不存在请确认数据！"),
+    PRODUCT_VARIANTS_NOT_EXIST(10015, "当前商品变体表不存在请确认数据！");
+
     private final Integer code;
     private final String message;
 }

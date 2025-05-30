@@ -29,7 +29,7 @@ public class JwtUtils {
      * @author sunny
      * @since 2025/05/15
      */
-    public String generateToken(Integer userId) {
+    public String generateToken(Long userId) {
         Date date = new Date(System.currentTimeMillis() + EXPIRE);
         return Jwts.builder()
                 .setSubject(userId.toString())

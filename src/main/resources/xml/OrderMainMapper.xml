@@ -2,4 +2,22 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.simple.mall.api.mapper.OrderMainMapper">
 
+    <!--添加订单-->
+    <insert id="insertOrderMain" parameterType="com.example.simple.mall.common.entity.OrderMainEntity">
+        INSERT INTO order_main
+        (order_number,
+         user_id,
+         shipping_address_id,
+         total_amount,
+         payment_status,
+         shipping_status,
+         status)
+        VALUES (#{orderNumber},
+                #{userId},
+                #{shippingAddressId},
+                #{totalAmount},
+                #{paymentStatus},
+                #{shippingStatus},
+                #{status})
+    </insert>
 </mapper>

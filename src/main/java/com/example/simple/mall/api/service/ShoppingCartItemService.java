@@ -2,18 +2,18 @@ package com.example.simple.mall.api.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.example.simple.mall.common.dto.CartItemDTO;
-import com.example.simple.mall.common.entity.CartItem;
+import com.example.simple.mall.common.entity.ShoppingCartItemEntity;
 
 import java.util.List;
 
 
 /**
- * CartItemService
+ * ShoppingCartItemService
  *
  * @author sunny
  * @since 2025/05/15
  */
-public interface CartItemService extends IService<CartItem> {
+public interface ShoppingCartItemService extends IService<ShoppingCartItemEntity> {
 
     /**
      * 添加购物车
@@ -32,7 +32,7 @@ public interface CartItemService extends IService<CartItem> {
      * @author sunny
      * @since 2025/05/15
      */
-    List<CartItem> listByUserId(Long userId);
+    List<ShoppingCartItemEntity> listByUserId(Long userId);
 
     /**
      * 单次添加或者减少购物车中物品的数量

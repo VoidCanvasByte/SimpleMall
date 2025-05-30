@@ -7,7 +7,7 @@ import com.example.simple.mall.api.service.ProductCategoryService;
 import com.example.simple.mall.common.dto.product.ProductDTO;
 import com.example.simple.mall.common.dto.product.ProductInfoDTO;
 import com.example.simple.mall.common.dto.product.ProductUpdateDTO;
-import com.example.simple.mall.common.entity.ProductCategory;
+import com.example.simple.mall.common.entity.ProductCategoryEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,7 +19,7 @@ import java.util.List;
  * @since 2025/05/09
  */
 @Service
-public class ProductCategoryServiceImpl extends ServiceImpl<ProductCategoryMapper, ProductCategory> implements ProductCategoryService {
+public class ProductCategoryServiceImpl extends ServiceImpl<ProductCategoryMapper, ProductCategoryEntity> implements ProductCategoryService {
 
     @Autowired
     private ProductCategoryMapper productCategoryMapper;
@@ -41,9 +41,9 @@ public class ProductCategoryServiceImpl extends ServiceImpl<ProductCategoryMappe
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void addCategory(ProductInfoDTO productInfoDTO) {
-        ProductCategory productCategory = new ProductCategory();
-        productCategory.setName(productInfoDTO.getName());
-        productCategoryMapper.insert(productCategory);
+        ProductCategoryEntity productCategoryEntity = new ProductCategoryEntity();
+        productCategoryEntity.setName(productInfoDTO.getName());
+        productCategoryMapper.insert(productCategoryEntity);
     }
 
     /**
@@ -55,7 +55,7 @@ public class ProductCategoryServiceImpl extends ServiceImpl<ProductCategoryMappe
      */
     @Override
     public void updateCategory(ProductUpdateDTO productUpdateDTO) {
-        QueryWrapper<ProductCategory> productCategoryWrapper = new QueryWrapper<>();
+        QueryWrapper<ProductCategoryEntity> productCategoryWrapper = new QueryWrapper<>();
         productCategoryWrapper.eq("id", productUpdateDTO.getId());
         productCategoryWrapper.eq("name", productUpdateDTO.getName());
         this.update(productCategoryWrapper);

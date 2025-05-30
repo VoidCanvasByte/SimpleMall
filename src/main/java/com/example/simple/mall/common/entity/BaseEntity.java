@@ -17,7 +17,7 @@ public class BaseEntity {
      * 用户ID
      */
     @TableId(value = "id")
-    private Integer id;
+    private Long id;
 
     /**
      * 创建时间

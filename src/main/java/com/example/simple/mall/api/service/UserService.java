@@ -32,7 +32,7 @@ public interface UserService extends IService<UserEntity> {
      * @author sunny
      * @since 2025/05/24
      */
-    Boolean judgeUserIfNull(Integer userId);
+    Boolean judgeUserIfNull(Long userId);
 
     /**
      * 更新用户信息

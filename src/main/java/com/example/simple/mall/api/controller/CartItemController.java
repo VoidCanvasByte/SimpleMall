@@ -1,8 +1,8 @@
 package com.example.simple.mall.api.controller;
 
-import com.example.simple.mall.api.service.CartItemService;
+import com.example.simple.mall.api.service.ShoppingCartItemService;
 import com.example.simple.mall.common.dto.CartItemDTO;
- import com.example.simple.mall.common.entity.CartItem;
+ import com.example.simple.mall.common.entity.ShoppingCartItemEntity;
 import com.example.simple.mall.common.enu.ResponseEnum;
 import com.example.simple.mall.common.response.ResponseResult;
 import io.swagger.v3.oas.annotations.Operation;
@@ -25,7 +25,7 @@ import java.util.List;
 public class CartItemController {
 
     @Autowired
-    private CartItemService cartItemService;
+    private ShoppingCartItemService shoppingCartItemService;
 
     /**
      * 添加购物车
@@ -37,7 +37,7 @@ public class CartItemController {
     @PostMapping("/add")
     @Operation(summary = "添加购物车", description = "添加购物车")
     public ResponseResult<CartItemDTO> addToCart(@RequestBody CartItemDTO cartItemDTO) {
-        cartItemService.addToCart(cartItemDTO);
+        shoppingCartItemService.addToCart(cartItemDTO);
         return ResponseResult.out(ResponseEnum.SUCCESS);
     }
 
@@ -50,8 +50,8 @@ public class CartItemController {
      */
     @GetMapping("/list")
     @Operation(summary = "根据用户查看购物车内容", description = "根据用户查看购物车内容")
-    public ResponseResult<List<CartItem>> list(@RequestAttribute Long userId) {
-        List<CartItem> list = cartItemService.listByUserId(userId);
+    public ResponseResult<List<ShoppingCartItemEntity>> list(@RequestAttribute Long userId) {
+        List<ShoppingCartItemEntity> list = shoppingCartItemService.listByUserId(userId);
         return ResponseResult.out(ResponseEnum.SUCCESS, list);
     }
 
@@ -65,7 +65,7 @@ public class CartItemController {
     @PostMapping("/update")
     @Operation(summary = "单次添加或者减少购物车中物品的数量", description = "单次添加或者减少购物车中物品的数量")
     public ResponseResult<CartItemDTO> updateCartItem(@RequestBody CartItemDTO cartItemDTO) {
-        cartItemService.updateCartItem(cartItemDTO);
+        shoppingCartItemService.updateCartItem(cartItemDTO);
         return ResponseResult.out(ResponseEnum.SUCCESS);
     }
 
@@ -79,7 +79,7 @@ public class CartItemController {
     @DeleteMapping("/custom/update")
     @Operation(summary = "自定义修改商品数量", description = "自定义修改商品数量")
     public ResponseResult<CartItemDTO> customUpdateTag(@RequestBody CartItemDTO cartItemDTO) {
-        cartItemService.customUpdateTag(cartItemDTO);
+        shoppingCartItemService.customUpdateTag(cartItemDTO);
         return ResponseResult.out(ResponseEnum.SUCCESS);
     }
 
@@ -93,7 +93,7 @@ public class CartItemController {
     @DeleteMapping("/clear")
     @Operation(summary = "清空购物车", description = "清空购物车")
     public ResponseResult<CartItemDTO> clear(@RequestAttribute Long userId) {
-        cartItemService.clearCart(userId);
+        shoppingCartItemService.clearCart(userId);
         return ResponseResult.out(ResponseEnum.SUCCESS);
     }
 

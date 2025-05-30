@@ -1,7 +1,8 @@
 package com.example.simple.mall.api.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.example.simple.mall.common.entity.ProductDetails;
+import com.example.simple.mall.common.entity.ProductDetailsEntity;
+import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 /**
@@ -10,7 +11,8 @@ import org.apache.ibatis.annotations.Param;
  * @author sunny
  * @since 2025/05/08
  */
-public interface ProductDetailsMapper extends BaseMapper<ProductDetails> {
+@Mapper
+public interface ProductDetailsMapper extends BaseMapper<ProductDetailsEntity> {
 
 
     /**
@@ -22,7 +24,7 @@ public interface ProductDetailsMapper extends BaseMapper<ProductDetails> {
      * @author sunny
      * @since 2025/05/30
      */
-    int updateQuantity(@Param("productId") Integer productId,
+    int updateQuantity(@Param("productId") Long productId,
                        @Param("quantity") Integer quantity,
                        @Param("oldVersion")Integer oldVersion);
 }

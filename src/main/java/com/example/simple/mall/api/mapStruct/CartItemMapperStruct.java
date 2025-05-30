@@ -2,7 +2,7 @@ package com.example.simple.mall.api.mapStruct;
 
 
 import com.example.simple.mall.common.dto.CartItemDTO;
-import com.example.simple.mall.common.entity.CartItem;
+import com.example.simple.mall.common.entity.ShoppingCartItemEntity;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
 
@@ -21,9 +21,9 @@ public interface CartItemMapperStruct {
      * dto to entity
      *
      * @param cartItemDTO cartItemDTO
-     * @return @return {@code CartItem }
+     * @return @return {@code ShoppingCartItemEntity }
      * @author sunny
      * @since 2025/05/15
      */
-    CartItem cartItemDtoToEntity(CartItemDTO cartItemDTO);
+    ShoppingCartItemEntity cartItemDtoToEntity(CartItemDTO cartItemDTO);
 }

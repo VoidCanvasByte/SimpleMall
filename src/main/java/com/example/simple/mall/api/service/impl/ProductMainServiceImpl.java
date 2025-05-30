@@ -9,9 +9,9 @@ import com.example.simple.mall.api.mapper.ProductDetailsMapper;
 import com.example.simple.mall.api.mapper.ProductMainMapper;
 import com.example.simple.mall.api.service.ProductMainService;
 import com.example.simple.mall.common.dto.product.ProductDTO;
-import com.example.simple.mall.common.entity.Product;
-import com.example.simple.mall.common.entity.ProductCategory;
-import com.example.simple.mall.common.entity.ProductDetails;
+import com.example.simple.mall.common.entity.ProductEntity;
+import com.example.simple.mall.common.entity.ProductCategoryEntity;
+import com.example.simple.mall.common.entity.ProductDetailsEntity;
 import com.example.simple.mall.common.enu.ResponseEnum;
 import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +27,7 @@ import java.util.List;
  * @since 2025/05/08
  */
 @Service
-public class ProductMainServiceImpl extends ServiceImpl<ProductMainMapper, Product> implements ProductMainService {
+public class ProductMainServiceImpl extends ServiceImpl<ProductMainMapper, ProductEntity> implements ProductMainService {
 
 
     @Autowired
@@ -44,16 +44,16 @@ public class ProductMainServiceImpl extends ServiceImpl<ProductMainMapper, Produ
      *
      * @param page        page
      * @param size        size
-     * @param product product
+     * @param productEntity productEntity
      * @author sunny
      * @since 2025/05/08@return @return {@code PageResult<ProductDTO> }
      */
     @Override
-    public List<Product> queryPageList(Integer page, Integer size, Product product) {
-        List<Product> productList = productMainMapper.selectPageList(product);
+    public List<ProductEntity> queryPageList(Integer page, Integer size, ProductEntity productEntity) {
+        List<ProductEntity> productEntityList = productMainMapper.selectPageList(productEntity);
         int fromIndex = (page - 1) * size;
-        int toIndex = Math.min(fromIndex + size, productList.size());
-        return CollUtil.sub(productList, fromIndex, toIndex);
+        int toIndex = Math.min(fromIndex + size, productEntityList.size());
+        return CollUtil.sub(productEntityList, fromIndex, toIndex);
     }
 
     /**
@@ -67,19 +67,19 @@ public class ProductMainServiceImpl extends ServiceImpl<ProductMainMapper, Produ
     @Transactional(rollbackFor = Exception.class)
     public void addProduct(ProductDTO productDTO) {
         String productCategoryId = productDTO.getProductCategoryId();
-        QueryWrapper<ProductCategory> productCategoryWrapper = new QueryWrapper<ProductCategory>();
+        QueryWrapper<ProductCategoryEntity> productCategoryWrapper = new QueryWrapper<ProductCategoryEntity>();
         productCategoryWrapper.eq("id", productCategoryId);
-        ProductCategory productCategory = productCategoryMapper.selectOne(productCategoryWrapper);
-        if (ObjectUtils.isEmpty(productCategory)) {
+        ProductCategoryEntity productCategoryEntity = productCategoryMapper.selectOne(productCategoryWrapper);
+        if (ObjectUtils.isEmpty(productCategoryEntity)) {
             throw new RuntimeException(ResponseEnum.PRODUCT_CATEGORY_NOT_EXIST.getMessage());
         }
         //商品主表
-        Product product = ProductMainMapperStruct.INSTANCE.productDTOToProductMain(productDTO);
+        ProductEntity productEntity = ProductMainMapperStruct.INSTANCE.productDTOToProductMain(productDTO);
         //商品详细表
-        ProductDetails productDetails = ProductMainMapperStruct.INSTANCE.productDTOToProductDetails(productDTO);
+        ProductDetailsEntity productDetailsEntity = ProductMainMapperStruct.INSTANCE.productDTOToProductDetails(productDTO);
 
-        productMainMapper.insert(product);
-        productDetailsMapper.insert(productDetails);
+        productMainMapper.insert(productEntity);
+        productDetailsMapper.insert(productDetailsEntity);
     }
 
     /**

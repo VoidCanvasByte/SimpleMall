@@ -5,7 +5,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.example.simple.mall.common.dto.product.ProductDTO;
 import com.example.simple.mall.common.dto.product.ProductInfoDTO;
 import com.example.simple.mall.common.dto.product.ProductUpdateDTO;
-import com.example.simple.mall.common.entity.ProductCategory;
+import com.example.simple.mall.common.entity.ProductCategoryEntity;
 
 import java.util.List;
 
@@ -15,7 +15,7 @@ import java.util.List;
  * @author sunny
  * @since 2025/05/09
  */
-public interface ProductCategoryService extends IService<ProductCategory> {
+public interface ProductCategoryService extends IService<ProductCategoryEntity> {
 
     /**
      * 查询全部分类

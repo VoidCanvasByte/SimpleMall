@@ -2,7 +2,7 @@ package com.example.simple.mall.api.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.example.simple.mall.common.dto.product.ProductDTO;
-import com.example.simple.mall.common.entity.Product;
+import com.example.simple.mall.common.entity.ProductEntity;
 
 import java.util.List;
 
@@ -12,7 +12,7 @@ import java.util.List;
  * @author sunny
  * @since 2025/05/08å
  */
-public interface ProductMainService extends IService<Product> {
+public interface ProductMainService extends IService<ProductEntity> {
 
 
     /**
@@ -20,11 +20,11 @@ public interface ProductMainService extends IService<Product> {
      *
      * @param page        page
      * @param size        size
-     * @param product product
+     * @param productEntity productEntity
      * @author sunny
      * @since 2025/05/08@return @return {@code PageResult<ProductDTO> }
      */
-    List<Product> queryPageList(Integer page, Integer size, Product product);
+    List<ProductEntity> queryPageList(Integer page, Integer size, ProductEntity productEntity);
 
     /**
      * 添加商品信息

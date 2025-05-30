@@ -14,6 +14,6 @@ public class UserBaseDTO {
     /**
      * 用户id
      */
-    public Integer userId;
+    public Long userId;
 }
 

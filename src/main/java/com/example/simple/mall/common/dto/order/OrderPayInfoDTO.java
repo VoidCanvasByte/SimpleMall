@@ -16,5 +16,5 @@ public class OrderPayInfoDTO {
      * 订单ID
      */
     @NotBlank(message = "订单ID不能为空")
-    public String orderId;
+    public Long orderId;
 }

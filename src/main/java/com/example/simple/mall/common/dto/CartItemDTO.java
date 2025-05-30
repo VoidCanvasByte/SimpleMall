@@ -17,7 +17,7 @@ public class CartItemDTO {
      * 购物车主表ID
      */
     @NotNull(message = "购物车主表ID")
-    private Integer id;
+    private Long id;
 
     /**
      * 用户ID

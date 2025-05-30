@@ -1,9 +1,9 @@
 package com.example.simple.mall.common.entity;
 
 import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 
 import java.math.BigDecimal;
 
@@ -15,20 +15,25 @@ import java.math.BigDecimal;
  */
 @Data
 @TableName("order_items")
-@EqualsAndHashCode(callSuper = true)
-public class OrderItems extends BaseEntity {
+public class OrderItemsEntity {
+
+    /**
+     * 用户ID
+     */
+    @TableId(value = "id")
+    private String id;
 
     /**
      * 所属订单
      */
     @TableField("order_id")
-    public Integer orderId;
+    public Long orderId;
 
     /**
      * 商品变体
      */
     @TableField("variant_id")
-    public Integer variantId;
+    public Long variantId;
 
     /**
      * 下单时商品名称
@@ -40,7 +45,7 @@ public class OrderItems extends BaseEntity {
      * 下单时 SKU
      */
     @TableField("sku")
-    public Integer sku;
+    public String sku;
 
     /**
      * 下单时单价
@@ -59,4 +64,17 @@ public class OrderItems extends BaseEntity {
      */
     @TableField("subtotal")
     public BigDecimal subtotal;
+
+    /**
+     * 创建时间
+     */
+    @TableField("create_time")
+    private String createTime;
+
+    /**
+     * 更新时间
+     */
+    @TableField("update_time")
+    private String updateTime;
+
 }

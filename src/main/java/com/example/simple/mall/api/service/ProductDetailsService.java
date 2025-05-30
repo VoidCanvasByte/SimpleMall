@@ -1,9 +1,9 @@
 package com.example.simple.mall.api.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.example.simple.mall.common.entity.ProductDetails;
+import com.example.simple.mall.common.entity.ProductDetailsEntity;
 
-public interface ProductDetailsService extends IService<ProductDetails> {
+public interface ProductDetailsService extends IService<ProductDetailsEntity> {
 
 
     /**
@@ -15,5 +15,5 @@ public interface ProductDetailsService extends IService<ProductDetails> {
      * @author sunny
      * @since 2025/05/30@return @return int
      */
-    int updateQuantity(Integer productId, Integer quantity,Integer oldVersion);
+    int updateQuantity(Long productId, Integer quantity,Integer oldVersion);
 }

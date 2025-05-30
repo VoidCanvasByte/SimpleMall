@@ -17,7 +17,7 @@ public class SimulatedPayServiceImpl implements SimulatedPayService {
      * @since 2025/05/25
      */
     @Override
-    public Boolean pay(String orderId) {
+    public Boolean pay(Long orderId) {
         return null;
     }
 }

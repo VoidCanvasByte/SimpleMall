@@ -23,19 +23,19 @@ public class OrderAddInfoDTO extends UserBaseDTO {
      * 用户id
      */
     @NotNull(message = "用户id不能为空")
-    public Integer userId;
+    public Long userId;
 
     /**
      * 收获地址ID
      */
     @NotNull(message = "收获地址ID")
-    public Integer shippingAddressId;
+    public Long shippingAddressId;
 
     /**
      * 产品ID
      */
     @NotNull(message = "产品ID不能为空")
-    public Integer productId;
+    public Long productId;
 
     /**
      * 产品code
@@ -54,7 +54,7 @@ public class OrderAddInfoDTO extends UserBaseDTO {
      * 商品变体ID不能为空
      */
     @NotNull(message = "商品变体ID不能为空")
-    public Integer variantId;
+    public Long variantId;
 
     /**
      * 下单时单价

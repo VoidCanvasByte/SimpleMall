@@ -3,13 +3,13 @@ package com.example.simple.mall.api.service.impl;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.example.simple.mall.api.mapper.ProductDetailsMapper;
 import com.example.simple.mall.api.service.ProductDetailsService;
-import com.example.simple.mall.common.entity.ProductDetails;
+import com.example.simple.mall.common.entity.ProductDetailsEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
-public class ProductDetailsServiceImpl extends ServiceImpl<ProductDetailsMapper, ProductDetails> implements ProductDetailsService {
+public class ProductDetailsServiceImpl extends ServiceImpl<ProductDetailsMapper, ProductDetailsEntity> implements ProductDetailsService {
 
 
     @Autowired
@@ -26,7 +26,7 @@ public class ProductDetailsServiceImpl extends ServiceImpl<ProductDetailsMapper,
      */
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public int updateQuantity(Integer productId, Integer quantity, Integer oldVersion) {
+    public int updateQuantity(Long productId, Integer quantity, Integer oldVersion) {
         return productDetailsMapper.updateQuantity(productId, quantity, oldVersion);
     }
 }

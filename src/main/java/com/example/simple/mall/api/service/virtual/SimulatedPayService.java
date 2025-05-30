@@ -15,5 +15,5 @@ public interface SimulatedPayService {
      * @author sunny
      * @since 2025/05/25
      */
-    Boolean pay(String orderId);
+    Boolean pay(Long orderId);
 }

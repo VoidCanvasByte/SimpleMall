@@ -14,7 +14,7 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @TableName("product_category")
-public class ProductCategory extends BaseEntity {
+public class ProductCategoryEntity extends BaseEntity {
 
     /**
      * 分类名称

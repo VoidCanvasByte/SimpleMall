@@ -1,7 +1,7 @@
 package com.example.simple.mall.api.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.example.simple.mall.common.entity.CartItem;
+import com.example.simple.mall.common.entity.ShoppingCartItemEntity;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -9,13 +9,13 @@ import java.math.BigDecimal;
 
 
 /**
- * CartItemMapper
+ * ShoppingCartItemMapper
  *
  * @author sunny
  * @since 2025/05/15
  */
 @Mapper
-public interface CartItemMapper extends BaseMapper<CartItem> {
+public interface ShoppingCartItemMapper extends BaseMapper<ShoppingCartItemEntity> {
 
     /**
      * 根据ID更新购物车中的数量
@@ -26,7 +26,7 @@ public interface CartItemMapper extends BaseMapper<CartItem> {
      * @since 2025/05/15
      */
     void updateQuantity(@Param("quantity") Integer quantityOld,
-                        @Param("id") Integer id);
+                        @Param("id") Long id);
 
     /**
      * 根据订单信息修改购物车信息
