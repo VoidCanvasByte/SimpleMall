@@ -2,7 +2,6 @@ package com.example.simple.mall.common.enu;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.Setter;
 
 /**
  * 响应的枚举
@@ -26,18 +25,13 @@ public enum ResponseEnum {
     USER_STATUS_IS_UNUSED(1007, "用户为封存状态，不可以进行信息的更新"),
     USER_EMAIL_IF_CORRECT(1008, "当前邮箱格式不正确，请确认邮箱的是否真确！"),
     USER_PASSWORD_IS_WRONG(1009, "当前密码输入错误，请确定密码！"),
-
     // -----------------------------------------购物车相关---------------------------------------------------------------------------------
     USER_CART_IS_EMPTY(10010, "当前用户购物车中不存在该物品，请确认数据"),
-
     // -----------------------------------------订单相关---------------------------------------------------------------------------------
     PRODUCT_NOT_EXIST(10011, "商当前商品信息不存在或者商品库存不足，请确认商品信息"),
     ORDER_NOT_EXIST(10012, "当前订单信息不存在，请确认信息"),
-
     // -----------------------------------------产品相关---------------------------------------------------------------------------------
-    PRODUCT_CATEGORY_NOT_EXIST(10013,"当前商品分类不存在请确认数据！");
-    @Setter
-    private Integer code;
-    @Setter
-    private String message;
+    PRODUCT_CATEGORY_NOT_EXIST(10013, "当前商品分类不存在请确认数据！");
+    private final Integer code;
+    private final String message;
 }

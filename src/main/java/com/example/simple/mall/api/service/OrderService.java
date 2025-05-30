@@ -23,7 +23,7 @@ public interface OrderService extends IService<Order> {
      * @author sunny
      * @since 2025/05/24@return {@code OrderReDTO }
      */
-    void addOrder(List<OrderAddInfoDTO> orderAddInfoDTO);
+    void addOrder(List<OrderAddInfoDTO> orderAddInfoDTO) throws Exception;
 
     /**
      * 订单支付

@@ -39,7 +39,7 @@ public class OrderController {
     @UserVerification
     @PostMapping("/add")
     @Operation(summary = "创建订单", description = "创建订单")
-    public ResponseResult<OrderReDTO> addOrder(@Valid @RequestBody List<OrderAddInfoDTO> orderAddInfoDTO) {
+    public ResponseResult<OrderReDTO> addOrder(@Valid @RequestBody List<OrderAddInfoDTO> orderAddInfoDTO) throws Exception {
         orderService.addOrder(orderAddInfoDTO);
         return ResponseResult.out(ResponseEnum.SUCCESS);
     }

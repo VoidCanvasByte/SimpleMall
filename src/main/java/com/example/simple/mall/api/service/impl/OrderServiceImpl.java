@@ -1,6 +1,9 @@
 package com.example.simple.mall.api.service.impl;
 
 import cn.hutool.core.util.ObjectUtil;
+import org.redisson.RedissonMultiLock;
+import org.redisson.api.RLock;
+import org.redisson.api.RedissonClient;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.example.simple.mall.api.mapStruct.OrderMapperStruct;
@@ -27,6 +30,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.TimeUnit;
 
 /**
  * 订单实现层
@@ -35,11 +39,9 @@ import java.util.Optional;
  * @since 2025/05/09
  */
 @Service
-
 public class OrderServiceImpl extends ServiceImpl<OrderMainMapper, Order> implements OrderService {
 
     @Autowired
-
     private ProductMainService productMainService;
 
     @Autowired
@@ -57,6 +59,9 @@ public class OrderServiceImpl extends ServiceImpl<OrderMainMapper, Order> implem
     @Autowired
     private SimulatedPayService simulatedPayService;
 
+    @Autowired
+    private RedissonClient redissonClient;
+
     /**
      * 创建订单
      *
@@ -66,94 +71,111 @@ public class OrderServiceImpl extends ServiceImpl<OrderMainMapper, Order> implem
      */
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void addOrder(List<OrderAddInfoDTO> orderAddInfoDTO) {
-        //校验
+    public void addOrder(List<OrderAddInfoDTO> orderAddInfoDTO) throws Exception {
+        //为了防止死锁添加排序
         List<Integer> productIdList = orderAddInfoDTO.stream()
                 .map(OrderAddInfoDTO::getProductId)
+                .distinct()
+                .sorted()
                 .toList();
-        QueryWrapper<Product> productMainWrapper = new QueryWrapper<>();
-        productMainWrapper.in("id", productIdList);
-        productMainWrapper.eq("status", ProductStatusEnum.NORMAL.getCode());
-        List<Product> produceMainInfoList = productMainService.list(productMainWrapper);
-        if (ObjectUtil.isEmpty(produceMainInfoList)) {
-            throw new RuntimeException(ResponseEnum.PRODUCT_NOT_EXIST.getMessage());
+        //商品锁
+        List<RLock> lockList = new ArrayList<>();
+        for (Integer productId : productIdList) {
+            RLock lock = redissonClient.getLock("order:product:" + productId);
+            lockList.add(lock);
         }
-        List<String> productCodeList = produceMainInfoList.stream().map(Product::getProductCode).toList();
-        QueryWrapper<ProductDetails> productDetailsWrapper = new QueryWrapper<>();
-        productDetailsWrapper.in("product_code", productCodeList);
-        List<ProductDetails> productDetails = productDetailsService.list(productDetailsWrapper);
-        if (ObjectUtil.isEmpty(productDetails)) {
-            throw new RuntimeException(ResponseEnum.PRODUCT_NOT_EXIST.getMessage());
+        // MultiLock：所有锁必须都加成功才算获得锁
+        boolean locked = false;
+        RLock multiLock = new RedissonMultiLock(lockList.toArray(new RLock[0]));
+        try {
+            locked = multiLock.tryLock(10, 30, TimeUnit.SECONDS);
+            if (locked) {
+                QueryWrapper<Product> productMainWrapper = new QueryWrapper<>();
+                productMainWrapper.in("id", productIdList);
+                productMainWrapper.eq("status", ProductStatusEnum.NORMAL.getCode());
+                List<Product> produceMainInfoList = productMainService.list(productMainWrapper);
+                if (ObjectUtil.isEmpty(produceMainInfoList)) {
+                    throw new RuntimeException(ResponseEnum.PRODUCT_NOT_EXIST.getMessage());
+                }
+                List<String> productCodeList = produceMainInfoList.stream().map(Product::getProductCode).toList();
+                QueryWrapper<ProductDetails> productDetailsWrapper = new QueryWrapper<>();
+                productDetailsWrapper.in("product_code", productCodeList);
+                List<ProductDetails> productDetails = productDetailsService.list(productDetailsWrapper);
+                if (ObjectUtil.isEmpty(productDetails)) {
+                    throw new RuntimeException(ResponseEnum.PRODUCT_NOT_EXIST.getMessage());
+                }
+                boolean hasZeroQuantity = productDetails.stream()
+                        .map(ProductDetails::getProductQuantity)
+                        .anyMatch(quantity -> quantity == 0);
+                if (hasZeroQuantity) {
+                    throw new RuntimeException(ResponseEnum.PRODUCT_NOT_EXIST.getMessage());
+                }
+                Integer userId = 0;
+                if (orderAddInfoDTO.stream()
+                        .map(OrderAddInfoDTO::getUserId).findFirst().isPresent()) {
+                    userId = orderAddInfoDTO.get(0).getUserId();
+                }
+                Integer shippingAddressId = 0;
+                if (orderAddInfoDTO.stream()
+                        .map(OrderAddInfoDTO::getUserId).findFirst().isPresent()) {
+                    shippingAddressId = orderAddInfoDTO.get(0).getShippingAddressId();
+                }
+                //处理数据
+                List<OrderItems> insertOrderItemList = new ArrayList<>();
+                List<Integer> productIdsToDelete = new ArrayList<>();
+                BigDecimal subtotal = new BigDecimal("0.00");
+                Order order = new Order();
+                order.setUserId(userId);
+                order.setStatus(OrderStatusEnum.PENDING_PAYMENT.getCode());
+                //订单编号 + userName + 下单时间戳
+                String orderNumber = String.valueOf(userId) + System.currentTimeMillis();
+                order.setOrderNumber(orderNumber);
+                order.setUserId(userId);
+                order.setShippingAddressId(shippingAddressId);
+                order.setPaymentStatus(OrderStatusEnum.PENDING_PAYMENT.getCode());
+                order.setShippingStatus(OrderStatusEnum.PENDING_SHIPMENT.getCode());
+                order.setStatus(StatusEnum.NEW.getCode());
+                orderMainMapper.insert(order);
+                Integer orderId = order.getId();
+                for (OrderAddInfoDTO item : orderAddInfoDTO) {
+                    OrderItems orderItem = OrderMapperStruct.INSTANCE.orderAddDTOToOrderInfo(item);
+                    orderItem.setOrderId(order.getId());
+                    Optional<String> productName = produceMainInfoList.stream()
+                            .filter(mainInfo -> mainInfo.getId().equals(item.getProductId()))
+                            .map(Product::getProductName)
+                            .findFirst();
+                    productName.ifPresent(orderItem::setProductName);
+                    orderItem.setVariantId(item.getVariantId());
+                    orderItem.setQuantity(item.getQuantity());
+                    orderItem.setUnitPrice(item.getUnitPrice());
+                    BigDecimal subtotalTemp = item.getUnitPrice().multiply(new BigDecimal(item.getQuantity()));
+                    orderItem.setSubtotal(subtotalTemp);
+                    subtotal = subtotal.add(subtotalTemp);
+                    insertOrderItemList.add(orderItem);
+                    orderItem.setOrderId(orderId);
+                    orderItem.setSubtotal(subtotal);
+                    productIdsToDelete.add(item.getProductId());
+                }
+                if (!insertOrderItemList.isEmpty()) {
+                    orderItemsMapper.batchInsert(insertOrderItemList);
+                }
+                //删除购物车中的货物信息
+                QueryWrapper<CartItem> cartItemQueryWrapper = new QueryWrapper<>();
+                cartItemQueryWrapper.eq("user_id", userId);
+                cartItemQueryWrapper.in("product_id", productIdsToDelete);
+                cartItemMapper.delete(cartItemQueryWrapper);
+                QueryWrapper<Order> orderWrapper = new QueryWrapper<>();
+                orderWrapper.eq("id", orderId);
+                orderWrapper.eq("total_amount", subtotal);
+                orderMainMapper.update(orderWrapper);
+            } else {
+                throw new RuntimeException("商品正被抢购中，请稍后再试");
+            }
+        } finally {
+            if (locked) {
+                multiLock.unlock();
+            }
         }
-        boolean hasZeroQuantity = productDetails.stream()
-                .map(ProductDetails::getProductQuantity)
-                .anyMatch(quantity -> quantity == 0);
-        if (hasZeroQuantity) {
-            throw new RuntimeException(ResponseEnum.PRODUCT_NOT_EXIST.getMessage());
-        }
-
-        Integer userId = 0;
-        if (orderAddInfoDTO.stream()
-                .map(OrderAddInfoDTO::getUserId).findFirst().isPresent()) {
-            userId = orderAddInfoDTO.stream()
-                    .map(OrderAddInfoDTO::getUserId).toList().get(1);
-        }
-
-        Integer shippingAddressId = 0;
-        if (orderAddInfoDTO.stream()
-                .map(OrderAddInfoDTO::getUserId).findFirst().isPresent()) {
-            shippingAddressId = orderAddInfoDTO.stream()
-                    .map(OrderAddInfoDTO::getShippingAddressId).toList().get(1);
-        }
-        List<OrderItems> insertOrderItemList = new ArrayList<>();
-        List<Integer> productIdsToDelete = new ArrayList<>();
-        BigDecimal subtotal = new BigDecimal("0.00");
-        //订单
-        Order order = new Order();
-        order.setUserId(userId);
-        order.setStatus(OrderStatusEnum.PENDING_PAYMENT.getCode());
-        //订单编号 + userName + 下单时间戳
-        String orderNumber = String.valueOf(userId) + System.currentTimeMillis();
-        order.setOrderNumber(orderNumber);
-        order.setUserId(userId);
-        order.setShippingAddressId(shippingAddressId);
-        order.setPaymentStatus(OrderStatusEnum.PENDING_PAYMENT.getCode());
-        order.setShippingStatus(OrderStatusEnum.PENDING_SHIPMENT.getCode());
-        order.setStatus(StatusEnum.NEW.getCode());
-        orderMainMapper.insert(order);
-        Integer orderId = order.getId();
-        //循环处理订单
-        for (OrderAddInfoDTO item : orderAddInfoDTO) {
-            OrderItems orderItem = OrderMapperStruct.INSTANCE.orderAddDTOToOrderInfo(item);
-            orderItem.setOrderId(order.getId());
-            Optional<String> productName = produceMainInfoList.stream()
-                    .filter(mainInfo -> mainInfo.getId().equals(item.getProductId()))
-                    .map(Product::getProductName)
-                    .findFirst();
-            productName.ifPresent(orderItem::setProductName);
-            orderItem.setVariantId(item.getVariantId());
-            orderItem.setQuantity(item.getQuantity());
-            orderItem.setUnitPrice(item.getUnitPrice());
-            BigDecimal subtotalTemp = item.getUnitPrice().multiply(new BigDecimal(item.getQuantity()));
-            orderItem.setSubtotal(subtotalTemp);
-            subtotal = subtotal.add(subtotalTemp);
-            insertOrderItemList.add(orderItem);
-            orderItem.setOrderId(orderId);
-            orderItem.setSubtotal(subtotal);
-            productIdsToDelete.add(item.getProductId());
-        }
-        if (!insertOrderItemList.isEmpty()) {
-            orderItemsMapper.batchInsert(insertOrderItemList);
-        }
-        //删除购物车中的货物信息
-        QueryWrapper<CartItem> cartItemQueryWrapper = new QueryWrapper<>();
-        cartItemQueryWrapper.eq("user_id", userId);
-        cartItemQueryWrapper.in("product_id", productIdsToDelete);
-        cartItemMapper.delete(cartItemQueryWrapper);
-        QueryWrapper<Order> orderWrapper = new QueryWrapper<>();
-        orderWrapper.eq("id", orderId);
-        orderWrapper.eq("total_amount", subtotal);
-        orderMainMapper.update(orderWrapper);
     }
 
     /**
