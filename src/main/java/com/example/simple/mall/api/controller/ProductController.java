@@ -2,7 +2,7 @@ package com.example.simple.mall.api.controller;
 
 import com.example.simple.mall.api.service.ProductMainService;
 import com.example.simple.mall.common.dto.product.ProductDTO;
-import com.example.simple.mall.common.entity.ProductMain;
+import com.example.simple.mall.common.entity.Product;
 import com.example.simple.mall.common.enu.ResponseEnum;
 import com.example.simple.mall.common.response.ResponseResult;
 import io.swagger.v3.oas.annotations.Operation;
@@ -32,17 +32,17 @@ public class ProductController {
      *
      * @param page        page
      * @param size        size
-     * @param productMain productMain
-     * @return @return {@code Page<ProductMain> }
+     * @param product product
+     * @return @return {@code Page<Product> }
      * @author sunny
      * @since 2025/05/08
      */
     @GetMapping(value = "/query/page")
     @Operation(summary = "商品列表-分页", description = "商品列表-分页")
-    public List<ProductMain> queryPageList(@RequestParam(defaultValue = "1") Integer page,
-                                           @RequestParam(defaultValue = "10") Integer size,
-                                           @RequestBody(required = false) ProductMain productMain) {
-        return productMainService.queryPageList(page, size, productMain);
+    public List<Product> queryPageList(@RequestParam(defaultValue = "1") Integer page,
+                                       @RequestParam(defaultValue = "10") Integer size,
+                                       @RequestBody(required = false) Product product) {
+        return productMainService.queryPageList(page, size, product);
 
     }
 

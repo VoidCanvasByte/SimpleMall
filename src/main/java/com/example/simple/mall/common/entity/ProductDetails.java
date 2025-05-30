@@ -34,7 +34,7 @@ public class ProductDetails extends BaseEntity {
      * 商品数量
      */
     @TableField("product_quantity")
-    public String productQuantity;
+    public Integer productQuantity;
 
     /**
      * 商品描述

@@ -9,11 +9,11 @@ import lombok.Data;
  * @since 2025/05/25
  */
 @Data
-public class UserAspectDTO {
+public class UserBaseDTO {
 
     /**
      * 用户id
      */
-    private String userId;
+    private Integer userId;
 }
 

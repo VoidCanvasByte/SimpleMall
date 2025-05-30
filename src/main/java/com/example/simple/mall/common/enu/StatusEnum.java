@@ -1,20 +1,21 @@
 package com.example.simple.mall.common.enu;
 
 import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.Getter;
 
 /**
- * 订单枚举
+ * 基础状态
  *
  * @author sunny
- * @since 2025/05/24
+ * @since 2025/05/30
  */
 @Getter
 @AllArgsConstructor
-public enum ProductStatusEnum {
-    NORMAL(1, "上架"),
-    SOLD_OUT(2, "下架");
-
-    private final Integer code;
+public enum StatusEnum {
+    NEW("新建", 1),
+    FINISH("完成", 2),
+    CANCEL("取消", 5);
     private final String msg;
+    private final Integer code;
 }

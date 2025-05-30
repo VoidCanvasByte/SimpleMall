@@ -52,8 +52,8 @@ public class UserEntity extends BaseEntity implements java.io.Serializable {
     private Integer status;
 
     /**
-     * 用户权限控制（USER 或 ADMIN）
+     * 用户权限控制（1:USER；2:ADMIN）
      */
     @TableField("role")
-    private String role;
+    private Integer role;
 }

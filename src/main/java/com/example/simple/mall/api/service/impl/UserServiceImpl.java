@@ -87,7 +87,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity> impleme
      * @since 2025/05/24@return @return {@code Boolean }@return @return {@code Boolean }
      */
     @Override
-    public Boolean judgeUserIfNull(String userId) {
+    public Boolean judgeUserIfNull(Integer userId) {
         QueryWrapper<UserEntity> userWrapper = new QueryWrapper<>();
         userWrapper.eq("id", userId);
         userWrapper.eq("status", UserStatusEnum.FRIEND.getCode());
@@ -103,7 +103,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity> impleme
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void updateUser(UserDTO userDto) {
-        Long id = userDto.getId();
+        Integer id = userDto.getId();
         if (ObjectUtil.isNotEmpty(id)) {
             UserEntity userOld = userMapper.selectById(id);
             if (ObjectUtil.isEmpty(userOld)) {

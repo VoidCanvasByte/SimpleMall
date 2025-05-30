@@ -14,37 +14,49 @@ import java.math.BigDecimal;
  * @since 2025/05/09
  */
 @Data
-@TableName("order_info")
+@TableName("order_items")
 @EqualsAndHashCode(callSuper = true)
-public class OrderInfo extends BaseEntity {
+public class OrderItems extends BaseEntity {
 
     /**
-     * 订单ID
+     * 所属订单
      */
     @TableField("order_id")
-    public String orderId;
+    public Integer orderId;
 
     /**
-     * 产品ID
+     * 商品变体
      */
-    @TableField("product_id")
-    public Integer productId;
+    @TableField("variant_id")
+    public Integer variantId;
 
     /**
-     * 产品名字
+     * 下单时商品名称
      */
     @TableField("product_name")
-    public Integer productName;
+    public String productName;
 
     /**
-     * 产品价格
+     * 下单时 SKU
      */
-    @TableField("product_price")
-    public BigDecimal productPrice;
+    @TableField("sku")
+    public Integer sku;
 
     /**
-     * 产品数量
+     * 下单时单价
+     */
+    @TableField("unit_price")
+    public BigDecimal unitPrice;
+
+    /**
+     * 数量
      */
     @TableField("quantity")
     public Integer quantity;
+
+    /**
+     * 小计 = (unit_price * quantity)
+     */
+    @TableField("subtotal")
+    public BigDecimal subtotal;
 }

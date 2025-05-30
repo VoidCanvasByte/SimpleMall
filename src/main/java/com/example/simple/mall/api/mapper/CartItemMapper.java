@@ -26,7 +26,7 @@ public interface CartItemMapper extends BaseMapper<CartItem> {
      * @since 2025/05/15
      */
     void updateQuantity(@Param("quantity") Integer quantityOld,
-                        @Param("id") Long id);
+                        @Param("id") Integer id);
 
     /**
      * 根据订单信息修改购物车信息

@@ -16,8 +16,8 @@ import java.io.Serial;
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-@TableName("product_main")
-public class ProductMain extends BaseEntity implements java.io.Serializable {
+@TableName("product")
+public class Product extends BaseEntity implements java.io.Serializable {
 
     @Serial
     private static final long serialVersionUID = 1L;

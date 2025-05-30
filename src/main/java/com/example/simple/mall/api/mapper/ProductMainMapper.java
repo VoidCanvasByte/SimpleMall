@@ -1,7 +1,7 @@
 package com.example.simple.mall.api.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.example.simple.mall.common.entity.ProductMain;
+import com.example.simple.mall.common.entity.Product;
 
 import java.util.List;
 
@@ -11,16 +11,16 @@ import java.util.List;
  * @author sunny
  * @since 2025/05/08
  */
-public interface ProductMainMapper extends BaseMapper<com.example.simple.mall.common.entity.ProductMain> {
+public interface ProductMainMapper extends BaseMapper<Product> {
 
 
     /**
      * 分页查询
      *
-     * @param productMain productMain
-     * @return @return {@code List<ProductMain> }
+     * @param product product
+     * @return @return {@code List<Product> }
      * @author sunny
      * @since 2025/05/25
      */
-    List<ProductMain> selectPageList(ProductMain productMain);
+    List<Product> selectPageList(Product product);
 }

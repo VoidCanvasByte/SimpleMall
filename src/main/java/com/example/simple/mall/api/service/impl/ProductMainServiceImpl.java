@@ -1,6 +1,5 @@
 package com.example.simple.mall.api.service.impl;
 
-
 import cn.hutool.core.collection.CollUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -10,9 +9,9 @@ import com.example.simple.mall.api.mapper.ProductDetailsMapper;
 import com.example.simple.mall.api.mapper.ProductMainMapper;
 import com.example.simple.mall.api.service.ProductMainService;
 import com.example.simple.mall.common.dto.product.ProductDTO;
+import com.example.simple.mall.common.entity.Product;
 import com.example.simple.mall.common.entity.ProductCategory;
 import com.example.simple.mall.common.entity.ProductDetails;
-import com.example.simple.mall.common.entity.ProductMain;
 import com.example.simple.mall.common.enu.ResponseEnum;
 import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +27,7 @@ import java.util.List;
  * @since 2025/05/08
  */
 @Service
-public class ProductMainServiceImpl extends ServiceImpl<ProductMainMapper, ProductMain> implements ProductMainService {
+public class ProductMainServiceImpl extends ServiceImpl<ProductMainMapper, Product> implements ProductMainService {
 
 
     @Autowired
@@ -45,13 +44,13 @@ public class ProductMainServiceImpl extends ServiceImpl<ProductMainMapper, Produ
      *
      * @param page        page
      * @param size        size
-     * @param productMain productMain
+     * @param product product
      * @author sunny
      * @since 2025/05/08@return @return {@code PageResult<ProductDTO> }
      */
     @Override
-    public List<ProductMain> queryPageList(Integer page, Integer size, ProductMain productMain) {
-        List<ProductMain> productList = productMainMapper.selectPageList(productMain);
+    public List<Product> queryPageList(Integer page, Integer size, Product product) {
+        List<Product> productList = productMainMapper.selectPageList(product);
         int fromIndex = (page - 1) * size;
         int toIndex = Math.min(fromIndex + size, productList.size());
         return CollUtil.sub(productList, fromIndex, toIndex);
@@ -75,11 +74,11 @@ public class ProductMainServiceImpl extends ServiceImpl<ProductMainMapper, Produ
             throw new RuntimeException(ResponseEnum.PRODUCT_CATEGORY_NOT_EXIST.getMessage());
         }
         //商品主表
-        ProductMain productMain = ProductMainMapperStruct.INSTANCE.productDTOToProductMain(productDTO);
+        Product product = ProductMainMapperStruct.INSTANCE.productDTOToProductMain(productDTO);
         //商品详细表
         ProductDetails productDetails = ProductMainMapperStruct.INSTANCE.productDTOToProductDetails(productDTO);
 
-        productMainMapper.insert(productMain);
+        productMainMapper.insert(product);
         productDetailsMapper.insert(productDetails);
     }
 

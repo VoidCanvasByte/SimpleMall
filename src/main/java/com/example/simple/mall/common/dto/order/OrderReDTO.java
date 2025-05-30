@@ -22,7 +22,7 @@ public class OrderReDTO {
      * 订单ID
      */
     @NotBlank(message = "订单ID不能为空")
-    public String orderId;
+    public Integer orderId;
 
     /**
      * 订单状态

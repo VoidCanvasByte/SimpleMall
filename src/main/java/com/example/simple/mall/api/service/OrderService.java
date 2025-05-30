@@ -4,7 +4,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.example.simple.mall.common.dto.order.OrderAddInfoDTO;
 import com.example.simple.mall.common.dto.order.OrderReDTO;
 import com.example.simple.mall.common.dto.order.OrderPayInfoDTO;
-import com.example.simple.mall.common.entity.OrderMain;
+import com.example.simple.mall.common.entity.Order;
 
 /**
  * 订单信息
@@ -12,17 +12,16 @@ import com.example.simple.mall.common.entity.OrderMain;
  * @author sunny
  * @since 2025/05/09
  */
-public interface OrderService extends IService<OrderMain> {
+public interface OrderService extends IService<Order> {
 
     /**
      * 创建订单
      *
      * @param orderAddInfoDTO orderAddInfoDTO
-     * @return {@code OrderReDTO }
      * @author sunny
-     * @since 2025/05/24
+     * @since 2025/05/24@return {@code OrderReDTO }
      */
-    OrderReDTO addOrder(OrderAddInfoDTO orderAddInfoDTO);
+    void addOrder(OrderAddInfoDTO orderAddInfoDTO);
 
     /**
      * 订单支付

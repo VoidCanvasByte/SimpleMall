@@ -2,7 +2,7 @@ package com.example.simple.mall.common.aspect;
 
 
 import com.example.simple.mall.api.service.UserService;
-import com.example.simple.mall.common.dto.user.UserAspectDTO;
+import com.example.simple.mall.common.dto.user.UserBaseDTO;
 import com.example.simple.mall.common.enu.ResponseEnum;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -32,7 +32,7 @@ public class UserExistsAspect {
     public Object checkUserExists(ProceedingJoinPoint joinPoint) throws Throwable {
         Object[] args = joinPoint.getArgs();
         Object argInfo = args[0];
-        UserAspectDTO userAspectDTO = new UserAspectDTO();
+        UserBaseDTO userAspectDTO = new UserBaseDTO();
         BeanUtils.copyProperties(argInfo,userAspectDTO);
         if (userService.judgeUserIfNull(userAspectDTO.getUserId())) {
             throw new RuntimeException(ResponseEnum.USER_NOT_EXIST.getMessage());

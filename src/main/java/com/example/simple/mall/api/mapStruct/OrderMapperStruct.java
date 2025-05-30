@@ -1,7 +1,7 @@
 package com.example.simple.mall.api.mapStruct;
 
 import com.example.simple.mall.common.dto.order.OrderAddInfoDTO;
-import com.example.simple.mall.common.entity.OrderInfo;
+import com.example.simple.mall.common.entity.OrderItems;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
 
@@ -16,11 +16,12 @@ public interface OrderMapperStruct {
     OrderMapperStruct INSTANCE = Mappers.getMapper(OrderMapperStruct.class);
 
     /**
-     * orderAddInfoDTO to OrderInfo
-     * @param orderAddInfoDTO orderAddInfoDTO
-     * @return @return {@code OrderInfo }
+     * productInfo to OrderItems
+     *
+     * @param productInfo productInfo
+     * @return {@code OrderInfo }
      * @author sunny
      * @since 2025/05/24
      */
-    OrderInfo orderAddDTOToOrderInfo(OrderAddInfoDTO orderAddInfoDTO);
+    OrderItems orderAddDTOToOrderInfo(OrderAddInfoDTO.ProductInfo productInfo);
 }

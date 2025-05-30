@@ -31,16 +31,15 @@ public class OrderController {
      * 创建订单
      *
      * @param orderAddInfoDTO orderAddInfoDTO
-     * @return {@code ResponseResult<OrderReDTO> }
      * @author sunny
-     * @since 2025/05/09@return
+     * @since 2025/05/09@return@return {@code ResponseResult<OrderReDTO> }
      */
     @UserVerification
     @PostMapping("/add")
     @Operation(summary = "创建订单", description = "创建订单")
     public ResponseResult<OrderReDTO> addOrder(@Valid @RequestBody OrderAddInfoDTO orderAddInfoDTO) {
-        OrderReDTO orderInfo = orderService.addOrder(orderAddInfoDTO);
-        return ResponseResult.out(ResponseEnum.SUCCESS, orderInfo);
+        orderService.addOrder(orderAddInfoDTO);
+        return ResponseResult.out(ResponseEnum.SUCCESS);
     }
 
     /**
