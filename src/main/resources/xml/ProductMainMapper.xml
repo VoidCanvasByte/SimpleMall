@@ -3,7 +3,7 @@
 <mapper namespace="com.example.simple.mall.api.mapper.ProductMainMapper">
 
     <!--    分页查询-->
-    <select id="selectPageList" resultType="com.example.simple.mall.common.dto.product.ProductDTO">
+    <select id="selectPageList" resultType="com.example.simple.mall.common.dto.product.ProductAddInfoDTO">
         select pm.product_code        as productCode,
         pm.product_category_id as productCategoryId,
         pm.product_name        as productName,

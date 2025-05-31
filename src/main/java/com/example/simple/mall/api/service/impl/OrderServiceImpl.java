@@ -231,7 +231,7 @@ public class OrderServiceImpl extends ServiceImpl<OrderMainMapper, OrderMainEnti
      *
      * @param orderPayInfoDTO orderPayInfoDTO
      * @author sunny
-     * @since 2025/05/09@return @return {@code ResponseResult<ProductDTO> }
+     * @since 2025/05/09@return @return {@code ResponseResult<ProductAddInfoDTO> }
      */
     @Override
     @Transactional(rollbackFor = Exception.class)

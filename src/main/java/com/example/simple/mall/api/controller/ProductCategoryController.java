@@ -2,10 +2,10 @@ package com.example.simple.mall.api.controller;
 
 import com.example.simple.mall.api.service.ProductCategoryService;
 import com.example.simple.mall.common.annotation.UserVerification;
+import com.example.simple.mall.common.dto.product.ProductAddInfoDTO;
 import com.example.simple.mall.common.dto.product.ProductCategoryInfoDTO;
 import com.example.simple.mall.common.dto.product.ProductCategoryReturnDTO;
-import com.example.simple.mall.common.dto.product.ProductDTO;
-import com.example.simple.mall.common.dto.product.ProductUpdateDTO;
+import com.example.simple.mall.common.dto.product.ProductCategoryUpdateDTO;
 import com.example.simple.mall.common.dto.user.UserBaseDTO;
 import com.example.simple.mall.common.enu.ResponseEnum;
 import com.example.simple.mall.common.response.ResponseResult;
@@ -52,14 +52,14 @@ public class ProductCategoryController {
      * 添加商品分类
      *
      * @param productCategoryInfoDTO productCategoryInfoDTO
-     * @return {@code ResponseResult<ProductDTO> }
+     * @return {@code ResponseResult<ProductAddInfoDTO> }
      * @author sunny
      * @since 2025/05/09
      */
     @UserVerification
     @PostMapping("/add")
     @Operation(summary = "添加商品分类", description = "添加商品分类")
-    public ResponseResult<ProductDTO> addCategory(@Valid @RequestBody ProductCategoryInfoDTO productCategoryInfoDTO) {
+    public ResponseResult<ProductAddInfoDTO> addCategory(@Valid @RequestBody ProductCategoryInfoDTO productCategoryInfoDTO) {
         productCategoryService.addCategory(productCategoryInfoDTO);
         return ResponseResult.out(ResponseEnum.SUCCESS);
     }
@@ -67,16 +67,16 @@ public class ProductCategoryController {
     /**
      * 更新商品分类
      *
-     * @param productUpdateDTO productDTO
-     * @return {@code ResponseResult<ProductDTO> }
+     * @param productCategoryUpdateDTO productDTO
+     * @return {@code ResponseResult<ProductAddInfoDTO> }
      * @author sunny
      * @since 2025/05/09
      */
     @UserVerification
     @PostMapping("/update")
     @Operation(summary = "更新商品分类", description = "更新商品分类")
-    public ResponseResult<ProductDTO> updateCategory(@Valid @RequestBody ProductUpdateDTO productUpdateDTO) {
-        productCategoryService.updateCategory(productUpdateDTO);
+    public ResponseResult<ProductAddInfoDTO> updateCategory(@Valid @RequestBody ProductCategoryUpdateDTO productCategoryUpdateDTO) {
+        productCategoryService.updateCategory(productCategoryUpdateDTO);
         return ResponseResult.out(ResponseEnum.SUCCESS);
     }
 
@@ -84,13 +84,13 @@ public class ProductCategoryController {
      * 删除分类
      *
      * @param id id
-     * @return {@code ResponseResult<ProductDTO> }
+     * @return {@code ResponseResult<ProductAddInfoDTO> }
      * @author sunny
      * @since 2025/05/09
      */
     @DeleteMapping("/delete/{id}")
     @Operation(summary = "删除分类", description = "删除分类")
-    public ResponseResult<ProductDTO> deleteCategory(@PathVariable String id) {
+    public ResponseResult<ProductAddInfoDTO> deleteCategory(@PathVariable String id) {
         productCategoryService.removeById(id);
         return ResponseResult.out(ResponseEnum.SUCCESS);
     }

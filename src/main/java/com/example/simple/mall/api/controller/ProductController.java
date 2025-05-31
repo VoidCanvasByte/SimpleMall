@@ -1,7 +1,7 @@
 package com.example.simple.mall.api.controller;
 
 import com.example.simple.mall.api.service.ProductMainService;
-import com.example.simple.mall.common.dto.product.ProductDTO;
+import com.example.simple.mall.common.dto.product.ProductAddInfoDTO;
 import com.example.simple.mall.common.entity.ProductEntity;
 import com.example.simple.mall.common.enu.ResponseEnum;
 import com.example.simple.mall.common.response.ResponseResult;
@@ -30,8 +30,8 @@ public class ProductController {
     /**
      * 分页查询
      *
-     * @param page        page
-     * @param size        size
+     * @param page          page
+     * @param size          size
      * @param productEntity productEntity
      * @return @return {@code Page<ProductEntity> }
      * @author sunny
@@ -46,34 +46,32 @@ public class ProductController {
 
     }
 
-
     /**
      * 添加商品
      *
-     * @param productDTO productDTO
-     * @return @return {@code ResponseResult<ProductDTO> }
+     * @param productAddInfoDTO productAddInfoDTO
+     * @return @return {@code ResponseResult<ProductAddInfoDTO> }
      * @author sunny
      * @since 2025/05/08
      */
     @PostMapping(value = "/add")
     @Operation(summary = "添加商品", description = "添加商品")
-    public ResponseResult<ProductDTO> addProduct(@Validated
-                                                 @RequestBody ProductDTO productDTO) {
-        productMainService.addProduct(productDTO);
+    public ResponseResult<ProductAddInfoDTO> addProduct(@Validated @RequestBody ProductAddInfoDTO productAddInfoDTO) {
+        productMainService.addProduct(productAddInfoDTO);
         return ResponseResult.out(ResponseEnum.SUCCESS);
     }
 
     /**
      * 商品信息更新
      *
-     * @param productDTO productDTO
-     * @return {@code ResponseResult<ProductDTO> }
+     * @param productAddInfoDTO productAddInfoDTO
+     * @return {@code ResponseResult<ProductAddInfoDTO> }
      * @author sunny
      * @since 2025/05/08
      */
     @PutMapping
-    public ResponseResult<ProductDTO> updateProduct(@Validated @RequestBody ProductDTO productDTO) {
-        productMainService.updateProduct(productDTO);
+    public ResponseResult<ProductAddInfoDTO> updateProduct(@Validated @RequestBody ProductAddInfoDTO productAddInfoDTO) {
+        productMainService.updateProduct(productAddInfoDTO);
         return ResponseResult.out(ResponseEnum.SUCCESS);
     }
 
@@ -81,12 +79,12 @@ public class ProductController {
      * 删除商品信息
      *
      * @param productCode 商品货号
-     * @return {@code ResponseResult<ProductDTO> }
+     * @return {@code ResponseResult<ProductAddInfoDTO> }
      * @author sunny
      * @since 2025/05/08
      */
     @DeleteMapping("/{productCode}")
-    public ResponseResult<ProductDTO> deleteProduct(@PathVariable String productCode) {
+    public ResponseResult<ProductAddInfoDTO> deleteProduct(@PathVariable String productCode) {
         productMainService.deleteProduct(productCode);
         return ResponseResult.out(ResponseEnum.SUCCESS);
     }

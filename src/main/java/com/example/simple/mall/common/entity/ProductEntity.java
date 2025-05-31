@@ -23,10 +23,10 @@ public class ProductEntity extends BaseEntity implements java.io.Serializable {
     private static final long serialVersionUID = 1L;
 
     /**
-     * 商品货号
+     * 商品分类id
      */
-    @TableField("product_code")
-    public String productCode;
+    @TableField("product_category_id")
+    public Long productCategoryId;
 
     /**
      * 商品名称
@@ -35,14 +35,26 @@ public class ProductEntity extends BaseEntity implements java.io.Serializable {
     public String productName;
 
     /**
-     * 商品状态：1正常，2售罄
+     * 商品货号
+     */
+    @TableField("product_code")
+    public String productCode;
+
+    /**
+     * 商品描述
+     */
+    @TableField("description")
+    public String description;
+
+    /**
+     * 品牌
+     */
+    @TableField("brand")
+    public String brand;
+
+    /**
+     * 商品状态：1上架，2下架
      */
     @TableField("status")
     public Integer status;
-
-    /**
-     * 商品分类id
-     */
-    @TableField("product_category_id")
-    public String productCategoryId;
 }

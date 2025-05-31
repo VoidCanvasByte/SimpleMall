@@ -30,7 +30,7 @@ public interface OrderService extends IService<OrderMainEntity> {
      *
      * @param orderPayInfoDTO orderPayInfoDTO
      * @author sunny
-     * @since 2025/05/09@return @return {@code ResponseResult<ProductDTO> }
+     * @since 2025/05/09@return @return {@code ResponseResult<ProductAddInfoDTO> }
      */
     void orderPay(OrderPayInfoDTO orderPayInfoDTO);
 

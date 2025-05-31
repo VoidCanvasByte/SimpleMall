@@ -10,7 +10,7 @@ import lombok.Data;
  * @since 2025/05/25
  */
 @Data
-public class ProductUpdateDTO {
+public class ProductCategoryUpdateDTO {
 
     /**
      * 商品信息分类名字

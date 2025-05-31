@@ -50,7 +50,7 @@ public class OrderController {
      * @param orderPayInfoDTO orderPayInfoDTO
      * @return @return {@code ResponseResult<OrderReDTO> }
      * @author sunny
-     * @since 2025/05/09@return @return {@code ResponseResult<ProductDTO> }
+     * @since 2025/05/09@return @return {@code ResponseResult<ProductAddInfoDTO> }
      */
     @UserVerification
     @PostMapping("/pay")
@@ -80,7 +80,7 @@ public class OrderController {
      *
      * @param id id
      * @author sunny
-     * @since 2025/05/09@return @return {@code ResponseResult<ProductDTO> }@return @return {@code ResponseResult<OrderReDTO> }
+     * @since 2025/05/09@return @return {@code ResponseResult<ProductAddInfoDTO> }@return @return {@code ResponseResult<OrderReDTO> }
      */
     @DeleteMapping("/delete/{id}")
     @Operation(summary = "删除订单信息", description = "删除订单信息")

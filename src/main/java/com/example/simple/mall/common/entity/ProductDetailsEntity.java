@@ -4,7 +4,6 @@ import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-
 import java.math.BigDecimal;
 
 /**
@@ -25,12 +24,6 @@ public class ProductDetailsEntity extends BaseEntity {
     public String productCode;
 
     /**
-     * 商品单价
-     */
-    @TableField("product_price")
-    public BigDecimal productPrice;
-
-    /**
      * 商品数量
      */
     @TableField("product_quantity")
@@ -43,10 +36,28 @@ public class ProductDetailsEntity extends BaseEntity {
     public String productDesc;
 
     /**
+     * 商品单价
+     */
+    @TableField("product_price")
+    public BigDecimal productPrice;
+
+    /**
      * 商品图片
      */
     @TableField("product_img")
     public String productImg;
+
+    /**
+     * 材质
+     */
+    @TableField("material")
+    public String material;
+
+    /**
+     * 尺寸
+     */
+    @TableField("size")
+    public String size;
 
     /**
      * 版本号

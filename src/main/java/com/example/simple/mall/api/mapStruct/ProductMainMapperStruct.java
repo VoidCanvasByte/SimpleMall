@@ -1,6 +1,6 @@
 package com.example.simple.mall.api.mapStruct;
 
-import com.example.simple.mall.common.dto.product.ProductDTO;
+import com.example.simple.mall.common.dto.product.ProductAddInfoDTO;
 import com.example.simple.mall.common.entity.ProductEntity;
 import com.example.simple.mall.common.entity.ProductDetailsEntity;
 import org.mapstruct.Mapper;
@@ -17,22 +17,22 @@ public interface ProductMainMapperStruct {
     ProductMainMapperStruct INSTANCE = Mappers.getMapper(ProductMainMapperStruct.class);
 
     /**
-     * productDTO to ProductEntity
+     * productAddInfoDTO to ProductEntity
      *
-     * @param productDTO productDTO
+     * @param productAddInfoDTO productAddInfoDTO
      * @return @return {@code ProductEntity }
      * @author sunny
      * @since 2025/05/27
      */
-    ProductEntity productDTOToProductMain(ProductDTO productDTO);
+    ProductEntity productDTOToProductMain(ProductAddInfoDTO productAddInfoDTO);
 
     /**
-     * productDTO to ProductDetailsEntity
+     * productAddInfoDTO to ProductDetailsEntity
      *
-     * @param productDTO productDTO
+     * @param productAddInfoDTO productAddInfoDTO
      * @return @return {@code ProductDetailsEntity }
      * @author sunny
      * @since 2025/05/27
      */
-    ProductDetailsEntity productDTOToProductDetails(ProductDTO productDTO);
+    ProductDetailsEntity productDTOToProductDetails(ProductAddInfoDTO productAddInfoDTO);
 }

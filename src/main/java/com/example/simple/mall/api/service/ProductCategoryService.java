@@ -1,6 +1,5 @@
 package com.example.simple.mall.api.service;
 
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.example.simple.mall.common.dto.product.*;
 import com.example.simple.mall.common.dto.user.UserBaseDTO;
@@ -28,11 +27,11 @@ public interface ProductCategoryService extends IService<ProductCategoryEntity> 
     /**
      * 更新商品分类信息
      *
-     * @param productUpdateDTO productUpdateDTO
+     * @param productCategoryUpdateDTO productCategoryUpdateDTO
      * @author sunny
      * @since 2025/05/25
      */
-    void updateCategory(ProductUpdateDTO productUpdateDTO);
+    void updateCategory(ProductCategoryUpdateDTO productCategoryUpdateDTO);
 
     /**
      * 查询当前用户下全部商品分类列表
