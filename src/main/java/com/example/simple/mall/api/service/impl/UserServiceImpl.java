@@ -34,10 +34,12 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+
 import static com.example.simple.mall.common.utils.PasswordRelatedUtil.enCode;
 import static com.example.simple.mall.common.utils.PasswordRelatedUtil.matches;
 
@@ -267,9 +269,9 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity> impleme
         QueryWrapper<UserAddressesEntity> userQueryWrapper = new QueryWrapper<UserAddressesEntity>();
         userQueryWrapper.eq("user_id", userId);
         List<UserAddressesEntity> userAddressesList = userAddressesMapper.selectList(userQueryWrapper);
-        UserReturnInfoDTO userReturnInfo =  UserMapperStruct.INSTANCE.userEntityToUserReturnInfoDTO(userEntity);
+        UserReturnInfoDTO userReturnInfo = UserMapperStruct.INSTANCE.userEntityToUserReturnInfoDTO(userEntity);
         List<UserReturnInfoDTO.UserAddressesReturnDTO> userAddressesDTOS = UserAddressesMapperStruct.INSTANCE.entitiesToDto(userAddressesList);
         userReturnInfo.getUserReturnInfoList().addAll(userAddressesDTOS);
-        return  userReturnInfo;
+        return userReturnInfo;
     }
 }
