@@ -1,9 +1,12 @@
 package com.example.simple.mall.api.controller;
 
 import com.example.simple.mall.api.service.ProductCategoryService;
+import com.example.simple.mall.common.annotation.UserVerification;
+import com.example.simple.mall.common.dto.product.ProductCategoryInfoDTO;
+import com.example.simple.mall.common.dto.product.ProductCategoryReturnDTO;
 import com.example.simple.mall.common.dto.product.ProductDTO;
-import com.example.simple.mall.common.dto.product.ProductInfoDTO;
 import com.example.simple.mall.common.dto.product.ProductUpdateDTO;
+import com.example.simple.mall.common.dto.user.UserBaseDTO;
 import com.example.simple.mall.common.enu.ResponseEnum;
 import com.example.simple.mall.common.response.ResponseResult;
 import io.swagger.v3.oas.annotations.Operation;
@@ -11,6 +14,8 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 
 /**
@@ -28,17 +33,33 @@ public class ProductCategoryController {
     private ProductCategoryService productCategoryService;
 
     /**
+     * 查询当前用户下全部商品分类列表
+     *
+     * @param userBaseDTO userBaseDTO
+     * @return {@code List<ProductCategoryReturnDTO> }
+     * @author sunny
+     * @since 2025/05/31@return
+     */
+    @UserVerification
+    @PostMapping("/listAll")
+    @Operation(summary = "查询当前用户下全部商品分类列表", description = "查询当前用户下全部商品分类列表")
+    public ResponseResult<List<ProductCategoryReturnDTO>> listAll(@RequestBody UserBaseDTO userBaseDTO) {
+        List<ProductCategoryReturnDTO> list = productCategoryService.listAll(userBaseDTO);
+        return ResponseResult.out(ResponseEnum.SUCCESS, list);
+    }
+
+    /**
      * 添加商品分类
      *
-     * @param productInfoDTO productInfoDTO
+     * @param productCategoryInfoDTO productCategoryInfoDTO
      * @return {@code ResponseResult<ProductDTO> }
      * @author sunny
      * @since 2025/05/09
      */
     @PostMapping("/add")
     @Operation(summary = "添加商品分类", description = "添加商品分类")
-    public ResponseResult<ProductDTO> addCategory(@Valid @RequestBody ProductInfoDTO productInfoDTO) {
-        productCategoryService.addCategory(productInfoDTO);
+    public ResponseResult<ProductDTO> addCategory(@Valid @RequestBody ProductCategoryInfoDTO productCategoryInfoDTO) {
+        productCategoryService.addCategory(productCategoryInfoDTO);
         return ResponseResult.out(ResponseEnum.SUCCESS);
     }
 

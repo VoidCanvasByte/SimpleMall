@@ -3,6 +3,7 @@ package com.example.simple.mall.common.entity;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import lombok.Data;
+import java.util.Date;
 
 /**
  * 基础实体
@@ -23,11 +24,11 @@ public class BaseEntity {
      * 创建时间
      */
     @TableField("create_time")
-    private String createTime;
+    private Date createTime;
 
     /**
      * 更新时间
      */
     @TableField("update_time")
-    private String updateTime;
+    private Date updateTime;
 }

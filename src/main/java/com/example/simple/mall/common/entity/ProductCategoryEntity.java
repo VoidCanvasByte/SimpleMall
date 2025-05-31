@@ -23,9 +23,27 @@ public class ProductCategoryEntity extends BaseEntity {
     public String name;
 
     /**
+     * 用户ID
+     */
+    @TableField("user_id")
+    private Long userId;
+
+    /**
+     * 父级分类，顶级为0
+     */
+    @TableField("parent_id")
+    private Integer parentId;
+
+    /**
      * 排序值，越小越靠前
      */
-    @TableField("sort")
-    public String sort;
+    @TableField("sort_order")
+    public Integer sortOrder;
+
+    /**
+     * 分类描述
+     */
+    @TableField("remark")
+    public String remark;
 
 }

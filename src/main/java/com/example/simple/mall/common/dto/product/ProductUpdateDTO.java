@@ -11,6 +11,7 @@ import lombok.Data;
  */
 @Data
 public class ProductUpdateDTO {
+
     /**
      * 商品信息分类名字
      */
@@ -20,5 +21,5 @@ public class ProductUpdateDTO {
      * 商品信息分类id
      */
     @NotNull(message = "商品信息分类ID不能为空")
-    private String id;
+    private Long id;
 }

@@ -2,9 +2,8 @@ package com.example.simple.mall.api.service;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.example.simple.mall.common.dto.product.ProductDTO;
-import com.example.simple.mall.common.dto.product.ProductInfoDTO;
-import com.example.simple.mall.common.dto.product.ProductUpdateDTO;
+import com.example.simple.mall.common.dto.product.*;
+import com.example.simple.mall.common.dto.user.UserBaseDTO;
 import com.example.simple.mall.common.entity.ProductCategoryEntity;
 
 import java.util.List;
@@ -18,23 +17,13 @@ import java.util.List;
 public interface ProductCategoryService extends IService<ProductCategoryEntity> {
 
     /**
-     * 查询全部分类
-     *
-     * @param sort sort
-     * @return @return {@code List<ProductDTO> }
-     * @author sunny
-     * @since 2025/05/09
-     */
-    List<ProductDTO> listAllBySort(QueryWrapper<ProductDTO> sort);
-
-    /**
      * 添加商品分类
      *
-     * @param productInfoDTO productInfoDTO
+     * @param productCategoryInfoDTO productCategoryInfoDTO
      * @author sunny
      * @since 2025/05/25
      */
-    void addCategory(ProductInfoDTO productInfoDTO);
+    void addCategory(ProductCategoryInfoDTO productCategoryInfoDTO);
 
     /**
      * 更新商品分类信息
@@ -45,4 +34,13 @@ public interface ProductCategoryService extends IService<ProductCategoryEntity> 
      */
     void updateCategory(ProductUpdateDTO productUpdateDTO);
 
+    /**
+     * 查询当前用户下全部商品分类列表
+     *
+     * @param userBaseDTO userBaseDTO
+     * @return {@code List<ProductCategoryReturnDTO> }
+     * @author sunny
+     * @since 2025/05/31@return
+     */
+    List<ProductCategoryReturnDTO> listAll(UserBaseDTO userBaseDTO);
 }
