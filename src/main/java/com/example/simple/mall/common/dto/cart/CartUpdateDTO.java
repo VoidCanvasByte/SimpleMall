@@ -38,4 +38,10 @@ public class CartUpdateDTO {
      */
     @NotNull(message = "用户ID不能为空")
     private Integer label;
+
+    /**
+     * 用户ID（用于用户校验验证）
+     */
+    @NotNull(message = "用户ID不能为空")
+    private Long userId;
 }

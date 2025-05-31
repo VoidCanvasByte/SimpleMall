@@ -1,6 +1,7 @@
 package com.example.simple.mall.api.controller;
 
 import com.example.simple.mall.api.service.ShoppingCartItemService;
+import com.example.simple.mall.common.annotation.UserVerification;
 import com.example.simple.mall.common.dto.cart.CartItemAddDTO;
 import com.example.simple.mall.common.dto.cart.CartItemUpdateDTO;
 import com.example.simple.mall.common.dto.cart.CartUpdateDTO;
@@ -11,6 +12,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
 import java.util.List;
 
 /**
@@ -34,6 +36,7 @@ public class CartItemController {
      * @author sunny
      * @since 2025/05/15
      */
+    @UserVerification
     @PostMapping("/add")
     @Operation(summary = "添加购物车以及物品", description = "添加购物车以及物品")
     public ResponseResult<CartItemAddDTO> addToCart(@RequestBody CartItemAddDTO cartItemAddDTO) {
@@ -62,6 +65,7 @@ public class CartItemController {
      * @author sunny
      * @since 2025/05/15
      */
+    @UserVerification
     @PostMapping("/update")
     @Operation(summary = "单次添加或者减少购物车中物品的数量", description = "单次添加或者减少购物车中物品的数量")
     public ResponseResult<CartItemAddDTO> updateCartItem(@RequestBody CartUpdateDTO cartUpdateDTO) {
@@ -76,6 +80,7 @@ public class CartItemController {
      * @author sunny
      * @since 2025/05/15@return @return {@code ResponseResult<CartItemAddDTO> }
      */
+    @UserVerification
     @DeleteMapping("/custom/update")
     @Operation(summary = "自定义修改商品数量", description = "自定义修改商品数量")
     public ResponseResult<CartItemAddDTO> customUpdateTag(@RequestBody CartItemUpdateDTO cartItemAddDTO) {
@@ -96,5 +101,4 @@ public class CartItemController {
         shoppingCartItemService.clearCart(cartId);
         return ResponseResult.out(ResponseEnum.SUCCESS);
     }
-
 }
