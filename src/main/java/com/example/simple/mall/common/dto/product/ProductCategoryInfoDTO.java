@@ -31,7 +31,7 @@ public class ProductCategoryInfoDTO {
     private Integer sortOrder;
 
     /**
-     * 用户id
+     * 用户id（校验）
      */
     public Long userId;
 }

@@ -56,6 +56,7 @@ public class ProductCategoryController {
      * @author sunny
      * @since 2025/05/09
      */
+    @UserVerification
     @PostMapping("/add")
     @Operation(summary = "添加商品分类", description = "添加商品分类")
     public ResponseResult<ProductDTO> addCategory(@Valid @RequestBody ProductCategoryInfoDTO productCategoryInfoDTO) {
@@ -71,6 +72,7 @@ public class ProductCategoryController {
      * @author sunny
      * @since 2025/05/09
      */
+    @UserVerification
     @PostMapping("/update")
     @Operation(summary = "更新商品分类", description = "更新商品分类")
     public ResponseResult<ProductDTO> updateCategory(@Valid @RequestBody ProductUpdateDTO productUpdateDTO) {
@@ -79,7 +81,7 @@ public class ProductCategoryController {
     }
 
     /**
-     * 删除分类（管理员）
+     * 删除分类
      *
      * @param id id
      * @return {@code ResponseResult<ProductDTO> }
@@ -87,6 +89,7 @@ public class ProductCategoryController {
      * @since 2025/05/09
      */
     @DeleteMapping("/delete/{id}")
+    @Operation(summary = "删除分类", description = "删除分类")
     public ResponseResult<ProductDTO> deleteCategory(@PathVariable String id) {
         productCategoryService.removeById(id);
         return ResponseResult.out(ResponseEnum.SUCCESS);
