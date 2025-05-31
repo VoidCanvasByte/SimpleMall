@@ -7,7 +7,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 /**
- * 用户信息
+ * 用户基础信息
  *
  * @author sunny
  * @since 2025/05/05

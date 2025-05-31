@@ -2,10 +2,13 @@ package com.example.simple.mall.api.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.example.simple.mall.common.dto.LoginRequestDTO;
+import com.example.simple.mall.common.dto.user.UserAddressesDTO;
 import com.example.simple.mall.common.dto.user.UserDTO;
+import com.example.simple.mall.common.dto.user.UserReturnInfoDTO;
 import com.example.simple.mall.common.entity.UserEntity;
 import org.springframework.security.core.userdetails.User;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -35,7 +38,7 @@ public interface UserService extends IService<UserEntity> {
     Boolean judgeUserIfNull(Long userId);
 
     /**
-     * 更新用户信息
+     * 更新用户基础信息
      *
      * @author sunny
      * @since 2025/05/05
@@ -74,4 +77,22 @@ public interface UserService extends IService<UserEntity> {
     Map<String, UserEntity> resultToken(User user, LoginRequestDTO loginRequest);
 
 
+    /**
+     * 维护用户地址信息
+     *
+     * @param userAddressesDTO userAddressesDTO
+     * @author sunny
+     * @since 2025/05/31
+     */
+    void userMaintainInfo(UserAddressesDTO userAddressesDTO);
+
+    /**
+     * 根据用户ID查询用户信息
+     *
+     * @param userId userId
+     * @return @return {@code List<UserReturnInfoDTO> }
+     * @author sunny
+     * @since 2025/05/31
+     */
+    UserReturnInfoDTO selectUserInfo(Long userId);
 }

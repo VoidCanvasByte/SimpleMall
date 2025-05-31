@@ -3,30 +3,41 @@ package com.example.simple.mall.api.service.impl;
 import cn.hutool.core.lang.Validator;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.example.simple.mall.api.mapStruct.UserAddressesMapperStruct;
 import com.example.simple.mall.api.mapStruct.UserMapperStruct;
+import com.example.simple.mall.api.mapper.UserAddressesMapper;
 import com.example.simple.mall.api.mapper.UserMapper;
 import com.example.simple.mall.api.service.UserService;
 import com.example.simple.mall.common.dto.LoginRequestDTO;
+import com.example.simple.mall.common.dto.user.AddressDTO;
+import com.example.simple.mall.common.dto.user.UserAddressesDTO;
 import com.example.simple.mall.common.dto.user.UserDTO;
+import com.example.simple.mall.common.dto.user.UserReturnInfoDTO;
+import com.example.simple.mall.common.entity.UserAddressesEntity;
 import com.example.simple.mall.common.entity.UserEntity;
-import com.example.simple.mall.common.utils.JwtUtils;
-import org.apache.commons.lang3.ObjectUtils;
-import org.springframework.security.core.userdetails.User;
 import com.example.simple.mall.common.enu.ResponseEnum;
 import com.example.simple.mall.common.enu.UserStatusEnum;
+import com.example.simple.mall.common.utils.JwtUtils;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.ObjectUtils;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
+import org.springframework.web.client.RestTemplate;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
+import java.util.Objects;
 import static com.example.simple.mall.common.utils.PasswordRelatedUtil.enCode;
 import static com.example.simple.mall.common.utils.PasswordRelatedUtil.matches;
 
@@ -40,12 +51,17 @@ import static com.example.simple.mall.common.utils.PasswordRelatedUtil.matches;
 @Service
 public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity> implements UserService {
 
+    @Value("${zip.code.address}")
+    private String zipCodeAddress;
 
     @Autowired
     private UserMapper userMapper;
 
     @Autowired
     private JwtUtils jwtUtils;
+
+    @Autowired
+    private UserAddressesMapper userAddressesMapper;
 
 
     /**
@@ -95,7 +111,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity> impleme
     }
 
     /**
-     * 更新用户信息(包括密码的更新)
+     * 更新用户基础信息(包括密码的更新)
      *
      * @author sunny
      * @since 2025/05/05
@@ -164,7 +180,6 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity> impleme
      * @since 2025/05/05
      */
     @Override
-    @Transactional(rollbackFor = Exception.class)
     public User login(String email, String password) {
         //查询数据库中存储的邮箱的码值
         UserDTO userDTO = userMapper.selectUserByEmail(email, null);
@@ -197,5 +212,64 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity> impleme
         Map<String, UserEntity> resultMap = new HashMap<>();
         resultMap.put(token, userEntity);
         return resultMap;
+    }
+
+    /**
+     * 维护用户地址信息
+     *
+     * @param userAddressesDTO userAddressesDTO
+     * @author sunny
+     * @since 2025/05/31
+     */
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public void userMaintainInfo(UserAddressesDTO userAddressesDTO) {
+        //根据邮编自动识别地址
+        RestTemplate restTemplate = new RestTemplate();
+        String postalCode = userAddressesDTO.getPostalCode();
+        String url = zipCodeAddress + postalCode;
+        ResponseEntity<String> response = restTemplate.getForEntity(url, String.class);
+        JSONObject json = JSONObject.parseObject(response.getBody());
+        JSONArray results = json.getJSONArray("results");
+        if (results != null) {
+            if (!ObjectUtil.equal(userAddressesDTO.getId(), null)) {
+                QueryWrapper<UserAddressesEntity> userAddresssQueryWrapper = new QueryWrapper<UserAddressesEntity>();
+                userAddresssQueryWrapper.eq("id", userAddressesDTO.getId());
+                userAddressesMapper.delete(userAddresssQueryWrapper);
+                userAddressesDTO.setId(null);
+            }
+            JSONObject item = Objects.requireNonNull(results).getJSONObject(0);
+            AddressDTO javaObject = item.toJavaObject(AddressDTO.class);
+            javaObject.setPrefecture(item.getString("address1"));
+            javaObject.setCity(item.getString("address2"));
+            javaObject.setTown(item.getString("address3"));
+            UserAddressesEntity UserAddressesEntity = UserAddressesMapperStruct.INSTANCE.addressDTOToUserAddressesEntity(javaObject);
+            BeanUtils.copyProperties(userAddressesDTO, UserAddressesEntity);
+            userAddressesMapper.insert(UserAddressesEntity);
+        } else {
+            throw new RuntimeException(ResponseEnum.PRODUCT_ADDRESS_FALSE.getMessage());
+        }
+    }
+
+    /**
+     * 根据用户ID查询用户信息
+     *
+     * @param userId userId
+     * @return @return {@code List<UserReturnInfoDTO> }
+     * @author sunny
+     * @since 2025/05/31
+     */
+    @Override
+    public UserReturnInfoDTO selectUserInfo(Long userId) {
+        //用户信息
+        UserEntity userEntity = userMapper.selectById(userId);
+
+        QueryWrapper<UserAddressesEntity> userQueryWrapper = new QueryWrapper<UserAddressesEntity>();
+        userQueryWrapper.eq("user_id", userId);
+        List<UserAddressesEntity> userAddressesList = userAddressesMapper.selectList(userQueryWrapper);
+        UserReturnInfoDTO userReturnInfo =  UserMapperStruct.INSTANCE.userEntityToUserReturnInfoDTO(userEntity);
+        List<UserReturnInfoDTO.UserAddressesReturnDTO> userAddressesDTOS = UserAddressesMapperStruct.INSTANCE.entitiesToDto(userAddressesList);
+        userReturnInfo.getUserReturnInfoList().addAll(userAddressesDTOS);
+        return  userReturnInfo;
     }
 }

@@ -2,7 +2,9 @@ package com.example.simple.mall.api.controller;
 
 import com.example.simple.mall.api.service.UserService;
 import com.example.simple.mall.common.dto.LoginRequestDTO;
+import com.example.simple.mall.common.dto.user.UserAddressesDTO;
 import com.example.simple.mall.common.dto.user.UserDTO;
+import com.example.simple.mall.common.dto.user.UserReturnInfoDTO;
 import com.example.simple.mall.common.entity.UserEntity;
 import com.example.simple.mall.common.enu.ResponseEnum;
 import com.example.simple.mall.common.response.ResponseResult;
@@ -43,16 +45,43 @@ public class UserController {
         return ResponseResult.out(ResponseEnum.SUCCESS);
     }
 
-//    @PreAuthorize("hasRole('ADMIN')")//指定方法访问控制表达式的注释将进行评估以决定是否允许使用方法调用
+    /**
+     * 维护用户地址信息
+     *
+     * @param userAddressesDTO userAddressesDTO
+     * @author sunny
+     * @since 2025/05/31
+     */
+    @Operation(summary = "维护用户地址信息", description = "维护用户地址信息")
+    @PutMapping("/update/info")
+    public ResponseResult<UserAddressesDTO> userMaintainInfo(@RequestBody UserAddressesDTO userAddressesDTO) {
+        userService.userMaintainInfo(userAddressesDTO);
+        return ResponseResult.out(ResponseEnum.SUCCESS);
+    }
 
     /**
-     * 更新用户信息
+     * 根据用户ID查询用户信息
+     *
+     * @param userId userId
+     * @return @return {@code ResponseResult<List<UserReturnInfoDTO>> }
+     * @author sunny
+     * @since 2025/05/31
+     */
+    @Operation(summary = "根据用户ID查询用户信息", description = "根据用户ID查询用户信息")
+    @GetMapping("/select/info/{userId}")
+    public ResponseResult<UserReturnInfoDTO> selectUserInfo(@PathVariable Long userId) {
+        UserReturnInfoDTO UserReturnInfo = userService.selectUserInfo(userId);
+        return ResponseResult.out(ResponseEnum.SUCCESS, UserReturnInfo);
+    }
+
+    /**
+     * 更新用户基础信息
      *
      * @return @return {@code ResponseResult<UserDTO> }
      * @author sunny
      * @since 2025/05/05
      */
-    @Operation(summary = "更新用户信息", description = "用户用户信息的更新")
+    @Operation(summary = "更新用户基础信息", description = "更新用户基础信息")
     @PutMapping("/update")
     public ResponseResult<UserDTO> userUpdate(@RequestBody UserDTO userDto) {
         userService.updateUser(userDto);
