@@ -13,14 +13,8 @@ import lombok.EqualsAndHashCode;
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-@TableName("shopping_cart_item")
+@TableName("product_shopping_cart_item")
 public class ShoppingCartItemEntity extends BaseEntity implements java.io.Serializable {
-
-    /**
-     * 用户ID
-     */
-    @TableField("user_id")
-    private Long userId;
 
     /**
      * 所属购物车

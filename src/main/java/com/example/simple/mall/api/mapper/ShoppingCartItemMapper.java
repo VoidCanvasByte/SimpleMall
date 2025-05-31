@@ -20,12 +20,11 @@ public interface ShoppingCartItemMapper extends BaseMapper<ShoppingCartItemEntit
     /**
      * 根据ID更新购物车中的数量
      *
-     * @param quantityOld 数量
-     * @param id          id
+     * @param quantity 数量
      * @author sunny
-     * @since 2025/05/15
+     * @since 2025/05/15@return
      */
-    void updateQuantity(@Param("quantity") Integer quantityOld,
+    void updateQuantity(@Param("quantity") Integer quantity,
                         @Param("id") Long id);
 
     /**

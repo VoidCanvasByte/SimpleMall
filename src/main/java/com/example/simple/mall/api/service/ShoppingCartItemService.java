@@ -1,7 +1,9 @@
 package com.example.simple.mall.api.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.example.simple.mall.common.dto.CartItemDTO;
+import com.example.simple.mall.common.dto.cart.CartItemAddDTO;
+import com.example.simple.mall.common.dto.cart.CartItemUpdateDTO;
+import com.example.simple.mall.common.dto.cart.CartUpdateDTO;
 import com.example.simple.mall.common.entity.ShoppingCartItemEntity;
 
 import java.util.List;
@@ -16,19 +18,19 @@ import java.util.List;
 public interface ShoppingCartItemService extends IService<ShoppingCartItemEntity> {
 
     /**
-     * 添加购物车
+     * 添加购物车以及物品
      *
-     * @param cartItemDTO cartItemDTO
+     * @param cartItemAddDTO cartItemAddDTO
      * @author sunny
      * @since 2025/05/15
      */
-    void addToCart(CartItemDTO cartItemDTO);
+    void addToCart(CartItemAddDTO cartItemAddDTO);
 
     /**
      * 根据用户查询购物车商品信息
      *
      * @param userId 用户ID
-     * @return @return {@code List<CartItemDTO> }
+     * @return @return {@code List<CartItemAddDTO> }
      * @author sunny
      * @since 2025/05/15
      */
@@ -37,27 +39,27 @@ public interface ShoppingCartItemService extends IService<ShoppingCartItemEntity
     /**
      * 单次添加或者减少购物车中物品的数量
      *
-     * @param cartItemDTO cartItemDTO
+     * @param cartUpdateDTO cartItemDTO
      * @author sunny
      * @since 2025/05/15
      */
-    void updateCartItem(CartItemDTO cartItemDTO);
+    void updateCartItem(CartUpdateDTO cartUpdateDTO);
 
     /**
      * 一键清空购物车
      *
-     * @param userId 用户ID
+     * @param cartId 购物车ID
      * @author sunny
      * @since 2025/05/15
      */
-    void clearCart(Long userId);
+    void clearCart(Long cartId);
 
     /**
      * 自定义修改商品数量
      *
-     * @param cartItemDTO cartItemDTO
+     * @param cartItemAddDTO cartItemAddDTO
      * @author sunny
-     * @since 2025/05/15@return
+     * @since 2025/05/15@return@return
      */
-    void customUpdateTag(CartItemDTO cartItemDTO);
+    void customUpdateTag(CartItemUpdateDTO cartItemAddDTO);
 }

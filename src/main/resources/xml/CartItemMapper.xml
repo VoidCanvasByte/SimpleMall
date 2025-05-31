@@ -4,19 +4,21 @@
 
     <!--根据ID更新语句-->
     <update id="updateQuantity">
-        UPDATE cart_item
-        <if test="quantity != null">
-            quantity = #{quantity}
-        </if>
+        UPDATE product_shopping_cart_item
+        <set>
+            <if test="quantity != null">
+                quantity = #{quantity}
+            </if>
+        </set>
         WHERE id = #{id}
     </update>
 
     <!--  根据订单信息清空购物车信息  -->
     <update id="clearCartItemProduct">
-        UPDATE cart_item
+        UPDATE product_shopping_cart_item
         SET quantity = quantity - #{quantity}
-        WHERE user_id = #{userId}
-          AND product_id = #{productId}
+        WHERE cart_id = #{cartId}
+          AND variant_id = #{variantId}
           AND quantity >= #{quantity};
     </update>
 </mapper>

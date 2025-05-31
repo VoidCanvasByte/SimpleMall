@@ -1,4 +1,4 @@
-package com.example.simple.mall.common.dto;
+package com.example.simple.mall.common.dto.cart;
 
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
@@ -11,7 +11,7 @@ import lombok.Data;
  */
 
 @Data
-public class CartItemDTO {
+public class CartItemAddDTO {
 
     /**
      * 购物车主表ID
@@ -26,29 +26,14 @@ public class CartItemDTO {
     private Long userId;
 
     /**
-     * 商品ID
+     * 商品变体ID
      */
-    @NotNull(message = "用户ID不能为空")
-    private Long productMainId;
+    @NotNull(message = "商品变体ID不能为空")
+    private Long variantId;
 
     /**
      * 商品数量
      */
     @NotNull(message = "用户ID不能为空")
     private Integer quantity;
-
-    /**
-     * 1:添加商品数量；2:减少商品数量
-     */
-    private Integer label;
-
-    /**
-     * 创建时间
-     */
-    private String creatTime;
-
-    /**
-     * 更新时间
-     */
-    private String updateTime;
 }
