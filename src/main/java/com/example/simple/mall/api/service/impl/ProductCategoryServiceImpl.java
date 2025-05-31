@@ -56,6 +56,7 @@ public class ProductCategoryServiceImpl extends ServiceImpl<ProductCategoryMappe
         QueryWrapper<ProductCategoryEntity> productCategoryWrapper = new QueryWrapper<>();
         productCategoryWrapper.eq("id", productUpdateDTO.getId());
         productCategoryWrapper.eq("name", productUpdateDTO.getName());
+        productCategoryWrapper.eq("user_id", productUpdateDTO.getUserId());
         BeanUtils.copyProperties(productUpdateDTO, productCategoryEntity);
         productCategoryMapper.update(productCategoryEntity, productCategoryWrapper);
     }

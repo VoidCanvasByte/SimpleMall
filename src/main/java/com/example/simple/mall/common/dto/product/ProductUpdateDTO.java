@@ -22,4 +22,9 @@ public class ProductUpdateDTO {
      */
     @NotNull(message = "商品信息分类ID不能为空")
     private Long id;
+
+    /**
+     * 用户id
+     */
+    public Long userId;
 }

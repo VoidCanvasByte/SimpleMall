@@ -29,4 +29,9 @@ public class ProductCategoryInfoDTO {
      */
     @NotNull(message = "排序值")
     private Integer sortOrder;
+
+    /**
+     * 用户id
+     */
+    public Long userId;
 }

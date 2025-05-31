@@ -14,7 +14,6 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 
 
@@ -82,7 +81,7 @@ public class ProductCategoryController {
      * 删除分类（管理员）
      *
      * @param id id
-     * @return @return {@code ResponseResult<ProductDTO> }
+     * @return {@code ResponseResult<ProductDTO> }
      * @author sunny
      * @since 2025/05/09
      */
