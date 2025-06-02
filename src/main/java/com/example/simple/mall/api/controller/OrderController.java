@@ -85,7 +85,7 @@ public class OrderController {
     @DeleteMapping("/delete/{id}")
     @Operation(summary = "删除订单信息", description = "删除订单信息")
     public ResponseResult<OrderReDTO> deleteOrder(@PathVariable String id) {
-        orderService.removeById(id);
+        orderService.deleteOrderById(id);
         return ResponseResult.out(ResponseEnum.SUCCESS);
     }
 }

@@ -35,11 +35,19 @@ public interface OrderService extends IService<OrderMainEntity> {
     void orderPay(OrderPayInfoDTO orderPayInfoDTO);
 
     /**
-     * orderReDTO
+     * 订单信息更新(支付三方回调接口)
      *
      * @param orderReDTO orderReDTO
      * @author sunny
      * @since 2025/05/25@return
      */
     void orderUpdate(OrderReDTO orderReDTO);
+
+    /**
+     * 删除订单
+     * @param id id
+     * @author sunny
+     * @since 2025/06/02
+     */
+    void deleteOrderById(String id);
 }

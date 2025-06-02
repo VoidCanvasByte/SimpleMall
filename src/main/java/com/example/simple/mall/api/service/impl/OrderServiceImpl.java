@@ -1,5 +1,6 @@
 package com.example.simple.mall.api.service.impl;
 
+import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.lang.UUID;
 import cn.hutool.core.util.ObjectUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
@@ -256,7 +257,7 @@ public class OrderServiceImpl extends ServiceImpl<OrderMainMapper, OrderMainEnti
     }
 
     /**
-     * 订单信息更新
+     * 订单信息更新(支付三方回调接口)
      *
      * @param orderReDTO orderReDTO
      * @author sunny
@@ -278,5 +279,25 @@ public class OrderServiceImpl extends ServiceImpl<OrderMainMapper, OrderMainEnti
             orderMainStatusWrapper.eq("status", OrderStatusEnum.PAID.getCode());
             orderMainMapper.update(orderMainStatusWrapper);
         }
+    }
+
+    /**
+     * 删除订单
+     *
+     * @param id id
+     * @author sunny
+     * @since 2025/06/02
+     */
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public void deleteOrderById(String id) {
+        QueryWrapper<OrderItemsEntity> orderItemsWrapper = new QueryWrapper<>();
+        orderItemsWrapper.eq("order_id", id);
+        List<OrderItemsEntity> list = orderItemsService.list(orderItemsWrapper);
+        if (CollUtil.isNotEmpty(list)) {
+            List<String> idList = list.stream().map(OrderItemsEntity::getId).toList();
+            orderItemsService.removeByIds(idList);
+        }
+        this.removeById(id);
     }
 }

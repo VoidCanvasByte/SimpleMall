@@ -14,7 +14,7 @@ import java.math.BigDecimal;
  * @since 2025/05/09
  */
 @Data
-@TableName("order_items")
+@TableName("order_main_items")
 public class OrderItemsEntity {
 
     /**
