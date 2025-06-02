@@ -5,14 +5,14 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.example.simple.mall.api.mapStruct.ProductMainMapperStruct;
 import com.example.simple.mall.api.mapper.ProductCategoryMapper;
-import com.example.simple.mall.api.mapper.ProductDetailsMapper;
 import com.example.simple.mall.api.mapper.ProductMainMapper;
 import com.example.simple.mall.api.service.ProductDetailsService;
 import com.example.simple.mall.api.service.ProductMainService;
 import com.example.simple.mall.common.dto.product.ProductAddInfoDTO;
-import com.example.simple.mall.common.entity.ProductEntity;
+import com.example.simple.mall.common.dto.product.ProductUpdateInfoDTO;
 import com.example.simple.mall.common.entity.ProductCategoryEntity;
 import com.example.simple.mall.common.entity.ProductDetailsEntity;
+import com.example.simple.mall.common.entity.ProductEntity;
 import com.example.simple.mall.common.enu.ResponseEnum;
 import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,15 +30,11 @@ import java.util.List;
 @Service
 public class ProductMainServiceImpl extends ServiceImpl<ProductMainMapper, ProductEntity> implements ProductMainService {
 
-
     @Autowired
     private ProductMainMapper productMainMapper;
 
     @Autowired
     private ProductCategoryMapper productCategoryMapper;
-
-    @Autowired
-    private ProductDetailsMapper productDetailsMapper;
 
     @Autowired
     private ProductDetailsService productDetailsMapperService;
@@ -87,14 +83,31 @@ public class ProductMainServiceImpl extends ServiceImpl<ProductMainMapper, Produ
     /**
      * 更新商品信息
      *
-     * @param productAddInfoDTO productAddInfoDTO
+     * @param productUpdateInfoDTO productUpdateInfoDTO
      * @author sunny
      * @since 2025/05/09
      */
     @Override
-    public void updateProduct(ProductAddInfoDTO productAddInfoDTO) {
+    @Transactional(rollbackFor = Exception.class)
+    public void updateProduct(ProductUpdateInfoDTO productUpdateInfoDTO) {
         //每次更新商品的信息，都会在原来的商品详情中添加版本号➕1
-
+        ProductUpdateInfoDTO.Product product = productUpdateInfoDTO.getProduct();
+        ProductUpdateInfoDTO.ProductDetail productDetail = productUpdateInfoDTO.getProductDetail();
+        String productCode = null;
+        if (ObjectUtils.isNotEmpty(product)) {
+            productCode = product.getProductCode();
+            ProductEntity productEntity = ProductMainMapperStruct.INSTANCE.productUpdateDTOToProductMain(product);
+            this.updateById(productEntity);
+        }
+        if (ObjectUtils.isNotEmpty(productDetail)) {
+            QueryWrapper<ProductDetailsEntity> productDetailsEntityQueryWrapper = new QueryWrapper<>();
+            productDetailsEntityQueryWrapper.eq("product_code", productCode);
+            ProductDetailsEntity productDetailsEntity = productDetailsMapperService.getOne(productDetailsEntityQueryWrapper);
+            productDetail.setVersion(productDetailsEntity.getVersion() + 1);
+            productDetailsMapperService.removeById(productDetailsEntity);
+            ProductDetailsEntity productDetailsEntityRe = ProductMainMapperStruct.INSTANCE.productUpdateDTOToProductDetail(productDetail);
+            productDetailsMapperService.save(productDetailsEntityRe);
+        }
     }
 
     /**
@@ -105,7 +118,21 @@ public class ProductMainServiceImpl extends ServiceImpl<ProductMainMapper, Produ
      * @since 2025/05/09
      */
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public void deleteProduct(String productCode) {
-
+        QueryWrapper<ProductEntity> productEntityQueryWrapper = new QueryWrapper<>();
+        productEntityQueryWrapper.eq("product_code", productCode);
+        ProductEntity productEntity = this.getOne(productEntityQueryWrapper);
+        if (ObjectUtils.isEmpty(productEntity)) {
+            throw new RuntimeException(ResponseEnum.PRODUCT_NOT_EXIST.getMessage());
+        }
+        QueryWrapper<ProductDetailsEntity> productDetailsEntityQueryWrapper = new QueryWrapper<>();
+        productDetailsEntityQueryWrapper.eq("product_code", productCode);
+        ProductDetailsEntity productDetailsEntity = productDetailsMapperService.getOne(productDetailsEntityQueryWrapper);
+        this.removeById(productEntity);
+        if (!ObjectUtils.isEmpty(productDetailsEntity)) {
+            productDetailsMapperService.removeById(productDetailsEntity);
+        }
     }
+
 }

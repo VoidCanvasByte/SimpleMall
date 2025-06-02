@@ -2,6 +2,7 @@ package com.example.simple.mall.api.controller;
 
 import com.example.simple.mall.api.service.ProductMainService;
 import com.example.simple.mall.common.dto.product.ProductAddInfoDTO;
+import com.example.simple.mall.common.dto.product.ProductUpdateInfoDTO;
 import com.example.simple.mall.common.entity.ProductEntity;
 import com.example.simple.mall.common.enu.ResponseEnum;
 import com.example.simple.mall.common.response.ResponseResult;
@@ -64,14 +65,15 @@ public class ProductController {
     /**
      * 商品信息更新
      *
-     * @param productAddInfoDTO productAddInfoDTO
+     * @param productUpdateInfoDTO productUpdateInfoDTO
      * @return {@code ResponseResult<ProductAddInfoDTO> }
      * @author sunny
      * @since 2025/05/08
      */
-    @PutMapping
-    public ResponseResult<ProductAddInfoDTO> updateProduct(@Validated @RequestBody ProductAddInfoDTO productAddInfoDTO) {
-        productMainService.updateProduct(productAddInfoDTO);
+    @PutMapping(value = "/update")
+    @Operation(summary = "商品信息更新", description = "商品信息更新")
+    public ResponseResult<ProductAddInfoDTO> updateProduct(@Validated @RequestBody ProductUpdateInfoDTO productUpdateInfoDTO) {
+        productMainService.updateProduct(productUpdateInfoDTO);
         return ResponseResult.out(ResponseEnum.SUCCESS);
     }
 
@@ -83,7 +85,8 @@ public class ProductController {
      * @author sunny
      * @since 2025/05/08
      */
-    @DeleteMapping("/{productCode}")
+    @DeleteMapping("/deleteProduct/{productCode}")
+    @Operation(summary = "删除商品信息", description = "删除商品信息")
     public ResponseResult<ProductAddInfoDTO> deleteProduct(@PathVariable String productCode) {
         productMainService.deleteProduct(productCode);
         return ResponseResult.out(ResponseEnum.SUCCESS);

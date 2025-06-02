@@ -2,6 +2,7 @@ package com.example.simple.mall.api.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.example.simple.mall.common.dto.product.ProductAddInfoDTO;
+import com.example.simple.mall.common.dto.product.ProductUpdateInfoDTO;
 import com.example.simple.mall.common.entity.ProductEntity;
 
 import java.util.List;
@@ -38,11 +39,11 @@ public interface ProductMainService extends IService<ProductEntity> {
     /**
      * 更新商品信息
      *
-     * @param productAddInfoDTO productAddInfoDTO
+     * @param productUpdateInfoDTO productUpdateInfoDTO
      * @author sunny
      * @since 2025/05/09
      */
-    void updateProduct(ProductAddInfoDTO productAddInfoDTO);
+    void updateProduct(ProductUpdateInfoDTO productUpdateInfoDTO);
 
     /**
      * 删除商品信息

@@ -1,6 +1,7 @@
 package com.example.simple.mall.api.mapStruct;
 
 import com.example.simple.mall.common.dto.product.ProductAddInfoDTO;
+import com.example.simple.mall.common.dto.product.ProductUpdateInfoDTO;
 import com.example.simple.mall.common.entity.ProductEntity;
 import com.example.simple.mall.common.entity.ProductDetailsEntity;
 import org.mapstruct.Mapper;
@@ -35,4 +36,24 @@ public interface ProductMainMapperStruct {
      * @since 2025/05/27
      */
     ProductDetailsEntity productDTOToProductDetails(ProductAddInfoDTO productAddInfoDTO);
+
+    /**
+     * productUpdateDTOToProductMain
+     *
+     * @param product product
+     * @return @return {@code ProductEntity }
+     * @author sunny
+     * @since 2025/06/02
+     */
+    ProductEntity productUpdateDTOToProductMain(ProductUpdateInfoDTO.Product product);
+
+    /**
+     * productUpdateDTOToProductDetail
+     *
+     * @param productDetail productDetail
+     * @return @return {@code ProductDetailsEntity }
+     * @author sunny
+     * @since 2025/06/02
+     */
+    ProductDetailsEntity productUpdateDTOToProductDetail(ProductUpdateInfoDTO.ProductDetail productDetail);
 }
