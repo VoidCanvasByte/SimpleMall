@@ -25,13 +25,11 @@ public class BaseEntity {
      * 创建时间
      */
     @TableField("create_time")
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd-HH:mm:ss")
-    private String createTime;
+    private Date createTime;
 
     /**
      * 更新时间
      */
     @TableField("update_time")
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd-HH:mm:ss")
-    private String updateTime;
+    private Date updateTime;
 }

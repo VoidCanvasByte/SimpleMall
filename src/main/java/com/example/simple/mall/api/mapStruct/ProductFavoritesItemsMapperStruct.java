@@ -4,6 +4,7 @@ import com.example.simple.mall.common.dto.favorites.ProductFavoritesDTO;
 import com.example.simple.mall.common.dto.product.ProductFavoritesItemsInfoDTO;
 import com.example.simple.mall.common.dto.user.UserBaseDTO;
 import com.example.simple.mall.common.entity.ProductFavoritesEntity;
+import com.example.simple.mall.common.entity.ProductFavoritesItemsEntity;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
 
@@ -16,11 +17,11 @@ public interface ProductFavoritesItemsMapperStruct {
      * productFavoritesItemsInfoDTOToProductFavoritesItemsEntity
      *
      * @param productFavoritesItemsInfoDTO productFavoritesItemsInfoDTO
-     * @return @return {@code ProductFavoritesItemsEntity }
+     * @return @return {@code ProductFavoritesEntity }
      * @author sunny
      * @since 2025/06/02
      */
-    ProductFavoritesEntity productFavoritesItemsInfoDTOToProductFavoritesItemsEntity(ProductFavoritesItemsInfoDTO productFavoritesItemsInfoDTO);
+    ProductFavoritesItemsEntity productFavoritesItemsInfoDTOToProductFavoritesItemsEntity(ProductFavoritesItemsInfoDTO productFavoritesItemsInfoDTO);
 
     /**
      * productFavoritesItemsInfoDTOToProductFavoritesEntity
@@ -43,10 +44,10 @@ public interface ProductFavoritesItemsMapperStruct {
     ProductFavoritesDTO userBaseDTOToProductFavoritesDTO(UserBaseDTO userBaseDTO);
 
     /**
-     * @param item item
+     * @param item
      * @return @return {@code ProductFavoritesDTO.ProductFavoritesItemDTO }
      * @author sunny
      * @since 2025/06/03
      */
-    ProductFavoritesDTO.ProductFavoritesItemDTO productFavoritesItemsEntityToProductFavoritesDTO(ProductFavoritesEntity item);
+    ProductFavoritesDTO.ProductFavoritesItemDTO productFavoritesItemsEntityToProductFavoritesDTO(ProductFavoritesItemsEntity item);
 }

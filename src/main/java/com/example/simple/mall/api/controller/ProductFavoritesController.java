@@ -29,7 +29,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class ProductFavoritesController {
 
     @Autowired
-    public ProductFavoritesService productFavoritesItemsService;
+    public ProductFavoritesService productFavoritesService;
 
     /**
      * 添加到收藏夹
@@ -43,7 +43,7 @@ public class ProductFavoritesController {
     @PostMapping(value = "/add")
     @Operation(summary = "添加到收藏夹", description = "添加到收藏夹")
     public ResponseResult<ProductFavoritesEntity> addProductFavorites(@Validated @RequestBody ProductFavoritesItemsInfoDTO productFavoritesItemsInfoDTO) {
-        productFavoritesItemsService.addProductFavorites(productFavoritesItemsInfoDTO);
+        productFavoritesService.addProductFavorites(productFavoritesItemsInfoDTO);
         return ResponseResult.out(ResponseEnum.SUCCESS);
     }
 
@@ -53,13 +53,13 @@ public class ProductFavoritesController {
      *
      * @param userBaseDTO userBaseDTO
      * @author sunny
-     * @since 2025/06/03@return @return {@code ResponseResult<ProductFavoritesItemsEntity> }
+     * @since 2025/06/03@return @return {@code ResponseResult<ProductFavoritesEntity> }
      */
     @UserVerification
     @PostMapping(value = "/get/all")
     @Operation(summary = "查询所有收藏夹", description = "查询所有收藏夹")
     public ResponseResult<ProductFavoritesDTO> getAllProductFavorites(@Validated @RequestBody UserBaseDTO userBaseDTO) {
-        ProductFavoritesDTO ProductFavoritesDTO = productFavoritesItemsService.getAllProductFavorites(userBaseDTO);
+        ProductFavoritesDTO ProductFavoritesDTO = productFavoritesService.getAllProductFavorites(userBaseDTO);
         return ResponseResult.out(ResponseEnum.SUCCESS, ProductFavoritesDTO);
     }
 }

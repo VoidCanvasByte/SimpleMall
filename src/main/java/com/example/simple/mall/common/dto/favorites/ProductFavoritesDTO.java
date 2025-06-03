@@ -1,5 +1,6 @@
 package com.example.simple.mall.common.dto.favorites;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 
 import java.util.ArrayList;
@@ -43,6 +44,7 @@ public class ProductFavoritesDTO {
         /**
          * 添加时间
          */
+        @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd-HH:mm:ss")
         public Date createTime;
 
         /**

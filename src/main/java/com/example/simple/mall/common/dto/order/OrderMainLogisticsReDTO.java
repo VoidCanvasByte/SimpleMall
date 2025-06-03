@@ -1,6 +1,9 @@
 package com.example.simple.mall.common.dto.order;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
+
+import java.util.Date;
 
 /**
  * 订单物流信息返回信息
@@ -34,7 +37,8 @@ public class OrderMainLogisticsReDTO {
     /**
      * 发货时间
      */
-    public String deliveryTime;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd-HH:mm:ss")
+    public Date deliveryTime;
 
     /**
      * 物流状态（1待揽件，2运输中，3派送中，4已签收）
@@ -42,12 +46,8 @@ public class OrderMainLogisticsReDTO {
     public Integer status;
 
     /**
-     * 创建时间
-     */
-    public String createTime;
-
-    /**
      * 更新时间
      */
-    public String updateTime;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd-HH:mm:ss")
+    public Date updateTime;
 }

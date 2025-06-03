@@ -1,6 +1,6 @@
 package com.example.simple.mall.common.dto.product;
 
-import com.baomidou.mybatisplus.annotation.TableField;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 import java.util.Date;
 
@@ -25,5 +25,6 @@ public class ProductFavoritesItemsReDTO {
     /**
      * 添加时间
      */
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd-HH:mm:ss")
     public Date createTime;
 }

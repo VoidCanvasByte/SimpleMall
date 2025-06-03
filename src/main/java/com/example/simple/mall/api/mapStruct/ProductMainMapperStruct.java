@@ -38,16 +38,6 @@ public interface ProductMainMapperStruct {
     ProductDetailsEntity productDTOToProductDetails(ProductAddInfoDTO productAddInfoDTO);
 
     /**
-     * productUpdateDTOToProductDetail
-     *
-     * @param productUpdateInfoDTO productUpdateInfoDTO
-     * @return @return {@code ProductDetailsEntity }
-     * @author sunny
-     * @since 2025/06/03
-     */
-    ProductDetailsEntity productUpdateDTOToProductDetail(ProductUpdateInfoDTO productUpdateInfoDTO);
-
-    /**
      * productUpdateDTOToProductMain
      *
      * @param productUpdateInfoDTO productUpdateInfoDTO
@@ -56,5 +46,15 @@ public interface ProductMainMapperStruct {
      * @since 2025/06/03
      */
     ProductEntity productUpdateDTOToProductMain(ProductUpdateInfoDTO productUpdateInfoDTO);
+
+    /**
+     * productUpdateDTOToProductDetail
+     *
+     * @param productUpdateInfoDTO productUpdateInfoDTO
+     * @return @return {@code ProductDetailsEntity }
+     * @author sunny
+     * @since 2025/06/03
+     */
+    ProductDetailsEntity productUpdateDTOToProductDetail(ProductUpdateInfoDTO productUpdateInfoDTO);
 
 }

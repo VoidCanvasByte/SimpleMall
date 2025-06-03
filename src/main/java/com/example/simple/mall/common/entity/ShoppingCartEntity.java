@@ -35,6 +35,5 @@ public class ShoppingCartEntity{
      * 创建时间
      */
     @TableField("create_time")
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd-HH:mm:ss")
-    private String createTime;
+    private Data createTime;
 }

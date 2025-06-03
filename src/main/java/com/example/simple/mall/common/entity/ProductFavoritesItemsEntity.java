@@ -6,15 +6,17 @@ import lombok.Data;
 
 import java.util.Date;
 
+
 /**
- * 收藏夹明细表
+ * ProductFavoritesItemsEntity
  *
  * @author sunny
- * @since 2025/06/02
+ * @since 2025/06/03
  */
 @Data
-@TableName("product_favorites")
-public class ProductFavoritesEntity {
+@TableName("product_favorites_items")
+public class  ProductFavoritesItemsEntity {
+
     /**
      * id
      */
@@ -22,10 +24,16 @@ public class ProductFavoritesEntity {
     public Long id;
 
     /**
-     * '所属用户'
+     * 所属收藏夹id
      */
-    @TableField("user_id")
-    public Long userId;
+    @TableField("favorites_id")
+    public Long favoritesId;
+
+    /**
+     * 商品变体id
+     */
+    @TableField("variant_id")
+    public Long variantId;
 
     /**
      * 添加时间

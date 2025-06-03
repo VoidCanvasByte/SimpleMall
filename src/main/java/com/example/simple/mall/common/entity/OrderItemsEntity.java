@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 
 import java.math.BigDecimal;
+import java.util.Date;
 
 /**
  * 商品订单明细表
@@ -71,13 +72,13 @@ public class OrderItemsEntity {
      */
     @TableField("create_time")
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd-HH:mm:ss")
-    private String createTime;
+    private Date createTime;
 
     /**
      * 更新时间
      */
     @TableField("update_time")
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd-HH:mm:ss")
-    private String updateTime;
+    private Date updateTime;
 
 }

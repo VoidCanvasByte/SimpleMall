@@ -5,6 +5,8 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 
+import java.util.Date;
+
 /**
  * 订单物流信息表
  *
@@ -44,8 +46,7 @@ public class OrderMainLogisticsEntity {
      * 发货时间
      */
     @TableField("delivery_time")
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd-HH:mm:ss")
-    public String deliveryTime;
+    public Date deliveryTime;
 
     /**
      * 物流状态（1待揽件，2运输中，3派送中，4已签收）
@@ -57,13 +58,11 @@ public class OrderMainLogisticsEntity {
      * 创建时间
      */
     @TableField("create_time")
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd-HH:mm:ss")
-    public String createTime;
+    public Date createTime;
 
     /**
      * 更新时间
      */
     @TableField("update_time")
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd-HH:mm:ss")
-    public String updateTime;
+    public Date updateTime;
 }
