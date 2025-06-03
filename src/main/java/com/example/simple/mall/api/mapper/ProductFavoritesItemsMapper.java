@@ -1,9 +1,9 @@
 package com.example.simple.mall.api.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.example.simple.mall.common.entity.ProductFavoritesItemsEntity;
+import com.example.simple.mall.common.entity.ProductFavoritesEntity;
 import org.apache.ibatis.annotations.Mapper;
 
 @Mapper
-public interface ProductFavoritesItemsMapper extends BaseMapper<ProductFavoritesItemsEntity> {
+public interface ProductFavoritesItemsMapper extends BaseMapper<ProductFavoritesEntity> {
 }

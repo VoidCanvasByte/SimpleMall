@@ -6,14 +6,14 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 
 /**
- * 收藏夹表
+ * 收藏夹明细表
  *
  * @author sunny
- * @since 2025/06/03
+ * @since 2025/06/02
  */
 @Data
-@TableName("product_favorites")
-public class ProductFavoritesEntity{
+@TableName("product_favorites_items")
+public class ProductFavoritesEntity {
 
     /**
      * id
@@ -22,10 +22,16 @@ public class ProductFavoritesEntity{
     public Long id;
 
     /**
-     * 用户ID
+     * 所属收藏夹id
      */
-    @TableField("user_id")
-    public Long userId;
+    @TableField("favorites_id")
+    public Long favoritesId;
+
+    /**
+     * 商品变体id
+     */
+    @TableField("variant_id")
+    public Long variantId;
 
     /**
      * 添加时间
@@ -33,5 +39,4 @@ public class ProductFavoritesEntity{
     @TableField("create_time")
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd-HH:mm:ss")
     public String createTime;
-
 }
