@@ -7,7 +7,9 @@ import com.example.simple.mall.api.mapper.ProductFavoritesItemsMapper;
 import com.example.simple.mall.api.mapper.ProductFavoritesMapper;
 import com.example.simple.mall.api.mapper.ProductVariantsMapper;
 import com.example.simple.mall.api.service.ProductFavoritesItemsService;
+import com.example.simple.mall.common.dto.favorites.ProductFavoritesDTO;
 import com.example.simple.mall.common.dto.product.ProductFavoritesItemsInfoDTO;
+import com.example.simple.mall.common.dto.user.UserBaseDTO;
 import com.example.simple.mall.common.entity.ProductFavoritesEntity;
 import com.example.simple.mall.common.entity.ProductFavoritesItemsEntity;
 import com.example.simple.mall.common.entity.ProductVariantsEntity;
@@ -16,6 +18,9 @@ import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * ProductFavoritesItemsServiceImpl
@@ -31,7 +36,7 @@ public class ProductFavoritesItemsServiceImpl extends ServiceImpl<ProductFavorit
     public ProductFavoritesMapper productFavoritesMapper;
 
     @Autowired
-    public ProductVariantsMapper  productVariantsMapper;
+    public ProductVariantsMapper productVariantsMapper;
 
     /**
      * 添加收藏夹
@@ -46,7 +51,7 @@ public class ProductFavoritesItemsServiceImpl extends ServiceImpl<ProductFavorit
         QueryWrapper<ProductVariantsEntity> productVariantsEntityQueryWrapper = new QueryWrapper<>();
         productVariantsEntityQueryWrapper.eq("id", productFavoritesItemsInfoDTO.getVariantId());
         ProductVariantsEntity productVariantsEntity = productVariantsMapper.selectOne(productVariantsEntityQueryWrapper);
-        if (ObjectUtils.isEmpty(productVariantsEntity)){
+        if (ObjectUtils.isEmpty(productVariantsEntity)) {
             throw new RuntimeException(ResponseEnum.PRODUCT_VARIANTS_NOT_EXIST.getMessage());
         }
         Long userId = productFavoritesItemsInfoDTO.getUserId();
@@ -59,9 +64,36 @@ public class ProductFavoritesItemsServiceImpl extends ServiceImpl<ProductFavorit
             ProductFavoritesEntity productFavoritesEntityTemp = ProductFavoritesItemsMapperStruct.INSTANCE.productFavoritesItemsInfoDTOToProductFavoritesEntity(productFavoritesItemsInfoDTO);
             productFavoritesMapper.insert(productFavoritesEntityTemp);
             productFavoritesItemsEntity.setFavoritesId(productFavoritesEntityTemp.getId());
-        }else{
+        } else {
             productFavoritesItemsEntity.setFavoritesId(productFavoritesEntity.getId());
         }
         this.save(productFavoritesItemsEntity);
+    }
+
+    /**
+     * 获取收藏夹全部信息
+     *
+     * @param userBaseDTO userBaseDTO
+     * @author sunny
+     * @since 2025/06/03@return @return {@code List<ProductFavoritesDTO> }
+     */
+    @Override
+    public ProductFavoritesDTO getAllProductFavorites(UserBaseDTO userBaseDTO) {
+        QueryWrapper<ProductFavoritesEntity> ProductFavoritesEntityQueryWrapper = new QueryWrapper<>();
+        ProductFavoritesEntityQueryWrapper.eq("user_id", userBaseDTO.getUserId());
+        ProductFavoritesEntity productFavoritesEntity = productFavoritesMapper.selectOne(ProductFavoritesEntityQueryWrapper);
+        ProductFavoritesDTO userBaseDTOToProductFavoritesDTO = ProductFavoritesItemsMapperStruct.INSTANCE.userBaseDTOToProductFavoritesDTO(userBaseDTO);
+        List<ProductFavoritesDTO.ProductFavoritesItemDTO> tempList = new ArrayList<>();
+        if (ObjectUtils.isNotEmpty(productFavoritesEntity)) {
+            QueryWrapper<ProductFavoritesItemsEntity> productFavoritesItemsEntityQueryWrapper = new QueryWrapper<ProductFavoritesItemsEntity>();
+            productFavoritesItemsEntityQueryWrapper.eq("favorites_id", productFavoritesEntity.getId());
+            List<ProductFavoritesItemsEntity> list = this.list(productFavoritesItemsEntityQueryWrapper);
+            for (ProductFavoritesItemsEntity item : list) {
+                ProductFavoritesDTO.ProductFavoritesItemDTO productFavoritesItemDTO = ProductFavoritesItemsMapperStruct.INSTANCE.productFavoritesItemsEntityToProductFavoritesDTO(item);
+                tempList.add(productFavoritesItemDTO);
+            }
+        }
+        userBaseDTOToProductFavoritesDTO.getProductFavoritesItemDTOList().addAll(tempList);
+        return userBaseDTOToProductFavoritesDTO;
     }
 }

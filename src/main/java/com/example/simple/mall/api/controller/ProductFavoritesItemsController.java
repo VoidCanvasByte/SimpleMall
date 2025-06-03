@@ -2,7 +2,9 @@ package com.example.simple.mall.api.controller;
 
 import com.example.simple.mall.api.service.ProductFavoritesItemsService;
 import com.example.simple.mall.common.annotation.UserVerification;
+import com.example.simple.mall.common.dto.favorites.ProductFavoritesDTO;
 import com.example.simple.mall.common.dto.product.ProductFavoritesItemsInfoDTO;
+import com.example.simple.mall.common.dto.user.UserBaseDTO;
 import com.example.simple.mall.common.entity.ProductFavoritesItemsEntity;
 import com.example.simple.mall.common.enu.ResponseEnum;
 import com.example.simple.mall.common.response.ResponseResult;
@@ -45,4 +47,19 @@ public class ProductFavoritesItemsController {
         return ResponseResult.out(ResponseEnum.SUCCESS);
     }
 
+
+    /**
+     * 查询所有收藏夹
+     *
+     * @param userBaseDTO userBaseDTO
+     * @author sunny
+     * @since 2025/06/03@return @return {@code ResponseResult<ProductFavoritesItemsEntity> }
+     */
+    @UserVerification
+    @PostMapping(value = "/get/all")
+    @Operation(summary = "查询所有收藏夹", description = "查询所有收藏夹")
+    public ResponseResult<ProductFavoritesDTO> getAllProductFavorites(@Validated @RequestBody UserBaseDTO userBaseDTO) {
+        ProductFavoritesDTO ProductFavoritesDTO = productFavoritesItemsService.getAllProductFavorites(userBaseDTO);
+        return ResponseResult.out(ResponseEnum.SUCCESS, ProductFavoritesDTO);
+    }
 }
