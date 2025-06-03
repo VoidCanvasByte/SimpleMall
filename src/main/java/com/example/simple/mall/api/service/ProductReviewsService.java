@@ -2,8 +2,11 @@ package com.example.simple.mall.api.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.example.simple.mall.common.dto.product.ProductReviewsInfoDTO;
+import com.example.simple.mall.common.dto.product.ProductReviewsReDTO;
 import com.example.simple.mall.common.dto.product.ProductReviewsUpdateDTO;
 import com.example.simple.mall.common.entity.ProductReviewsEntity;
+
+import java.util.List;
 
 /**
  * <p>
@@ -42,4 +45,22 @@ public interface ProductReviewsService extends IService<ProductReviewsEntity> {
      */
     void updateProductReviews(ProductReviewsUpdateDTO productReviewsUpdateDTO);
 
+    /**
+     * 查询商品评价
+     *
+     * @param productId 商品ID
+     * @author sunny
+     * @since 2025/06/03@return
+     */
+    List<ProductReviewsReDTO> selectProductReviews(Long productId);
+
+    /**
+     * 根据商品ID查询对应的商品评论
+     *
+     * @param productId 商品ID
+     * @return @return {@code List<ProductReviewsReDTO> }
+     * @author sunny
+     * @since 2025/06/03
+     */
+    List<ProductReviewsReDTO> listAll(Long productId);
 }

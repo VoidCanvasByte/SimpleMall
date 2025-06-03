@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.simple.mall.api.mapper.ProductReviewsMapper">
+
+
+    <!--根据商品ID查询对应的商品评论-->
+    <select id="listAll" resultType="com.example.simple.mall.common.dto.product.ProductReviewsReDTO">
+        select *
+        from product_reviews
+        where 1 = 1
+        <if test="productId != null and productId !=''">
+            and product_id = #{productId}
+        </if>
+    </select>
+</mapper>

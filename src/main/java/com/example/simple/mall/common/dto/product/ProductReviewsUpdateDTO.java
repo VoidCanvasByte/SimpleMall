@@ -1,5 +1,6 @@
 package com.example.simple.mall.common.dto.product;
 
+import com.example.simple.mall.common.dto.user.UserBaseDTO;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
@@ -13,7 +14,7 @@ import java.util.Date;
  * @since 2025/06/03
  */
 @Data
-public class ProductReviewsUpdateDTO {
+public class ProductReviewsUpdateDTO extends UserBaseDTO {
 
     /**
      * 主键ID
@@ -26,12 +27,6 @@ public class ProductReviewsUpdateDTO {
      */
     @NotNull(message = "评价商品id不能为空")
     private Long productId;
-
-    /**
-     * 评价用户id
-     */
-    @NotNull(message = "评价用户id不能为空")
-    private Long userId;
 
     /**
      * 评分（1–5)

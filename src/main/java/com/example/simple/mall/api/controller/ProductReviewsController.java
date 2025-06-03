@@ -11,10 +11,9 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 /**
  * 商品评价控制器
@@ -71,11 +70,26 @@ public class ProductReviewsController {
      * @since 2025/06/03
      */
     @UserVerification
-    @PostMapping(value = "/delete")
+    @DeleteMapping(value = "/delete/{productReviewsId}")
     @Operation(summary = "删除商品评论", description = "删除商品评论")
-    public ResponseResult<ProductReviewsReDTO> deleteProductReviews(@RequestBody Long productReviewsId) {
+    public ResponseResult<ProductReviewsReDTO> deleteProductReviews(@PathVariable Long productReviewsId) {
         productReviewsService.deleteProductReviews(productReviewsId);
         return ResponseResult.out(ResponseEnum.SUCCESS);
+    }
+
+
+    /**
+     * 查询商品评价
+     *
+     * @param productId 商品ID
+     * @author sunny
+     * @since 2025/06/03@return @return {@code ResponseResult<ProductReviewsReDTO> }
+     */
+    @GetMapping(value = "/select/{productId}")
+    @Operation(summary = "查询商品评价", description = "查询商品评价")
+    public ResponseResult< List<ProductReviewsReDTO>> selectProductReviews(@PathVariable Long productId) {
+        List<ProductReviewsReDTO> list = productReviewsService.selectProductReviews(productId);
+        return ResponseResult.out(ResponseEnum.SUCCESS,list);
     }
 
 }
