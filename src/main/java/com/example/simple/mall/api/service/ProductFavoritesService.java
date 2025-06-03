@@ -6,6 +6,8 @@ import com.example.simple.mall.common.dto.product.ProductFavoritesItemsInfoDTO;
 import com.example.simple.mall.common.dto.user.UserBaseDTO;
 import com.example.simple.mall.common.entity.ProductFavoritesEntity;
 
+import java.util.List;
+
 
 /**
  * ProductFavoritesItemsService
@@ -31,4 +33,13 @@ public interface ProductFavoritesService extends IService<ProductFavoritesEntity
      * @since 2025/06/03@return @return {@code List<ProductFavoritesDTO> }
      */
     ProductFavoritesDTO getAllProductFavorites(UserBaseDTO userBaseDTO);
+
+    /**
+     * 删除相关收藏夹内容
+     *
+     * @param favoritesIdList favorites主键ID
+     * @author sunny
+     * @since 2025/06/03
+     */
+    void deleteProductFavorites(List<Long> favoritesIdList);
 }

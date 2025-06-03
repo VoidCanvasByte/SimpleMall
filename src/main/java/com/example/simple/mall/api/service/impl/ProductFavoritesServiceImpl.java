@@ -1,27 +1,28 @@
 package com.example.simple.mall.api.service.impl;
 
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.example.simple.mall.api.mapStruct.ProductFavoritesItemsMapperStruct;
-import com.example.simple.mall.api.mapper.ProductFavoritesItemsMapper;
-import com.example.simple.mall.api.mapper.ProductFavoritesMapper;
-import com.example.simple.mall.api.mapper.ProductVariantsMapper;
-import com.example.simple.mall.api.service.ProductFavoritesItemsService;
-import com.example.simple.mall.api.service.ProductFavoritesService;
-import com.example.simple.mall.common.dto.favorites.ProductFavoritesDTO;
-import com.example.simple.mall.common.dto.product.ProductFavoritesItemsInfoDTO;
-import com.example.simple.mall.common.dto.user.UserBaseDTO;
-import com.example.simple.mall.common.entity.ProductFavoritesEntity;
-import com.example.simple.mall.common.entity.ProductFavoritesItemsEntity;
-import com.example.simple.mall.common.entity.ProductVariantsEntity;
-import com.example.simple.mall.common.enu.ResponseEnum;
-import org.apache.commons.lang3.ObjectUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
+        import cn.hutool.core.collection.CollUtil;
+        import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+        import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+        import com.example.simple.mall.api.mapStruct.ProductFavoritesItemsMapperStruct;
+        import com.example.simple.mall.api.mapper.ProductFavoritesItemsMapper;
+        import com.example.simple.mall.api.mapper.ProductFavoritesMapper;
+        import com.example.simple.mall.api.mapper.ProductVariantsMapper;
+        import com.example.simple.mall.api.service.ProductFavoritesItemsService;
+        import com.example.simple.mall.api.service.ProductFavoritesService;
+        import com.example.simple.mall.common.dto.favorites.ProductFavoritesDTO;
+        import com.example.simple.mall.common.dto.product.ProductFavoritesItemsInfoDTO;
+        import com.example.simple.mall.common.dto.user.UserBaseDTO;
+        import com.example.simple.mall.common.entity.ProductFavoritesEntity;
+        import com.example.simple.mall.common.entity.ProductFavoritesItemsEntity;
+        import com.example.simple.mall.common.entity.ProductVariantsEntity;
+        import com.example.simple.mall.common.enu.ResponseEnum;
+        import org.apache.commons.lang3.ObjectUtils;
+        import org.springframework.beans.factory.annotation.Autowired;
+        import org.springframework.stereotype.Service;
+        import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.List;
+        import java.util.ArrayList;
+        import java.util.List;
 
 /**
  * ProductFavoritesItemsServiceImpl
@@ -99,12 +100,29 @@ public class ProductFavoritesServiceImpl extends ServiceImpl<ProductFavoritesMap
             QueryWrapper<ProductFavoritesItemsEntity> productFavoritesItemsEntityQueryWrapper = new QueryWrapper<>();
             productFavoritesItemsEntityQueryWrapper.eq("favorites_id", productFavoritesEntity.getId());
             List<ProductFavoritesItemsEntity> list = productFavoritesItemsService.list(productFavoritesItemsEntityQueryWrapper);
-            for (ProductFavoritesItemsEntity item : list) {
-                ProductFavoritesDTO.ProductFavoritesItemDTO productFavoritesItemDTO = ProductFavoritesItemsMapperStruct.INSTANCE.productFavoritesItemsEntityToProductFavoritesDTO(item);
-                tempList.add(productFavoritesItemDTO);
+            if (!CollUtil.isEmpty(list)) {
+                for (ProductFavoritesItemsEntity item : list) {
+                    ProductFavoritesDTO.ProductFavoritesItemDTO productFavoritesItemDTO = ProductFavoritesItemsMapperStruct.INSTANCE.productFavoritesItemsEntityToProductFavoritesDTO(item);
+                    tempList.add(productFavoritesItemDTO);
+                }
+                userBaseDTOToProductFavoritesDTO.getProductFavoritesItemDTOList().addAll(tempList);
             }
         }
-        userBaseDTOToProductFavoritesDTO.getProductFavoritesItemDTOList().addAll(tempList);
         return userBaseDTOToProductFavoritesDTO;
+    }
+
+
+    /**
+     * 删除相关收藏夹内容
+     *
+     * @param favoritesIdList favorites主键ID
+     * @author sunny
+     * @since 2025/06/03
+     */
+    @Override
+    public void deleteProductFavorites(List<Long> favoritesIdList) {
+        if (!CollUtil.isEmpty(favoritesIdList)) {
+            productFavoritesItemsMapper.deleteBatchIds(favoritesIdList);
+        }
     }
 }

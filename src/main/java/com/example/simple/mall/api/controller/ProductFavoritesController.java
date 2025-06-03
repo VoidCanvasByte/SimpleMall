@@ -17,6 +17,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 /**
  * ProductFavoritesController
  *
@@ -61,5 +63,20 @@ public class ProductFavoritesController {
     public ResponseResult<ProductFavoritesDTO> getAllProductFavorites(@Validated @RequestBody UserBaseDTO userBaseDTO) {
         ProductFavoritesDTO ProductFavoritesDTO = productFavoritesService.getAllProductFavorites(userBaseDTO);
         return ResponseResult.out(ResponseEnum.SUCCESS, ProductFavoritesDTO);
+    }
+
+
+    /**
+     * 删除相关收藏夹内容
+     *
+     * @param favoritesIdList favorites主键ID
+     * @author sunny
+     * @since 2025/06/03@return @return {@code ResponseResult<ProductFavoritesEntity> }@return @return {@code ResponseResult<ProductFavoritesDTO> }
+     */
+    @PostMapping(value = "/delete")
+    @Operation(summary = "删除相关收藏夹内容", description = "删除相关收藏夹内容")
+    public ResponseResult<ProductFavoritesDTO> deleteProductFavorites(@RequestBody List<Long> favoritesIdList) {
+        productFavoritesService.deleteProductFavorites(favoritesIdList);
+        return ResponseResult.out(ResponseEnum.SUCCESS);
     }
 }
