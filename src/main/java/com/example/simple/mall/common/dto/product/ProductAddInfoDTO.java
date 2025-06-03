@@ -3,6 +3,7 @@ package com.example.simple.mall.common.dto.product;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import java.math.BigDecimal;
+import java.util.List;
 
 /**
  * 商品DTO
@@ -47,13 +48,11 @@ public class ProductAddInfoDTO {
      */
     public Integer status;
 
-////// --------- 信息详情表
     /**
      * 商品数量
      */
     @NotNull(message = "商品数量不能为空")
     public Integer productQuantity;
-
 
     /**
      * 商品单价
@@ -62,9 +61,15 @@ public class ProductAddInfoDTO {
     public BigDecimal productPrice;
 
     /**
+     * 变体ID
+     */
+    @NotNull(message = "商品变体ID不能为空")
+    public Long variantId;
+
+    /**
      * 商品图片
      */
-    public String productImg;
+    public List<String> productImgList;
 
     /**
      * 材质

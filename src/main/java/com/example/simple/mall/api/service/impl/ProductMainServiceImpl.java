@@ -5,20 +5,24 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.example.simple.mall.api.mapStruct.ProductMainMapperStruct;
 import com.example.simple.mall.api.mapper.ProductCategoryMapper;
+import com.example.simple.mall.api.mapper.ProductImagesMapper;
 import com.example.simple.mall.api.mapper.ProductMainMapper;
 import com.example.simple.mall.api.service.ProductDetailsService;
+import com.example.simple.mall.api.service.ProductImagesService;
 import com.example.simple.mall.api.service.ProductMainService;
 import com.example.simple.mall.common.dto.product.ProductAddInfoDTO;
 import com.example.simple.mall.common.dto.product.ProductUpdateInfoDTO;
 import com.example.simple.mall.common.entity.ProductCategoryEntity;
 import com.example.simple.mall.common.entity.ProductDetailsEntity;
 import com.example.simple.mall.common.entity.ProductEntity;
+import com.example.simple.mall.common.entity.ProductImagesEntity;
 import com.example.simple.mall.common.enu.ResponseEnum;
 import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -35,6 +39,12 @@ public class ProductMainServiceImpl extends ServiceImpl<ProductMainMapper, Produ
 
     @Autowired
     private ProductCategoryMapper productCategoryMapper;
+
+    @Autowired
+    private ProductImagesMapper productImagesMapper;
+
+    @Autowired
+    private ProductImagesService productImagesService;
 
     @Autowired
     private ProductDetailsService productDetailsMapperService;
@@ -77,7 +87,25 @@ public class ProductMainServiceImpl extends ServiceImpl<ProductMainMapper, Produ
         ProductDetailsEntity productDetailsEntity = ProductMainMapperStruct.INSTANCE.productDTOToProductDetails(productAddInfoDTO);
         System.out.printf("ProductEntity: %s, ProductDetailsEntity: %s", productEntity, productDetailsEntity);
         this.save(productEntity);
+
+        //图片信息
+        List<String> productImgList = productAddInfoDTO.getProductImgList();
+        if (CollUtil.isNotEmpty(productImgList)) {
+            List<ProductImagesEntity> ProductImagesEntityList = getProductImagesEntities(productAddInfoDTO, productImgList);
+            productImagesService.saveBatch(ProductImagesEntityList);
+        }
         productDetailsMapperService.save(productDetailsEntity);
+    }
+    private List<ProductImagesEntity> getProductImagesEntities(ProductAddInfoDTO productAddInfoDTO, List<String> productImgList) {
+        List<ProductImagesEntity> ProductImagesEntityList = new ArrayList<>(productImgList.size());
+        for(String item : productImgList){
+            ProductImagesEntity productImagesEntity = new ProductImagesEntity();
+            productImagesEntity.setProductCode(productAddInfoDTO.getProductCode());
+            productImagesEntity.setVariantId(productAddInfoDTO.getVariantId());
+            productImagesEntity.setUrl(item);
+            ProductImagesEntityList.add(productImagesEntity);
+        }
+        return ProductImagesEntityList;
     }
 
     /**
