@@ -1,5 +1,6 @@
 package com.example.simple.mall.api.service.impl;
 
+import cn.hutool.core.lang.UUID;
 import cn.hutool.core.util.ObjectUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
@@ -8,10 +9,13 @@ import com.example.simple.mall.api.mapStruct.OrderMapperStruct;
 import com.example.simple.mall.api.mapper.OrderMainLogisticsMapper;
 import com.example.simple.mall.api.service.OrderMainLogisticsService;
 import com.example.simple.mall.api.service.OrderService;
+import com.example.simple.mall.api.service.ProductShipmentService;
 import com.example.simple.mall.common.dto.order.OrderMainLogisticsInfoDTO;
 import com.example.simple.mall.common.dto.order.OrderMainLogisticsReDTO;
 import com.example.simple.mall.common.entity.OrderMainEntity;
 import com.example.simple.mall.common.entity.OrderMainLogisticsEntity;
+import com.example.simple.mall.common.entity.ProductShipmentEntity;
+import com.example.simple.mall.common.enu.ProductShipmentStatusEnum;
 import com.example.simple.mall.common.enu.ResponseEnum;
 import com.example.simple.mall.common.enu.ShippingStatusEnum;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +34,9 @@ public class OrderMainLogisticsServiceImpl extends ServiceImpl<OrderMainLogistic
     @Autowired
     public OrderService orderService;
 
+    @Autowired
+    public ProductShipmentService productShipmentService;
+
     /**
      * 添加订单物流信息
      *
@@ -40,6 +47,13 @@ public class OrderMainLogisticsServiceImpl extends ServiceImpl<OrderMainLogistic
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void addLogistics(OrderMainLogisticsInfoDTO orderMainLogisticsInfoDTO) {
+        ProductShipmentEntity productShipmentEntity = new ProductShipmentEntity();
+        productShipmentEntity.setOrderId(orderMainLogisticsInfoDTO.getOrderId());
+        productShipmentEntity.setTrackingNumber( UUID.randomUUID().toString());
+        productShipmentEntity.setShippedAt(orderMainLogisticsInfoDTO.getDeliveryTime());
+        productShipmentEntity.setStatus(ProductShipmentStatusEnum.IN_PROCESS.getCode());
+        productShipmentService.save(productShipmentEntity);
+
         Long orderId = orderMainLogisticsInfoDTO.getOrderId();
         QueryWrapper<OrderMainEntity> orderMainEntityQueryWrapper = new QueryWrapper<>();
         orderMainEntityQueryWrapper.eq("id", orderId);

@@ -25,7 +25,7 @@ public class ProductEntity{
     /**
      * 用户ID
      */
-    @TableId(value = "id")
+    @TableField(value = "id")
     private Long id;
 
     /**

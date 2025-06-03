@@ -133,8 +133,6 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity> impleme
             }
             //对象转换
             UserEntity user = UserMapperStruct.INSTANCE.userDtoToEntity(userDto);
-
-
             //更新密码，对旧密码进行校验
             String password = userDto.getPassword();
             boolean match = matches(password, userOld.getPassword());
@@ -142,6 +140,9 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity> impleme
                 throw new RuntimeException(ResponseEnum.USER_PASSWORD_IS_WRONG.getMessage());
             }
             //更新用户的信息
+            //密码加密(BCryptPasswordEncoder)
+            String unCodePassword = enCode(user.getPassword());
+            user.setPassword(unCodePassword);
             this.updateById(user);
         } else {
             throw new RuntimeException(ResponseEnum.USER_ID_IS_EMPTY.getMessage());
