@@ -1,0 +1,58 @@
+package com.example.simple.mall.common.dto.product;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
+import jakarta.validation.constraints.NotNull;
+import lombok.Data;
+
+import java.util.Date;
+
+/**
+ * 用户评价更新DTO
+ *
+ * @author sunny
+ * @since 2025/06/03
+ */
+@Data
+public class ProductReviewsUpdateDTO {
+
+    /**
+     * 主键ID
+     */
+    @NotNull(message = "主键ID不能为空")
+    public Long id;
+
+    /**
+     * 评价商品id
+     */
+    @NotNull(message = "评价商品id不能为空")
+    private Long productId;
+
+    /**
+     * 评价用户id
+     */
+    @NotNull(message = "评价用户id不能为空")
+    private Long userId;
+
+    /**
+     * 评分（1–5)
+     */
+    @NotNull(message = "评分不能为空")
+    private Integer rating;
+
+    /**
+     * 评价内容
+     */
+    private String comment;
+
+    /**
+     * 添加时间
+     */
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd-HH:mm:ss")
+    private Date createTime;
+
+    /**
+     * 添加时间
+     */
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd-HH:mm:ss")
+    private Date updateTime;
+}
