@@ -90,7 +90,7 @@ public class ProductCategoryController {
      */
     @DeleteMapping("/delete/{id}")
     @Operation(summary = "删除分类", description = "删除分类")
-    public ResponseResult<ProductAddInfoDTO> deleteCategory(@PathVariable String id) {
+    public ResponseResult<ProductAddInfoDTO> deleteCategory(@PathVariable Long id) {
         productCategoryService.removeById(id);
         return ResponseResult.out(ResponseEnum.SUCCESS);
     }
