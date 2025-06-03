@@ -38,22 +38,23 @@ public interface ProductMainMapperStruct {
     ProductDetailsEntity productDTOToProductDetails(ProductAddInfoDTO productAddInfoDTO);
 
     /**
-     * productUpdateDTOToProductMain
-     *
-     * @param product product
-     * @return @return {@code ProductEntity }
-     * @author sunny
-     * @since 2025/06/02
-     */
-    ProductEntity productUpdateDTOToProductMain(ProductUpdateInfoDTO.Product product);
-
-    /**
      * productUpdateDTOToProductDetail
      *
-     * @param productDetail productDetail
+     * @param productUpdateInfoDTO productUpdateInfoDTO
      * @return @return {@code ProductDetailsEntity }
      * @author sunny
-     * @since 2025/06/02
+     * @since 2025/06/03
      */
-    ProductDetailsEntity productUpdateDTOToProductDetail(ProductUpdateInfoDTO.ProductDetail productDetail);
+    ProductDetailsEntity productUpdateDTOToProductDetail(ProductUpdateInfoDTO productUpdateInfoDTO);
+
+    /**
+     * productUpdateDTOToProductMain
+     *
+     * @param productUpdateInfoDTO productUpdateInfoDTO
+     * @return @return {@code ProductEntity }
+     * @author sunny
+     * @since 2025/06/03
+     */
+    ProductEntity productUpdateDTOToProductMain(ProductUpdateInfoDTO productUpdateInfoDTO);
+
 }

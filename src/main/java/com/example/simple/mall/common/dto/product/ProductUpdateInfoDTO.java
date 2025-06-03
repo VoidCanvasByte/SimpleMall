@@ -4,6 +4,8 @@ import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 商品信息更新表
@@ -15,95 +17,106 @@ import java.math.BigDecimal;
 public class ProductUpdateInfoDTO {
 
     /**
-     * 商品基础信息
+     * 更新时间
      */
-    @NotNull(message = "商品基础信息不能为空")
-    public Product product = new Product();
+    public String updateTime;
 
     /**
-     * 商品基础信息
+     * 所属商品编码
      */
-    public ProductDetail productDetail = new ProductDetail();
+    @NotNull(message = "所属商品编码不能为空")
+    public String productCode;
+
+    /**
+     * 商品表ID
+     */
+    @NotNull(message = "商品表ID不能为空")
+    public Long id;
+
+    /**
+     * 商品分类id
+     */
+    @NotNull(message = "商品分类id不能为空")
+    public Long productCategoryId;
+
+    /**
+     * 商品标题
+     */
+    public String productName;
+
+    /**
+     * 商品描述（详情）
+     */
+    public String description;
+
+    /**
+     * 品牌
+     */
+    public String brand;
+
+    /**
+     * 上下架状态（1：上架；2:下架）
+     */
+    public Integer status;
+
+
+    /**
+     * 商品详细表ID
+     */
+    public Long productDetailsId;
+
+    /**
+     * 商品数量
+     */
+    public Integer productQuantity;
+
+    /**
+     * 商品单价
+     */
+    public BigDecimal productPrice;
+
+    /**
+     * 商品图片
+     */
+    public String productImg;
+
+    /**
+     * 材质
+     */
+    public String material;
+
+    /**
+     * 尺寸
+     */
+    public String size;
+
+    /**
+     * 版本
+     */
+    public Integer version;
+
+
+    /**
+     * 商品图片信息
+     */
+    public List<ProductImages> productImagesList = new ArrayList<>();
+
 
     @Data
-    public static class Product {
+    public static class ProductImages {
+        /**
+         * 如对应变体时填写
+         */
+        public Long variantId;
 
         /**
-         * 商品表ID
+         * url
          */
-        @NotNull(message = "商品表ID不能为空")
-        public Long id;
+        public String url;
 
         /**
-         * 用户ID
+         * 显示顺序
          */
-        public Long userId;
-
-        /**
-         * 商品标题
-         */
-        public String productName;
-
-        /**
-         * 商品货号
-         */
-        @NotNull(message = "商品货号不能为空")
-        public String productCode;
-
-        /**
-         * 商品描述（详情）
-         */
-        public String description;
-
-        /**
-         * 品牌
-         */
-        public String brand;
-
-        /**
-         * 上下架状态（1：上架；2:下架）
-         */
-        public Integer status;
+        public Integer sortOrder;
     }
-
-    @Data
-    public static class ProductDetail {
-
-        /**
-         * id
-         */
-        public Long id;
-
-        /**
-         * 商品数量
-         */
-        public Integer productQuantity;
-
-
-        /**
-         * 商品单价
-         */
-        public BigDecimal productPrice;
-
-        /**
-         * 商品图片
-         */
-        public String productImg;
-
-        /**
-         * 材质
-         */
-        public String material;
-
-        /**
-         * 尺寸
-         */
-        public String size;
-
-        /**
-         * 版本
-         */
-        public Integer version;
-    }
-
 }

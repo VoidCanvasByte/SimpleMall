@@ -41,9 +41,6 @@ public class ProductMainServiceImpl extends ServiceImpl<ProductMainMapper, Produ
     private ProductCategoryMapper productCategoryMapper;
 
     @Autowired
-    private ProductImagesMapper productImagesMapper;
-
-    @Autowired
     private ProductImagesService productImagesService;
 
     @Autowired
@@ -87,7 +84,6 @@ public class ProductMainServiceImpl extends ServiceImpl<ProductMainMapper, Produ
         ProductDetailsEntity productDetailsEntity = ProductMainMapperStruct.INSTANCE.productDTOToProductDetails(productAddInfoDTO);
         System.out.printf("ProductEntity: %s, ProductDetailsEntity: %s", productEntity, productDetailsEntity);
         this.save(productEntity);
-
         //图片信息
         List<String> productImgList = productAddInfoDTO.getProductImgList();
         if (CollUtil.isNotEmpty(productImgList)) {
@@ -96,9 +92,10 @@ public class ProductMainServiceImpl extends ServiceImpl<ProductMainMapper, Produ
         }
         productDetailsMapperService.save(productDetailsEntity);
     }
+
     private List<ProductImagesEntity> getProductImagesEntities(ProductAddInfoDTO productAddInfoDTO, List<String> productImgList) {
         List<ProductImagesEntity> ProductImagesEntityList = new ArrayList<>(productImgList.size());
-        for(String item : productImgList){
+        for (String item : productImgList) {
             ProductImagesEntity productImagesEntity = new ProductImagesEntity();
             productImagesEntity.setProductCode(productAddInfoDTO.getProductCode());
             productImagesEntity.setVariantId(productAddInfoDTO.getVariantId());
@@ -119,22 +116,55 @@ public class ProductMainServiceImpl extends ServiceImpl<ProductMainMapper, Produ
     @Transactional(rollbackFor = Exception.class)
     public void updateProduct(ProductUpdateInfoDTO productUpdateInfoDTO) {
         //每次更新商品的信息，都会在原来的商品详情中添加版本号➕1
-        ProductUpdateInfoDTO.Product product = productUpdateInfoDTO.getProduct();
-        ProductUpdateInfoDTO.ProductDetail productDetail = productUpdateInfoDTO.getProductDetail();
-        String productCode = null;
-        if (ObjectUtils.isNotEmpty(product)) {
-            productCode = product.getProductCode();
-            ProductEntity productEntity = ProductMainMapperStruct.INSTANCE.productUpdateDTOToProductMain(product);
-            this.updateById(productEntity);
-        }
-        if (ObjectUtils.isNotEmpty(productDetail)) {
+        String productCode = productUpdateInfoDTO.getProductCode();
+        ProductEntity productEntity = ProductMainMapperStruct.INSTANCE.productUpdateDTOToProductMain(productUpdateInfoDTO);
+        this.updateById(productEntity);
+
+        ProductDetailsEntity productDetailsEntityRe = ProductMainMapperStruct.INSTANCE.productUpdateDTOToProductDetail(productUpdateInfoDTO);
+        if (ObjectUtils.isNotEmpty(productUpdateInfoDTO.getProductDetailsId())) {
             QueryWrapper<ProductDetailsEntity> productDetailsEntityQueryWrapper = new QueryWrapper<>();
             productDetailsEntityQueryWrapper.eq("product_code", productCode);
             ProductDetailsEntity productDetailsEntity = productDetailsMapperService.getOne(productDetailsEntityQueryWrapper);
-            productDetail.setVersion(productDetailsEntity.getVersion() + 1);
-            productDetailsMapperService.removeById(productDetailsEntity);
-            ProductDetailsEntity productDetailsEntityRe = ProductMainMapperStruct.INSTANCE.productUpdateDTOToProductDetail(productDetail);
-            productDetailsMapperService.save(productDetailsEntityRe);
+            if (ObjectUtils.isEmpty(productDetailsEntity)) {
+                productDetailsEntityRe.setVersion(1);
+            } else {
+                productDetailsEntity.setVersion(productDetailsEntity.getVersion() + 1);
+            }
+            productDetailsEntityRe.setId(productUpdateInfoDTO.getProductDetailsId());
+            productDetailsEntityRe.setProductCode(productUpdateInfoDTO.getProductCode());
+            productDetailsEntityRe.setUpdateTime(productUpdateInfoDTO.getUpdateTime());
+            productDetailsMapperService.updateById(productDetailsEntityRe);
+        }
+
+
+        if (CollUtil.isNotEmpty(productUpdateInfoDTO.getProductImagesList())) {
+            List<ProductImagesEntity> productImagesEntityList = new ArrayList<>();
+            //批量删除旧图片，批量插入新的图片
+            QueryWrapper<ProductImagesEntity> productImagesEntityQueryWrapper = new QueryWrapper<>();
+            productImagesEntityQueryWrapper.eq("product_code", productUpdateInfoDTO.getProductCode());
+            List<ProductImagesEntity> productImagesList = productImagesService.list(productImagesEntityQueryWrapper);
+            if (CollUtil.isNotEmpty(productImagesList)) {
+                List<Long> listId = productImagesList.stream().map(ProductImagesEntity::getId).toList();
+                productImagesService.removeByIds(listId);
+            }
+            for (ProductUpdateInfoDTO.ProductImages productImages : productUpdateInfoDTO.getProductImagesList()) {
+                ProductImagesEntity productImagesEntity = new ProductImagesEntity();
+                productImagesEntity.setProductCode(productUpdateInfoDTO.getProductCode());
+                productImagesEntity.setVariantId(productImages.getVariantId());
+                productImagesEntity.setUrl(productImages.getUrl());
+                productImagesEntity.setSortOrder(productImages.getSortOrder());
+                productImagesEntityList.add(productImagesEntity);
+            }
+            productImagesService.saveBatch(productImagesEntityList);
+        } else {
+            //批量删除图片
+            QueryWrapper<ProductImagesEntity> productImagesEntityQueryWrapper = new QueryWrapper<>();
+            productImagesEntityQueryWrapper.eq("product_code", productUpdateInfoDTO.getProductCode());
+            List<ProductImagesEntity> productImagesList = productImagesService.list(productImagesEntityQueryWrapper);
+            if (CollUtil.isNotEmpty(productImagesList)) {
+                List<Long> listId = productImagesList.stream().map(ProductImagesEntity::getId).toList();
+                productImagesService.removeByIds(listId);
+            }
         }
     }
 
