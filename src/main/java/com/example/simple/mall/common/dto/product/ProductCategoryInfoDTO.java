@@ -1,7 +1,9 @@
 package com.example.simple.mall.common.dto.product;
 
+import com.example.simple.mall.common.dto.user.UserBaseDTO;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 /**
  * ProductCategoryInfoDTO
@@ -10,13 +12,14 @@ import lombok.Data;
  * @since 2025/05/31
  */
 @Data
-public class ProductCategoryInfoDTO {
+@EqualsAndHashCode(callSuper = true)
+public class ProductCategoryInfoDTO extends UserBaseDTO {
 
     /**
      * 商品信息分类名字
      */
     @NotNull(message = "商品信息分类名字不能为空")
-    private Integer parentId;
+    private Long parentId;
 
     /**
      * 商品信息分类名字
@@ -29,9 +32,4 @@ public class ProductCategoryInfoDTO {
      */
     @NotNull(message = "排序值")
     private Integer sortOrder;
-
-    /**
-     * 用户id（校验）
-     */
-    public Long userId;
 }

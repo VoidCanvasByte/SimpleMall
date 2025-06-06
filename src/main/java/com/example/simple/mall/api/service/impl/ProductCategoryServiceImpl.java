@@ -14,8 +14,10 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author sunny
@@ -74,6 +76,40 @@ public class ProductCategoryServiceImpl extends ServiceImpl<ProductCategoryMappe
         QueryWrapper<ProductCategoryEntity> productCategoryWrapper = new QueryWrapper<>();
         productCategoryWrapper.eq("user_id", userBaseDTO.getUserId());
         List<ProductCategoryEntity> productCategoryEntities = productCategoryMapper.selectList(productCategoryWrapper);
-        return ProductCategoryMapperStruct.INSTANCE.productCategoryEntitiesToDTO(productCategoryEntities);
+        return buildCategoryTree(productCategoryEntities);
+    }
+
+
+    /**
+     * 构建数据
+     *
+     * @param entityList entityList
+     * @return {@code List<ProductCategoryReturnDTO> }
+     * @author sunny
+     * @since 2025/06/06
+     */
+    public List<ProductCategoryReturnDTO> buildCategoryTree(List<ProductCategoryEntity> entityList) {
+        List<ProductCategoryReturnDTO> dtoList = entityList.stream()
+                .map(ProductCategoryMapperStruct.INSTANCE::productCategoryEntitiesToDTO)
+                .toList();
+
+        Map<Long, ProductCategoryReturnDTO> idMap = new HashMap<>();
+        for (ProductCategoryReturnDTO dto : dtoList) {
+            idMap.put(dto.getId(), dto);
+        }
+
+        List<ProductCategoryReturnDTO> rootList = new ArrayList<>();
+        for (ProductCategoryReturnDTO dto : dtoList) {
+            long parentId = dto.getParentId() != null ? dto.getParentId() : 0L;
+            if (parentId == 0L) {
+                rootList.add(dto);
+            } else {
+                ProductCategoryReturnDTO parent = idMap.get(parentId);
+                if (parent != null) {
+                    parent.getChildren().add(dto);
+                }
+            }
+        }
+        return rootList;
     }
 }

@@ -269,7 +269,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity> impleme
         List<UserAddressesEntity> userAddressesList = userAddressesMapper.selectList(userQueryWrapper);
         UserReturnInfoDTO userReturnInfo = UserMapperStruct.INSTANCE.userEntityToUserReturnInfoDTO(userEntity);
         List<UserReturnInfoDTO.UserAddressesReturnDTO> userAddressesDTOS = UserAddressesMapperStruct.INSTANCE.entitiesToDto(userAddressesList);
-        userReturnInfo.getUserReturnInfoList().addAll(userAddressesDTOS);
+        userReturnInfo.getUserAddressesReturnDTOList().addAll(userAddressesDTOS);
         return userReturnInfo;
     }
 }

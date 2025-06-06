@@ -42,7 +42,7 @@ public class UserReturnInfoDTO {
     /**
      * 用户地址信息
      */
-    private List<UserAddressesReturnDTO> userReturnInfoList = new ArrayList<>();
+    private List<UserAddressesReturnDTO> userAddressesReturnDTOList = new ArrayList<>();
 
     @Data
     public static class UserAddressesReturnDTO {

@@ -30,5 +30,5 @@ public interface ProductCategoryMapperStruct {
      * @author sunny
      * @since 2025/05/31
      */
-    List<ProductCategoryReturnDTO> productCategoryEntitiesToDTO(List<ProductCategoryEntity> productCategoryEntities);
+    ProductCategoryReturnDTO productCategoryEntitiesToDTO(ProductCategoryEntity productCategoryEntities);
 }

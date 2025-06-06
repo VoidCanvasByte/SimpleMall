@@ -32,7 +32,7 @@ public class ProductCategoryEntity extends BaseEntity {
      * 父级分类，顶级为0
      */
     @TableField("parent_id")
-    private Integer parentId;
+    private Long parentId;
 
     /**
      * 排序值，越小越靠前

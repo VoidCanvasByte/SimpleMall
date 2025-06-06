@@ -3,10 +3,25 @@ package com.example.simple.mall.common.dto.product;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
-import java.util.Date;
 
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
+/**
+ * ProductCategoryReturnDTO
+ *
+ * @author sunny
+ * @since 2025/06/06
+ */
 @Data
 public class ProductCategoryReturnDTO {
+
+
+    /**
+     * 子节点集合
+     */
+    private List<ProductCategoryReturnDTO> children = new ArrayList<>();
 
     /**
      * id
@@ -14,15 +29,14 @@ public class ProductCategoryReturnDTO {
     private Long id;
 
     /**
+     * 父级分类，顶级为0
+     */
+    private Long parentId;
+
+    /**
      * 用户ID
      */
     private Long userId;
-
-
-    /**
-     * 父级分类，顶级为0
-     */
-    private Integer parentId;
 
     /**
      * 分类名称
