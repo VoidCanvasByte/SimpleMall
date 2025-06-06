@@ -4,6 +4,7 @@ import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.stereotype.Component;
 
+import java.nio.charset.StandardCharsets;
 import java.security.Key;
 import java.util.Date;
 
@@ -17,9 +18,10 @@ import java.util.Date;
 @Component
 public class JwtUtils {
 
-    public static final long EXPIRE = 86400000;
+    private static final String SECRET = "your-256-bit-secret-your-256-bit-secret";
+    private static final Key KEY = Keys.hmacShaKeyFor(SECRET.getBytes(StandardCharsets.UTF_8));
+    private static final long EXPIRE = 1000 * 60 * 60 * 24;
 
-    private final Key key = Keys.secretKeyFor(SignatureAlgorithm.HS256);
 
     /**
      * 生成token
@@ -29,13 +31,13 @@ public class JwtUtils {
      * @author sunny
      * @since 2025/05/15
      */
-    public String generateToken(Long userId) {
-        Date date = new Date(System.currentTimeMillis() + EXPIRE);
+    public static String generateToken(Long userId) {
+        Date expireDate = new Date(System.currentTimeMillis() + EXPIRE);
         return Jwts.builder()
                 .setSubject(userId.toString())
                 .setIssuedAt(new Date())
-                .setExpiration(date)
-                .signWith(key)
+                .setExpiration(expireDate)
+                .signWith(KEY, SignatureAlgorithm.HS256)
                 .compact();
     }
 
@@ -50,7 +52,7 @@ public class JwtUtils {
      */
     public Claims getClaimsFromToken(String token) {
         return Jwts.parserBuilder()
-                .setSigningKey(key)
+                .setSigningKey(KEY)
                 .build()
                 .parseClaimsJws(token)
                 .getBody();

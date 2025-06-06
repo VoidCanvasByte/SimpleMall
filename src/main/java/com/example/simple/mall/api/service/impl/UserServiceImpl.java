@@ -208,7 +208,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity> impleme
         QueryWrapper<UserEntity> userWrapperUpdate = new QueryWrapper<>();
         userWrapperUpdate.eq("email", loginRequest.getEmail());
         UserEntity userEntity = userMapper.selectOne(userWrapperUpdate);
-        String token = jwtUtils.generateToken(userEntity.getId());
+        String token = JwtUtils.generateToken(userEntity.getId());
         Map<String, UserEntity> resultMap = new HashMap<>();
         resultMap.put(token, userEntity);
         return resultMap;
