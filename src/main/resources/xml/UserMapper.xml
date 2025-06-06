@@ -7,8 +7,9 @@
         INSERT INTO user
         (user_name,
          email,
-         password)
-        VALUES (#{userName}, #{email}, #{password})
+         password,
+         phone)
+        VALUES (#{userName}, #{email}, #{password}, #{phone})
     </insert>
 
     <!-- 根据邮箱信息查询单个用户 -->

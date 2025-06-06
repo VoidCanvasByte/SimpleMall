@@ -40,6 +40,12 @@ public class UserEntity extends BaseEntity implements java.io.Serializable {
     private String password;
 
     /**
+     * 电话号码
+     */
+    @TableField("phone")
+    private String phone;
+
+    /**
      * 性别：1男，2女，0未知
      */
     @TableField("user_gender")

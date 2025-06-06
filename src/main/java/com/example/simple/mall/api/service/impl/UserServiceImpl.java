@@ -13,10 +13,7 @@ import com.example.simple.mall.api.mapper.UserAddressesMapper;
 import com.example.simple.mall.api.mapper.UserMapper;
 import com.example.simple.mall.api.service.UserService;
 import com.example.simple.mall.common.dto.LoginRequestDTO;
-import com.example.simple.mall.common.dto.user.AddressDTO;
-import com.example.simple.mall.common.dto.user.UserAddressesDTO;
-import com.example.simple.mall.common.dto.user.UserDTO;
-import com.example.simple.mall.common.dto.user.UserReturnInfoDTO;
+import com.example.simple.mall.common.dto.user.*;
 import com.example.simple.mall.common.entity.UserAddressesEntity;
 import com.example.simple.mall.common.entity.UserEntity;
 import com.example.simple.mall.common.enu.ResponseEnum;
@@ -74,8 +71,8 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity> impleme
      */
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void addUser(UserDTO userDto) {
-        String email = userDto.getEmail();
+    public void addUser(UserInfoDTO userInfoDTO) {
+        String email = userInfoDTO.getEmail();
         //校验邮箱的格式是否正确
         boolean email1 = Validator.isEmail(email);
         if (!email1) {
@@ -86,7 +83,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity> impleme
         if (!ObjectUtil.isEmpty(user)) {
             throw new RuntimeException(ResponseEnum.USER_EMAIL_EXIST.getMessage());
         }
-        UserEntity userNew = UserMapperStruct.INSTANCE.userDtoToEntity(userDto);
+        UserEntity userNew = UserMapperStruct.INSTANCE.userInfoDTOToEntity(userInfoDTO);
         if (StrUtil.isEmpty(userNew.getUserName())) {
             String userName = "user" + System.currentTimeMillis();
             userNew.setUserName(userName);

@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.example.simple.mall.common.dto.LoginRequestDTO;
 import com.example.simple.mall.common.dto.user.UserAddressesDTO;
 import com.example.simple.mall.common.dto.user.UserDTO;
+import com.example.simple.mall.common.dto.user.UserInfoDTO;
 import com.example.simple.mall.common.dto.user.UserReturnInfoDTO;
 import com.example.simple.mall.common.entity.UserEntity;
 import org.springframework.security.core.userdetails.User;
@@ -25,7 +26,7 @@ public interface UserService extends IService<UserEntity> {
      * @author sunny
      * @since 2025/05/05
      */
-    void addUser(UserDTO userDto);
+    void addUser(UserInfoDTO userInfoDTO);
 
     /**
      * 判断用户是否存在（用户不存在返回true）

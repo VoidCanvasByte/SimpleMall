@@ -4,6 +4,7 @@ import com.example.simple.mall.api.service.UserService;
 import com.example.simple.mall.common.dto.LoginRequestDTO;
 import com.example.simple.mall.common.dto.user.UserAddressesDTO;
 import com.example.simple.mall.common.dto.user.UserDTO;
+import com.example.simple.mall.common.dto.user.UserInfoDTO;
 import com.example.simple.mall.common.dto.user.UserReturnInfoDTO;
 import com.example.simple.mall.common.entity.UserEntity;
 import com.example.simple.mall.common.enu.ResponseEnum;
@@ -40,8 +41,8 @@ public class UserController {
      */
     @Operation(summary = "用户注册申请", description = "用户信息注册")
     @PostMapping("/register")
-    public ResponseResult<UserDTO> addUser(@Validated @RequestBody UserDTO userDto) {
-        userService.addUser(userDto);
+    public ResponseResult<UserDTO> addUser(@Validated @RequestBody UserInfoDTO userInfoDTO) {
+        userService.addUser(userInfoDTO);
         return ResponseResult.out(ResponseEnum.SUCCESS);
     }
 
