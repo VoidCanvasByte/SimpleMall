@@ -38,7 +38,7 @@ public class UserAddressesDTO {
     /**
      * 详细地址
      */
-    @NotNull(message = "详细地址不能为")
+    @NotNull(message = "详细地址不能为空")
     public String streetAddress;
 
     /**

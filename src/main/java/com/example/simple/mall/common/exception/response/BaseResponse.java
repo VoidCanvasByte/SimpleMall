@@ -1,4 +1,4 @@
-package com.example.simple.mall.common.response;
+package com.example.simple.mall.common.exception.response;
 
 import com.example.simple.mall.common.enu.ResponseEnum;
 import lombok.Getter;

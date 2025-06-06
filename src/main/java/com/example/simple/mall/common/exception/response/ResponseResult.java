@@ -1,11 +1,11 @@
-package com.example.simple.mall.common.response;
+package com.example.simple.mall.common.exception.response;
 
 import com.example.simple.mall.common.enu.ResponseEnum;
 import lombok.Getter;
 import lombok.Setter;
 
 /**
- * 静态工厂方法
+ * 返回类
  *
  * @author sunny
  * @since 2025/05/05
@@ -47,5 +47,20 @@ public class ResponseResult<T> extends BaseResponse {
      */
     public static <T> ResponseResult<T> out(ResponseEnum respEnum, T data) {
         return new ResponseResult<>(respEnum, data);
+    }
+
+    /**
+     * error
+     *
+     * @param message message
+     * @return @return {@code ResponseResult<T> }
+     * @author sunny
+     * @since 2025/06/06
+     */
+    public static <T> ResponseResult<T> error(String message) {
+        ResponseResult<T> r = new ResponseResult<>(ResponseEnum.FAIL);
+        r.setMessage(message);
+        r.setData(null);
+        return r;
     }
 }

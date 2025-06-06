@@ -6,7 +6,7 @@ import com.example.simple.mall.common.dto.order.OrderAddInfoDTO;
 import com.example.simple.mall.common.dto.order.OrderReDTO;
 import com.example.simple.mall.common.dto.order.OrderPayInfoDTO;
 import com.example.simple.mall.common.enu.ResponseEnum;
-import com.example.simple.mall.common.response.ResponseResult;
+import com.example.simple.mall.common.exception.response.ResponseResult;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;

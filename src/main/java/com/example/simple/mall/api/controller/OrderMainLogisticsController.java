@@ -4,7 +4,7 @@ import com.example.simple.mall.api.service.OrderMainLogisticsService;
 import com.example.simple.mall.common.dto.order.OrderMainLogisticsInfoDTO;
 import com.example.simple.mall.common.dto.order.OrderMainLogisticsReDTO;
 import com.example.simple.mall.common.enu.ResponseEnum;
-import com.example.simple.mall.common.response.ResponseResult;
+import com.example.simple.mall.common.exception.response.ResponseResult;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;

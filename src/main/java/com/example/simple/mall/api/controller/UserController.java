@@ -8,7 +8,7 @@ import com.example.simple.mall.common.dto.user.UserInfoDTO;
 import com.example.simple.mall.common.dto.user.UserReturnInfoDTO;
 import com.example.simple.mall.common.entity.UserEntity;
 import com.example.simple.mall.common.enu.ResponseEnum;
-import com.example.simple.mall.common.response.ResponseResult;
+import com.example.simple.mall.common.exception.response.ResponseResult;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
@@ -55,7 +55,7 @@ public class UserController {
      */
     @Operation(summary = "维护用户地址信息", description = "维护用户地址信息")
     @PutMapping("/update/info")
-    public ResponseResult<UserAddressesDTO> userMaintainInfo(@RequestBody UserAddressesDTO userAddressesDTO) {
+    public ResponseResult<UserAddressesDTO> userMaintainInfo(@Validated @RequestBody UserAddressesDTO userAddressesDTO) {
         userService.userMaintainInfo(userAddressesDTO);
         return ResponseResult.out(ResponseEnum.SUCCESS);
     }

@@ -6,7 +6,7 @@ import com.example.simple.mall.common.dto.product.ProductReviewsInfoDTO;
 import com.example.simple.mall.common.dto.product.ProductReviewsReDTO;
 import com.example.simple.mall.common.dto.product.ProductReviewsUpdateDTO;
 import com.example.simple.mall.common.enu.ResponseEnum;
-import com.example.simple.mall.common.response.ResponseResult;
+import com.example.simple.mall.common.exception.response.ResponseResult;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
