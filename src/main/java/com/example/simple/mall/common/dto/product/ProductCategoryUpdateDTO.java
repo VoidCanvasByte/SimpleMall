@@ -1,7 +1,9 @@
 package com.example.simple.mall.common.dto.product;
 
+import com.example.simple.mall.common.dto.user.UserBaseDTO;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 /**
  * 更新商品分类DTO
@@ -10,7 +12,8 @@ import lombok.Data;
  * @since 2025/05/25
  */
 @Data
-public class ProductCategoryUpdateDTO {
+@EqualsAndHashCode(callSuper = true)
+public class ProductCategoryUpdateDTO extends UserBaseDTO {
 
     /**
      * 商品信息分类名字
@@ -24,7 +27,7 @@ public class ProductCategoryUpdateDTO {
     private Long id;
 
     /**
-     * 用户id
+     * 排序值
      */
-    public Long userId;
+    private Integer sortOrder;
 }

@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -62,12 +63,6 @@ public class ProductDetailsEntity {
     public BigDecimal productPrice;
 
     /**
-     * 商品图片
-     */
-    @TableField("product_img")
-    public String productImg;
-
-    /**
      * 材质
      */
     @TableField("material")
@@ -77,7 +72,7 @@ public class ProductDetailsEntity {
      * 尺寸
      */
     @TableField("size")
-    public String size;
+    public Integer size;
 
     /**
      * 版本号

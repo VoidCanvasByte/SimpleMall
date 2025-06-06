@@ -2,6 +2,7 @@ package com.example.simple.mall.common.dto.product;
 
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
+
 import java.math.BigDecimal;
 import java.util.List;
 
@@ -61,17 +62,6 @@ public class ProductAddInfoDTO {
     public BigDecimal productPrice;
 
     /**
-     * 变体ID
-     */
-    @NotNull(message = "商品变体ID不能为空")
-    public Long variantId;
-
-    /**
-     * 商品图片
-     */
-    public List<String> productImgList;
-
-    /**
      * 材质
      */
     public String material;
@@ -79,5 +69,30 @@ public class ProductAddInfoDTO {
     /**
      * 尺寸
      */
-    public String size;
+    public Integer size;
+
+    /**
+     * 商品图片
+     */
+    public List<ProductImg> productImgList;
+
+    /**
+     * 图片合集
+     *
+     * @author sunny
+     * @since 2025/06/06
+     */
+    @Data
+    public static class ProductImg {
+
+        /**
+         * 排序
+         */
+        public Integer sortOrder;
+
+        /**
+         * 地址
+         */
+        public String url;
+    }
 }

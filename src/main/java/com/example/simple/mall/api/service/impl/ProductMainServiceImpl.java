@@ -2,6 +2,7 @@ package com.example.simple.mall.api.service.impl;
 
 import cn.hutool.core.collection.CollUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.example.simple.mall.api.mapStruct.ProductMainMapperStruct;
 import com.example.simple.mall.api.mapper.ProductCategoryMapper;
@@ -84,22 +85,32 @@ public class ProductMainServiceImpl extends ServiceImpl<ProductMainMapper, Produ
         ProductDetailsEntity productDetailsEntity = ProductMainMapperStruct.INSTANCE.productDTOToProductDetails(productAddInfoDTO);
         System.out.printf("ProductEntity: %s, ProductDetailsEntity: %s", productEntity, productDetailsEntity);
         this.save(productEntity);
+        productDetailsMapperService.save(productDetailsEntity);
+
         //图片信息
-        List<String> productImgList = productAddInfoDTO.getProductImgList();
+        List<ProductAddInfoDTO.ProductImg> productImgList = productAddInfoDTO.getProductImgList();
         if (CollUtil.isNotEmpty(productImgList)) {
             List<ProductImagesEntity> ProductImagesEntityList = getProductImagesEntities(productAddInfoDTO, productImgList);
             productImagesService.saveBatch(ProductImagesEntityList);
         }
-        productDetailsMapperService.save(productDetailsEntity);
     }
 
-    private List<ProductImagesEntity> getProductImagesEntities(ProductAddInfoDTO productAddInfoDTO, List<String> productImgList) {
+    /**
+     * 添加图片
+     *
+     * @param productAddInfoDTO productAddInfoDTO
+     * @param productImgList    productImgList
+     * @return @return {@code List<ProductImagesEntity> }
+     * @author sunny
+     * @since 2025/06/06
+     */
+    private List<ProductImagesEntity> getProductImagesEntities(ProductAddInfoDTO productAddInfoDTO, List<ProductAddInfoDTO.ProductImg> productImgList) {
         List<ProductImagesEntity> ProductImagesEntityList = new ArrayList<>(productImgList.size());
-        for (String item : productImgList) {
+        for (ProductAddInfoDTO.ProductImg item : productImgList) {
             ProductImagesEntity productImagesEntity = new ProductImagesEntity();
             productImagesEntity.setProductCode(productAddInfoDTO.getProductCode());
-            productImagesEntity.setVariantId(productAddInfoDTO.getVariantId());
-            productImagesEntity.setUrl(item);
+            productImagesEntity.setUrl(item.getUrl());
+            productImagesEntity.setSortOrder(item.getSortOrder());
             ProductImagesEntityList.add(productImagesEntity);
         }
         return ProductImagesEntityList;
@@ -132,7 +143,6 @@ public class ProductMainServiceImpl extends ServiceImpl<ProductMainMapper, Produ
             }
             productDetailsEntityRe.setId(productUpdateInfoDTO.getProductDetailsId());
             productDetailsEntityRe.setProductCode(productUpdateInfoDTO.getProductCode());
-            productDetailsEntityRe.setUpdateTime(productUpdateInfoDTO.getUpdateTime());
             productDetailsMapperService.updateById(productDetailsEntityRe);
         }
 
@@ -150,7 +160,6 @@ public class ProductMainServiceImpl extends ServiceImpl<ProductMainMapper, Produ
             for (ProductUpdateInfoDTO.ProductImages productImages : productUpdateInfoDTO.getProductImagesList()) {
                 ProductImagesEntity productImagesEntity = new ProductImagesEntity();
                 productImagesEntity.setProductCode(productUpdateInfoDTO.getProductCode());
-                productImagesEntity.setVariantId(productImages.getVariantId());
                 productImagesEntity.setUrl(productImages.getUrl());
                 productImagesEntity.setSortOrder(productImages.getSortOrder());
                 productImagesEntityList.add(productImagesEntity);
@@ -190,6 +199,13 @@ public class ProductMainServiceImpl extends ServiceImpl<ProductMainMapper, Produ
         this.removeById(productEntity);
         if (!ObjectUtils.isEmpty(productDetailsEntity)) {
             productDetailsMapperService.removeById(productDetailsEntity);
+        }
+        //批量删除图片
+        QueryWrapper<ProductImagesEntity> productImagesEntityQueryWrapper = new QueryWrapper<>();
+        productImagesEntityQueryWrapper.eq("product_code", productCode);
+        List<ProductImagesEntity> productImagesList = productImagesService.list(productImagesEntityQueryWrapper);
+        if (!CollectionUtils.isEmpty(productImagesList)) {
+            productImagesService.removeByIds(productImagesList);
         }
     }
 
