@@ -12,10 +12,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -58,7 +55,7 @@ public class ProductFavoritesController {
      * @since 2025/06/03@return @return {@code ResponseResult<ProductFavoritesEntity> }
      */
     @UserVerification
-    @PostMapping(value = "/get/all")
+    @GetMapping(value = "/get/all")
     @Operation(summary = "查询所有收藏夹", description = "查询所有收藏夹")
     public ResponseResult<ProductFavoritesDTO> getAllProductFavorites(@Validated @RequestBody UserBaseDTO userBaseDTO) {
         ProductFavoritesDTO ProductFavoritesDTO = productFavoritesService.getAllProductFavorites(userBaseDTO);
@@ -73,7 +70,7 @@ public class ProductFavoritesController {
      * @author sunny
      * @since 2025/06/03@return @return {@code ResponseResult<ProductFavoritesEntity> }@return @return {@code ResponseResult<ProductFavoritesDTO> }
      */
-    @PostMapping(value = "/delete")
+    @DeleteMapping(value = "/delete")
     @Operation(summary = "删除相关收藏夹内容", description = "删除相关收藏夹内容")
     public ResponseResult<ProductFavoritesDTO> deleteProductFavorites(@RequestBody List<Long> favoritesIdList) {
         productFavoritesService.deleteProductFavorites(favoritesIdList);
