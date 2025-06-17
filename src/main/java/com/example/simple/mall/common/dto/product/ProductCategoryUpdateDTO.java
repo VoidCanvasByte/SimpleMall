@@ -1,6 +1,7 @@
 package com.example.simple.mall.common.dto.product;
 
 import com.example.simple.mall.common.dto.user.UserBaseDTO;
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -18,16 +19,20 @@ public class ProductCategoryUpdateDTO extends UserBaseDTO {
     /**
      * 商品信息分类名字
      */
+    @Schema(description = "商品信息分类名字")
     @NotNull(message = "商品信息分类名字不能为空")
     private String name;
+
     /**
      * 商品信息分类id
      */
+    @Schema(description = "商品信息分类id")
     @NotNull(message = "商品信息分类ID不能为空")
     private Long id;
 
     /**
      * 排序值
      */
+    @Schema(description = "排序值")
     private Integer sortOrder;
 }

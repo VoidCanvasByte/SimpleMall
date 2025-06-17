@@ -2,6 +2,7 @@ package com.example.simple.mall.common.dto.product;
 
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
 import java.util.ArrayList;
@@ -21,47 +22,56 @@ public class ProductCategoryReturnDTO {
     /**
      * 子节点集合
      */
+    @Schema(description = "子节点集合")
     private List<ProductCategoryReturnDTO> children = new ArrayList<>();
 
     /**
      * id
      */
+    @Schema(description = "id")
     private Long id;
 
     /**
      * 父级分类，顶级为0
      */
+    @Schema(description = "父级分类，顶级为0")
     private Long parentId;
 
     /**
      * 用户ID
      */
+    @Schema(description = "用户ID")
     private Long userId;
 
     /**
      * 分类名称
      */
+    @Schema(description = "分类名称")
     private String name;
 
     /**
      * 排序值
      */
+    @Schema(description = "排序值")
     private Integer sortOrder;
 
     /**
      * 备注
      */
+    @Schema(description = "备注")
     private String remark;
 
     /**
      * 创建时间
      */
+    @Schema(description = "创建时间")
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd-HH:mm:ss")
     private Date createTime;
 
     /**
      * 更新时间
      */
+    @Schema(description = "更新时间")
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd-HH:mm:ss")
     private Date updateTime;
 

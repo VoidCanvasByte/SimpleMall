@@ -10,6 +10,7 @@ import com.example.simple.mall.common.enu.ResponseEnum;
 import com.example.simple.mall.common.exception.response.ResponseResult;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -39,7 +40,7 @@ public class CartItemController {
     @UserVerification
     @PostMapping("/add")
     @Operation(summary = "添加购物车以及物品", description = "添加购物车以及物品")
-    public ResponseResult<CartItemAddDTO> addToCart(@RequestBody CartItemAddDTO cartItemAddDTO) {
+    public ResponseResult<CartItemAddDTO> addToCart(@Valid @RequestBody CartItemAddDTO cartItemAddDTO) {
         shoppingCartItemService.addToCart(cartItemAddDTO);
         return ResponseResult.out(ResponseEnum.SUCCESS);
     }
@@ -66,9 +67,9 @@ public class CartItemController {
      * @since 2025/05/15
      */
     @UserVerification
-    @PostMapping("/update")
+    @PutMapping("/update")
     @Operation(summary = "单次添加或者减少购物车中物品的数量", description = "单次添加或者减少购物车中物品的数量")
-    public ResponseResult<CartItemAddDTO> updateCartItem(@RequestBody CartUpdateDTO cartUpdateDTO) {
+    public ResponseResult<CartItemAddDTO> updateCartItem(@Valid @RequestBody CartUpdateDTO cartUpdateDTO) {
         shoppingCartItemService.updateCartItem(cartUpdateDTO);
         return ResponseResult.out(ResponseEnum.SUCCESS);
     }

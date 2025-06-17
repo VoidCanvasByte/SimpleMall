@@ -1,5 +1,6 @@
 package com.example.simple.mall.common.dto.product;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
@@ -19,95 +20,111 @@ public class ProductUpdateInfoDTO {
     /**
      * 所属商品编码
      */
+    @Schema(description = "所属商品编码")
     @NotNull(message = "所属商品编码不能为空")
     public String productCode;
 
     /**
      * 商品表ID
      */
+    @Schema(description = "商品表ID")
     @NotNull(message = "商品表ID不能为空")
     public Long id;
 
     /**
      * 商品分类id
      */
+    @Schema(description = "商品分类id")
     @NotNull(message = "商品分类id不能为空")
     public Long productCategoryId;
 
     /**
      * 商品标题
      */
+    @Schema(description = "商品标题")
     public String productName;
 
     /**
      * 商品描述（详情）
      */
+    @Schema(description = "商品描述（详情）")
     public String description;
 
     /**
      * 品牌
      */
+    @Schema(description = "品牌")
     public String brand;
 
     /**
      * 上下架状态（1：上架；2:下架）
      */
+    @Schema(description = "上下架状态（1：上架；2:下架）")
     public Integer status;
-
 
     /**
      * 商品详细表ID
      */
+    @Schema(description = "商品详细表ID")
     public Long productDetailsId;
 
     /**
      * 商品数量
      */
+    @Schema(description = "商品数量")
     public Integer productQuantity;
 
     /**
      * 商品单价
      */
+    @Schema(description = "商品单价")
     public BigDecimal productPrice;
 
     /**
      * 商品图片
      */
+    @Schema(description = "商品图片")
     public String productImg;
 
     /**
      * 材质
      */
+    @Schema(description = "材质")
     public String material;
 
     /**
      * 尺寸
      */
+    @Schema(description = "尺寸")
     public Integer size;
 
     /**
      * 版本
      */
+    @Schema(description = "版本")
     public Integer version;
-
 
     /**
      * 商品图片信息
      */
+    @Schema(description = "商品图片信息")
     public List<ProductImages> productImagesList = new ArrayList<>();
 
 
+    @Schema(description = "商品图片信息")
     @Data
     public static class ProductImages {
 
         /**
          * url
          */
+        @Schema(description = "url")
         public String url;
 
         /**
          * 显示顺序
          */
+        @Schema(description = "显示顺序")
         public Integer sortOrder;
     }
 }

@@ -1,5 +1,6 @@
 package com.example.simple.mall.common.dto.product;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
 /**
@@ -14,9 +15,12 @@ public class ProductPaginationDTO {
     /**
      * 商品分类名称
      */
+    @Schema(description = "商品分类名称")
     public String productCategoryName;
+
     /**
      * 商品名称
      */
+    @Schema(description = "商品名称")
     public String productName;
 }
