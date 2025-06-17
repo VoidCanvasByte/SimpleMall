@@ -20,7 +20,7 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.
-                csrf(AbstractHttpConfigurer::disable). // 关闭 CSRF（防止 Swagger 发 POST 被拦）
+                csrf(AbstractHttpConfigurer::disable).
                 authorizeHttpRequests(auth -> auth
                 .requestMatchers("/api/admin/**").hasRole("ADMIN")
                 .requestMatchers("/api/user/**").hasAnyRole("USER", "ADMIN")
