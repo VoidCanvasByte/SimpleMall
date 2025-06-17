@@ -2,6 +2,7 @@ package com.example.simple.mall.api.controller;
 
 import com.example.simple.mall.api.service.ProductMainService;
 import com.example.simple.mall.common.dto.product.ProductAddInfoDTO;
+import com.example.simple.mall.common.dto.product.ProductPaginationDTO;
 import com.example.simple.mall.common.dto.product.ProductUpdateInfoDTO;
 import com.example.simple.mall.common.entity.ProductEntity;
 import com.example.simple.mall.common.enu.ResponseEnum;
@@ -29,21 +30,20 @@ public class ProductController {
     private ProductMainService productMainService;
 
     /**
-     * 分页查询
+     * productPaginationDTO
      *
-     * @param page          page
-     * @param size          size
-     * @param productEntity productEntity
-     * @return @return {@code Page<ProductEntity> }
+     * @param page                 page
+     * @param size                 size
+     * @param productPaginationDTO productPaginationDTO
      * @author sunny
-     * @since 2025/05/08
+     * @since 2025/05/08@return @return {@code Page<ProductEntity> }
      */
-    @GetMapping(value = "/query/page")
+    @PostMapping(value = "/query/page")
     @Operation(summary = "商品列表-分页", description = "商品列表-分页")
     public List<ProductEntity> queryPageList(@RequestParam(defaultValue = "1") Integer page,
                                              @RequestParam(defaultValue = "10") Integer size,
-                                             @RequestBody(required = false) ProductEntity productEntity) {
-        return productMainService.queryPageList(page, size, productEntity);
+                                             @RequestBody(required = false) ProductPaginationDTO productPaginationDTO) {
+        return productMainService.queryPageList(page, size, productPaginationDTO);
 
     }
 

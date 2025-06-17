@@ -3,18 +3,19 @@
 <mapper namespace="com.example.simple.mall.api.mapper.ProductMainMapper">
 
     <!--分页查询-->
-    <select id="selectPageList" resultType="com.example.simple.mall.common.dto.product.ProductReDTO">
-        select pm.product_code        as productCode,
-        pm.product_category_id as productCategoryId,
-        pm.product_name        as productName,
-        pm.status              as status,
-        pd.product_price       as productPrice,
-        pd.id                  as productDetailsId
+    <select id="selectPageList" resultType="com.example.simple.mall.common.entity.ProductEntity" parameterType="com.example.simple.mall.common.dto.product.ProductPaginationDTO">
+        select pm.product_code as productCode,
+        pc.name as productCategoryName,
+        pm.product_name as productName,
+        pm.status as status,
+        pd.product_price as productPrice,
+        pd.id as productDetailsId
         from product pm
         left join product_details pd on pm.product_code = pd.product_code
+        left join product_category pc on pc.id = pm.product_category_id
         where 1 = 1
-        <if test="productCode != null and productCode !=''">
-            and pm.product_category_id = #{productCode}
+        <if test="productCategoryName != null and productCategoryName !=''">
+            and pc.name = #{productCategoryName}
         </if>
         <if test="productName != null and productName !=''">
             and pm.product_name = #{productName}

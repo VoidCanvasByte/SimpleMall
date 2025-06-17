@@ -2,6 +2,7 @@ package com.example.simple.mall.api.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.example.simple.mall.common.dto.product.ProductAddInfoDTO;
+import com.example.simple.mall.common.dto.product.ProductPaginationDTO;
 import com.example.simple.mall.common.dto.product.ProductUpdateInfoDTO;
 import com.example.simple.mall.common.entity.ProductEntity;
 
@@ -19,13 +20,13 @@ public interface ProductMainService extends IService<ProductEntity> {
     /**
      * 分页查询
      *
-     * @param page        page
-     * @param size        size
-     * @param productEntity productEntity
+     * @param page                 page
+     * @param size                 size
+     * @param productPaginationDTO productPaginationDTO
      * @author sunny
-     * @since 2025/05/08@return @return {@code PageResult<ProductAddInfoDTO> }
+     * @since 2025/05/08@return @return {@code PageResult<ProductAddInfoDTO> }@return @return {@code List<ProductEntity> }
      */
-    List<ProductEntity> queryPageList(Integer page, Integer size, ProductEntity productEntity);
+    List<ProductEntity> queryPageList(Integer page, Integer size, ProductPaginationDTO productPaginationDTO);
 
     /**
      * 添加商品信息

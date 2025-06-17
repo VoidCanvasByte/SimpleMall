@@ -6,12 +6,12 @@ import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.example.simple.mall.api.mapStruct.ProductMainMapperStruct;
 import com.example.simple.mall.api.mapper.ProductCategoryMapper;
-import com.example.simple.mall.api.mapper.ProductImagesMapper;
 import com.example.simple.mall.api.mapper.ProductMainMapper;
 import com.example.simple.mall.api.service.ProductDetailsService;
 import com.example.simple.mall.api.service.ProductImagesService;
 import com.example.simple.mall.api.service.ProductMainService;
 import com.example.simple.mall.common.dto.product.ProductAddInfoDTO;
+import com.example.simple.mall.common.dto.product.ProductPaginationDTO;
 import com.example.simple.mall.common.dto.product.ProductUpdateInfoDTO;
 import com.example.simple.mall.common.entity.ProductCategoryEntity;
 import com.example.simple.mall.common.entity.ProductDetailsEntity;
@@ -50,15 +50,15 @@ public class ProductMainServiceImpl extends ServiceImpl<ProductMainMapper, Produ
     /**
      * 分页查询
      *
-     * @param page          page
-     * @param size          size
-     * @param productEntity productEntity
+     * @param page                 page
+     * @param size                 size
+     * @param productPaginationDTO productPaginationDTO
      * @author sunny
-     * @since 2025/05/08@return @return {@code PageResult<ProductAddInfoDTO> }
+     * @since 2025/05/08@return @return {@code PageResult<ProductAddInfoDTO> }@return @return {@code List<ProductEntity> }
      */
     @Override
-    public List<ProductEntity> queryPageList(Integer page, Integer size, ProductEntity productEntity) {
-        List<ProductEntity> productEntityList = productMainMapper.selectPageList(productEntity);
+    public List<ProductEntity> queryPageList(Integer page, Integer size, ProductPaginationDTO productPaginationDTO) {
+        List<ProductEntity> productEntityList = productMainMapper.selectPageList(productPaginationDTO);
         int fromIndex = (page - 1) * size;
         int toIndex = Math.min(fromIndex + size, productEntityList.size());
         return CollUtil.sub(productEntityList, fromIndex, toIndex);

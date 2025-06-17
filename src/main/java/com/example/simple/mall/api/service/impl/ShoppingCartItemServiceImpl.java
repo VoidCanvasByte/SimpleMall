@@ -67,7 +67,6 @@ public class ShoppingCartItemServiceImpl extends ServiceImpl<ShoppingCartItemMap
                 shoppingCartItemMapper.insert(shoppingCartItemEntity);
             }
         } else {
-            //创建购物车
             ShoppingCartEntity shoppingCartEntityTemp = CartMapperStruct.INSTANCE.cartItemDTOToEntity(cartItemAddDTO);
             shoppingCartMapper.insert(shoppingCartEntityTemp);
             ShoppingCartItemEntity shoppingCartItemEntity = CartMapperStruct.INSTANCE.cartItemDtoToEntity(cartItemAddDTO);
