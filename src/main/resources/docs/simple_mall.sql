@@ -17,13 +17,13 @@ create table product_category
 (
     id          bigint unsigned auto_increment comment '分类主键'
         primary key,
-    user_id     bigint unsigned                        not null comment '用户ID',
-    parent_id   int unsigned default '0'               null comment '父级分类，顶级为0',
-    name        varchar(100)                           not null comment '分类名称',
-    sort_order  int          default 0                 not null comment '排序值',
-    remark      varchar(255)                           null comment '分类描述',
-    create_time datetime     default CURRENT_TIMESTAMP not null comment '创建时间',
-    update_time datetime     default CURRENT_TIMESTAMP not null on update CURRENT_TIMESTAMP comment '更新时间'
+    user_id     bigint unsigned                           not null comment '用户ID',
+    parent_id   bigint unsigned default '0'               null comment '父级分类，顶级为0',
+    name        varchar(100)                              not null comment '分类名称',
+    sort_order  int             default 0                 not null comment '排序值',
+    remark      varchar(255)                              null comment '分类描述',
+    create_time datetime        default CURRENT_TIMESTAMP not null comment '创建时间',
+    update_time datetime        default CURRENT_TIMESTAMP not null on update CURRENT_TIMESTAMP comment '更新时间'
 )
     comment '商品分类表' charset = utf8mb4;
 
@@ -32,10 +32,10 @@ create table product
     id                  bigint unsigned auto_increment comment '商品主键'
         primary key,
     product_category_id bigint unsigned                    null comment '商品分类表',
-    product_name        varchar(200) charset utf8mb4       not null comment '商品标题',
-    product_code        varchar(255) charset utf8mb4       not null comment '商品货号',
-    description         text charset utf8mb4               null comment '商品详情（富文本/Markdown 等）',
-    brand               varchar(100) charset utf8mb4       null comment '品牌',
+    product_name        varchar(200)                       not null comment '商品标题',
+    product_code        varchar(255)                       not null comment '商品货号',
+    description         text                               null comment '商品详情（富文本/Markdown 等）',
+    brand               varchar(100)                       null comment '品牌',
     status              tinyint  default 1                 not null comment '上下架状态（1：上架，2：下架）',
     create_time         datetime default CURRENT_TIMESTAMP not null comment '创建时间',
     update_time         datetime default CURRENT_TIMESTAMP not null on update CURRENT_TIMESTAMP comment '更新时间',
@@ -51,16 +51,15 @@ create table product_details
 (
     id               bigint unsigned auto_increment
         primary key,
-    product_code     varchar(255) charset utf8mb4 not null comment '商品货号',
-    product_quantity int                          not null comment '商品库存',
-    product_desc     varchar(255)                 null comment '商品描述',
-    product_price    decimal(10, 2)               not null comment '商品价格',
-    product_img      varchar(255)                 not null comment '商品图片',
-    material         varchar(100)                 null comment '材质',
-    size             int                          null comment '尺寸',
-    version          int default 1                not null comment '版本号',
-    create_time      datetime                     null comment '创建时间',
-    update_time      datetime                     null comment '更新时间'
+    product_code     varchar(255)             not null comment '商品货号',
+    product_quantity int                      not null comment '商品库存',
+    product_desc     varchar(255)             null comment '商品描述',
+    product_price    decimal(10, 2)           not null comment '商品价格',
+    material         varchar(100)             null comment '材质',
+    size             int                      null comment '尺寸',
+    version          int      default 1       not null comment '版本号',
+    create_time      datetime default (now()) null comment '创建时间',
+    update_time      datetime default (now()) null comment '更新时间'
 )
     comment '商品信息主表' charset = utf8mb4;
 
@@ -86,11 +85,10 @@ create table product_shipment
     id              bigint unsigned auto_increment comment '发货主键'
         primary key,
     order_id        bigint unsigned   not null comment '关联订单',
-    carrier         varchar(50)       null comment '物流公司',
     tracking_number varchar(100)      null comment '运单号',
     shipped_at      datetime          null comment '发货时间',
     delivered_at    datetime          null comment '签收时间',
-    status          tinyint default 0 not null comment '发货状态（0：运输中，1：已签收）',
+    status          tinyint default 0 not null comment '发货状态（1：运输中，2：已签收）',
     constraint tracking_number
         unique (tracking_number)
 )
